@@ -10,6 +10,9 @@ class _ConnectionFailled(Exception):
 class _NotAuthorisedMethod(Exception):
     pass
 
+class _IncompatibleDataUnit(Exception):
+    pass
+
 def _connect_mysql(host, user, pw):
     connection = pymysql.connect(host=host,
                                  user=user,
@@ -34,13 +37,25 @@ _DELETE_TABLE = "DROP TABLE {0};"
 _ADD_COLUMN = "ALTER TABLE {0} ADD COLUMN {1} {0};"
 _DELETE_COLUMN = "ALTER TABLE {0} DROP COLUMN {1};"
 _CHANGE_COLUMN = "ALTER TABLE {0} CHANGE {1} {2} {3};"
-_ADD_VALUE = ""
+_ADD_VALUE = "I"+"NSERT INTO {0} VALUES {1};"
 _INSERT_VALUE = ""
 
 _protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
 _protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
                    'i' : ' INT NOT NULL,',
                    'p' : ' PRIMARY KEY {0} '}
+
+def _include_list(ln, lp):
+    if len(ln) > len(lp):
+        return False
+    for i in ln:
+        if i in lp:
+            continue
+        return False
+    return True
+
+def _equal_list(ln, lp):
+    return _include_list(ln, lp) and _include_list(lp, ln)
 
 def _query_create_table(name, fields):
     _funquery = ''
@@ -57,6 +72,55 @@ def _query_create_table(name, fields):
         _funquery += ' ' + field + _protocol_noprotocol
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-4] + _query[-2:]
+
+
+def _certify(d=dct, _format):
+    if not _format:
+        return tuple(d.values())
+    op = ()
+    for field in _format:
+        try:
+            op += (d[field],)
+        except:
+            op += ('NULL',)
+    return op
+
+
+class DataUnit(object):
+    # Data unit store a dict of fields and their contents
+    # at _args
+    table_format = []
+
+    __slots__ = ['_args']
+
+    def __init__(self, db=None, **kwargs):
+        self._args = kwargs
+        self._db = db
+
+    @property
+    def args(self):
+        return self._args
+
+    @property
+    def direct(self):
+        return (self._db, self._table)
+
+    @property
+    def keys(self):
+        return list(self.args.keys())
+
+    @property
+    def quantify(self):
+        return _certify(self.args, self.table_format)
+
+class TaxonDataUnit(DataUnit):
+    table_format = ['name', 'type', 'level', 'pclass']
+    pass
+
+class SpeciesDataUnit(DataUnit):
+    table_format = []
+    pass
+
 
 class DBManager:
     # Mysql database manager
@@ -197,12 +261,28 @@ class DBManager:
             cursor.execute(sql)
             print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
 
-    def _add_value(self, data, db=None, table=None):
-        pass
+    def _add_value(self, dataunit, db=None, table=None):
+        if dataunit.db and db and db != dataunit.db:
+            raise _IncompatibleDataUnit('DataUnit db is not the same as selected db')
+        if db is None and dataunit.db is None:
+            print('Select a database or set dataunit db')
+            return
+        db = dataunit.db or db
+        self.use_database(db)
+        if table is None:
+            print('Select a table')
+            return
+        if _include_list(dataunit.args, self._table_columns(db, table)):
+            with self.connection.cursor() as cursor:
+                sql = _ADD_VALUE.format(table, dataunit.quantify)
+                cursor.execute(sql)
+                print('added value')
 
-    def _insert_value(self, data,aid=None, aname=None db=None, table=None):
-        pass
+        else:
+            raise _IncompatibleDataUnit('Not compatible data unit')
 
+    def _insert_value(self, dataunit, aid=None, aname=None, db=None, table=None):
+        pass
 
 
 LICAPY_DATABASES = ['Plantae',
@@ -216,8 +296,8 @@ LICAPY_DATABASES = ['Plantae',
 
 LICAPY_SUPPORT_DATABASES = ['LicapyDB']
 
-PLANTAE_DB = {'TreeData' : ('id', 'name', 'pname', 'level'),
-              'PlantsData' : ('id', 'name', 'pname', 'locations', 'caracteristiques')}
+PLANTAE_DB = {'TreeData' : ('name', 'pname', 'level', 'bul'),
+              'PlantsData' : ('name', 'name', 'pname', 'locations', 'carac')}
 
 ANIMALIA_DB = {}
 FUNGI_DB = {}
@@ -283,7 +363,6 @@ class LicapyDBManager(DBManager):
             if _compare_l1(content, self._table_columns(table)):
                 return True
             return False
-
 
     def _build_db_architecture(self, db, ecrase=True):
         L = LICAPY_DATABASES
