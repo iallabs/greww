@@ -74,7 +74,7 @@ def _query_create_table(name, fields):
     return _query[0:-4] + _query[-2:]
 
 
-def _certify(d=dct, _format):
+def _certify(d, _format):
     if not _format:
         return tuple(d.values())
     op = ()
@@ -91,11 +91,12 @@ class DataUnit(object):
     # at _args
     table_format = []
 
-    __slots__ = ['_args']
+    __slots__ = ['_args', '_db', '_table']
 
-    def __init__(self, db=None, **kwargs):
+    def __init__(self, db=None, table=None **kwargs):
         self._args = kwargs
         self._db = db
+        self._table = table
 
     @property
     def args(self):
@@ -194,7 +195,7 @@ class DBManager:
             raise _NotAuthorisedMethod('Cant delete :', dbname)
 
 
-    def use_database(self, name):
+    def use_database(self, dbname):
         if self.state == 2:
             raise _NotAuthorisedMethod('You are already connected to a database *m6')
         try:
