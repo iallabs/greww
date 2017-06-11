@@ -282,7 +282,7 @@ class DBManager:
         if table is None:
             print('Select a table')
             return
-        if _include_list(dataunit.args, self._table_columns(db, table)):
+        if _include_list(dataunit.args, self._table_columns(table)):
             with self.connection.cursor() as cursor:
                 sql = _ADD_VALUE.format(table, dataunit.quantify)
                 cursor.execute(sql)
