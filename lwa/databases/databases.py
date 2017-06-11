@@ -211,7 +211,7 @@ class DBManager:
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         with self.connection.cursor() as cursor:
-            sql = _SHOW_TABLE.format(dbname)
+            sql = _SHOW_TABLE.format(table)
             cursor.execute(sql)
             result = cursor.fetchall()
             return result
