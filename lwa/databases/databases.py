@@ -37,7 +37,8 @@ _DELETE_TABLE = "DROP TABLE {0};"
 _ADD_COLUMN = "ALTER TABLE {0} ADD COLUMN {1} {0};"
 _DELETE_COLUMN = "ALTER TABLE {0} DROP COLUMN {1};"
 _CHANGE_COLUMN = "ALTER TABLE {0} CHANGE {1} {2} {3};"
-_ADD_VALUE = "I"+"NSERT INTO {0} VALUES ({1});"
+_ADD_VALUE = "I" + "NSERT INTO {0} VALUES ({1});"
+_SHOW_TABLE_VALUES = "S" + "ELECT * FROM {0};"
 _INSERT_VALUE = ""
 
 _protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
@@ -235,6 +236,18 @@ class DBManager:
         except:
             raise _NotAuthorisedOperation('Cant create table ', tablename)
 
+    def _show_table(self, tablename):
+        if self.state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        try:
+            with self.connection.cursor() as cursor:
+                sql = _SHOW_TABLE_VALUES.format(tablename)
+                cursor.execute(sql)
+                result = cursor.fetchall()
+                return result
+        except:
+            raise _NotAuthorisedOperation('Cant show table ', tablename)
+
     def _delete_table(self, tablename):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
@@ -278,7 +291,8 @@ class DBManager:
             return
         db = dataunit.db or db
         table = dataunit.table or table
-        self.use_database(db)
+        if self.state == 1:
+            self.use_database(db)
         if table is None:
             print('Select a table')
             return
