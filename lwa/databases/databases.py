@@ -103,6 +103,14 @@ class DataUnit(object):
         return self._args
 
     @property
+    def db(self):
+        return self._db
+
+    @property
+    def table(self):
+        return self._table
+
+    @property
     def direct(self):
         return (self._db, self._table)
 
@@ -228,7 +236,7 @@ class DBManager:
             raise _NotAuthorisedOperation('Cant create table ', tablename)
 
     def _delete_table(self, tablename):
-        if state == 1:
+        if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         try:
             with self.connection.cursor() as cursor:
@@ -239,7 +247,7 @@ class DBManager:
             raise _NotAuthorisedOperation('Cant delete table ', tablename)
 
     def _add_columns(self, tablename, column, typ):
-        if state == 1:
+        if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         with self.connection.cursor() as cursor:
             sql = _ADD_FIELD.format(tablename, column, typ)
@@ -247,7 +255,7 @@ class DBManager:
             print('Added Field : ', tablename)
 
     def _del_column(self, tablename, collumn):
-        if state == 1:
+        if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         with self.connection.cursor() as cursor:
             sql = _DELETE_COLUMN.format(tablename, column)
@@ -255,7 +263,7 @@ class DBManager:
             print('Deleted Field : ', tablename)
 
     def _change_column(self, tablename, column , new_column, new_type):
-        if state == 1:
+        if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         with self.connection.cursor() as cursor:
             sql = _CHANGE_COLUMN.format(tablename, column, new_column, new_type)
