@@ -71,7 +71,7 @@ def _query_create_table(name, fields):
             continue
         _funquery += ' ' + field + _protocol_noprotocol
     _query = _CREATE_TABLE.format(name, _funquery)
-    return _query[0:-4] + _query[-2:]
+    return _query[0:-3] + _query[-2:]
 
 
 def _certify(d, _format):
