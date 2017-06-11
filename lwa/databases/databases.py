@@ -93,7 +93,7 @@ class DataUnit(object):
 
     __slots__ = ['_args', '_db', '_table']
 
-    def __init__(self, db=None, table=None **kwargs):
+    def __init__(self, db=None, table=None, **kwargs):
         self._args = kwargs
         self._db = db
         self._table = table
