@@ -283,13 +283,11 @@ class DBManager:
             cursor.execute(sql)
             print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
 
-    def _add_value(self, dataunit, db=None, table=None):
-        if dataunit.db and db and db != dataunit.db:
-            raise _IncompatibleDataUnit('DataUnit db is not the same as selected db')
-        if db is None and dataunit.db is None:
+    def _add_value(self, dataunit, table=None):
+        if dataunit.db is None:
             print('Select a database or set dataunit db')
             return
-        db = dataunit.db or db
+        db = dataunit.db
         table = dataunit.table or table
         if self.state == 1:
             self.use_database(db)
