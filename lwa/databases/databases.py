@@ -217,7 +217,7 @@ class DBManager:
             return result
 
     def _create_table(self, tablename, columns):
-        if state == 1:
+        if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         try:
             with self.connection.cursor() as cursor:
