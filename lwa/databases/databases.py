@@ -268,6 +268,7 @@ class DBManager:
             print('Select a database or set dataunit db')
             return
         db = dataunit.db or db
+        table = dataunit.table or table
         self.use_database(db)
         if table is None:
             print('Select a table')
