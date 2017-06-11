@@ -2,8 +2,6 @@
 
 import pymysql.cursors
 
-databases = ['testdb']
-
 class _ConnectionFailled(Exception):
     pass
 
@@ -13,18 +11,11 @@ class _NotAuthorisedMethod(Exception):
 class _IncompatibleDataUnit(Exception):
     pass
 
-def _connect_mysql(host, user, pw):
-    connection = pymysql.connect(host=host,
-                                 user=user,
-                                 password=pw)
-    return connection
+class _NotAuthorisedOperation(Exception):
+    pass
 
-def _connect_withdb(host, user, pw , db):
-    connection = pymysql.connect(host=host,
-                                 user=user,
-                                 password=pw,
-                                 db=db)
-    return connection
+databases = ['testdb']
+dataunit_classes = set()
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
 _CREATE_DATA_BASE = "CREATE DATABASE {0};"
@@ -45,6 +36,51 @@ _protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
 _protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
                    'i' : ' INT NOT NULL,',
                    'p' : ' PRIMARY KEY {0} '}
+
+LICAPY_DATABASES = ['Plantae',
+                    'Animalia',
+                    'Fungi',
+                    'Chromista',
+                    'Virus',
+                    'Bacteria',
+                    'Essential Oils',
+                    'Vegatal Oils']
+
+LICAPY_SUPPORT_DATABASES = ['LicapyDB']
+
+PLANTAE_DB = {'TreeData' : ('name', 'pname', 'level', 'bul'),
+              'PlantsData' : ('name', 'name', 'pname', 'locations', 'carac')}
+
+ANIMALIA_DB = {}
+FUNGI_DB = {}
+CHROMISTA_DB = {}
+VIRUS_DB = {}
+BACTERIA_DB = {}
+ESSENTIAL_OILS_DB = {}
+VEGETAL_OILS_DB = {}
+
+LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
+                            ANIMALIA_DB,
+                            FUNGI_DB,
+                            CHROMISTA_DB,
+                            VIRUS_DB,
+                            BACTERIA_DB,
+                            ESSENTIAL_OILS_DB,
+                            VEGETAL_OILS_DB]
+
+
+def _connect_mysql(host, user, pw):
+    connection = pymysql.connect(host=host,
+                                 user=user,
+                                 password=pw)
+    return connection
+
+def _connect_withdb(host, user, pw , db):
+    connection = pymysql.connect(host=host,
+                                 user=user,
+                                 password=pw,
+                                 db=db)
+    return connection
 
 def _include_list(ln, lp):
     if len(ln) > len(lp):
@@ -127,9 +163,13 @@ class TaxonDataUnit(DataUnit):
     table_format = ['name', 'type', 'level', 'pclass']
     pass
 
-class SpeciesDataUnit(DataUnit):
-    table_format = []
-    pass
+def _create_dataunit_class(classname, _format):
+    class _XDataUnit(DataUnit):
+        table_format = _format
+        _name = classname
+        pass
+    dataunit_classes.add(_XDataUnit)
+    return _XDataUnit
 
 
 class DBManager:
@@ -309,37 +349,6 @@ class DBManager:
         pass
 
 
-LICAPY_DATABASES = ['Plantae',
-                    'Animalia',
-                    'Fungi',
-                    'Chromista',
-                    'Virus',
-                    'Bacteria',
-                    'Essential Oils',
-                    'Vegatal Oils']
-
-LICAPY_SUPPORT_DATABASES = ['LicapyDB']
-
-PLANTAE_DB = {'TreeData' : ('name', 'pname', 'level', 'bul'),
-              'PlantsData' : ('name', 'name', 'pname', 'locations', 'carac')}
-
-ANIMALIA_DB = {}
-FUNGI_DB = {}
-CHROMISTA_DB = {}
-VIRUS_DB = {}
-BACTERIA_DB = {}
-ESSENTIAL_OILS_DB = {}
-VEGETAL_OILS_DB = {}
-
-LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
-                            ANIMALIA_DB,
-                            FUNGI_DB,
-                            CHROMISTA_DB,
-                            VIRUS_DB,
-                            BACTERIA_DB,
-                            ESSENTIAL_OILS_DB,
-                            VEGETAL_OILS_DB]
-
 
 def _compare_l1(ln, lp):
     for i in ln:
@@ -347,8 +356,6 @@ def _compare_l1(ln, lp):
             return False
     return True
 
-class _NotAuthorisedOperation(Exception):
-    pass
 
 class LicapyDBManager(DBManager):
     # Licapy DataBase manager
