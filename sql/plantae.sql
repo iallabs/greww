@@ -1,0 +1,5 @@
+BEGIN;
+
+CREATE DATABASE Plantae;
+
+COMMIT;
