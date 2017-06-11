@@ -25,36 +25,38 @@ def _connect_withdb(host, user, pw , db):
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
 _CREATE_DATA_BASE = "CREATE DATABASE {0};"
-_DELETE_DATA_BASE = "DROP DATABASE {0}"
-_USE_DATA_BASE = "USE {0}"
-_SHOW_TABLE = "DESC {0}"
+_DELETE_DATA_BASE = "DROP DATABASE {0};"
+_USE_DATA_BASE = "USE {0};"
+_SHOW_TABLE = "DESC {0};"
 _SHOW_ALL_TABLES = "show tables;"
 _CREATE_TABLE = "CREATE TABLE {0} ({1});"
-_ADD_COLLUMN = ""
-_DELETE_TABLE = ""
+_DELETE_TABLE = "DROP TABLE {0};"
+_ADD_COLUMN = "ALTER TABLE {0} ADD COLUMN {1} {0};"
+_DELETE_COLUMN = "ALTER TABLE {0} DROP COLUMN {1};"
+_CHANGE_COLUMN = "ALTER TABLE {0} CHANGE {1} {2} {3};"
 _ADD_VALUE = ""
 _INSERT_VALUE = ""
 
 _protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
 _protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
                    'i' : ' INT NOT NULL,',
-                   'p' : ' PRIMARY KEY {0}'}
+                   'p' : ' PRIMARY KEY {0} '}
 
 def _query_create_table(name, fields):
     _funquery = ''
     for field in fields:
         if ':' in field:
-            field, code = field.split(':'))
-            _funquery += ' ' + field
+            field1, code = field.split(':')
+            _funquery += ' ' + field1
             for c in code:
+                if c == 'p':
+                    _funquery += (_protocol_taxon['p']).format(field1)
+                    continue
                 _funquery += _protocol_taxon[c]
-                if field != fields[-1]:
-                    _funquery += ','
             continue
         _funquery += ' ' + field + _protocol_noprotocol
-        if field != fields[-1]:
-            _funquery += ','
     _query = _CREATE_TABLE.format(name, _funquery)
+    return _query[0:-4] + _query[-2:]
 
 class DBManager:
     # Mysql database manager
@@ -119,36 +121,88 @@ class DBManager:
     def delete_database(self, dbname):
         if self.state == 2:
             raise _NotAuthorisedMethod('You are already connected to a database *m5')
-        with self.connection.cursor() as cursor:
-            sql = _DELETE_DATA_BASE.format(dbname)
-            cursor.execute(sql)
-            print('Deleted database : ', dbname)
+        try:
+            with self.connection.cursor() as cursor:
+                sql = _DELETE_DATA_BASE.format(dbname)
+                cursor.execute(sql)
+                print('Deleted database : ', dbname)
+        except:
+            raise _NotAuthorisedMethod('Cant delete :', dbname)
+
 
     def use_database(self, name):
         if self.state == 2:
             raise _NotAuthorisedMethod('You are already connected to a database *m6')
-        with self.connection.cursor() as cursor:
-            sql = _DELETE_DATA_BASE.format(dbname)
-            cursor.execute(sql)
-            print('Deleted database : ', dbname)
+        try:
+            with self.connection.cursor() as cursor:
+                sql = _USE_DATA_BASE.format(dbname)
+                cursor.execute(sql)
+                self.state = 2
+                print('Selected database : ', dbname)
+        except:
+            raise _NotAuthorisedOperation('Cant select :', dbname)
 
     def _table_columns(self, table):
-        pass
+        if self.state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        with self.connection.cursor() as cursor:
+            sql = _SHOW_TABLE.format(dbname)
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            return result
 
-    def _create_table(self, tablename, collumns):
-        pass
+    def _create_table(self, tablename, columns):
+        if state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        try:
+            with self.connection.cursor() as cursor:
+                sql = _query_create_table(tablename, columns)
+                cursor.execute(sql)
+                print('Created table : ', tablename , 'with fields', columns)
+        except:
+            raise _NotAuthorisedOperation('Cant create table ', tablename)
 
     def _delete_table(self, tablename):
-        pass
+        if state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        try:
+            with self.connection.cursor() as cursor:
+                sql = _DELETE_TABLE.format(tablename)
+                cursor.execute(sql)
+                print('Deleted table : ', tablename)
+        except:
+            raise _NotAuthorisedOperation('Cant delete table ', tablename)
 
-    def _add_columns(self, tablename, collumn):
-        pass
+    def _add_columns(self, tablename, column, typ):
+        if state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        with self.connection.cursor() as cursor:
+            sql = _ADD_FIELD.format(tablename, column, typ)
+            cursor.execute(sql)
+            print('Added Field : ', tablename)
 
     def _del_column(self, tablename, collumn):
+        if state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        with self.connection.cursor() as cursor:
+            sql = _DELETE_COLUMN.format(tablename, column)
+            cursor.execute(sql)
+            print('Deleted Field : ', tablename)
+
+    def _change_column(self, tablename, column , new_column, new_type):
+        if state == 1:
+            raise _NotAuthorisedMethod('Please select a database first')
+        with self.connection.cursor() as cursor:
+            sql = _CHANGE_COLUMN.format(tablename, column, new_column, new_type)
+            cursor.execute(sql)
+            print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
+
+    def _add_value(self, data, db=None, table=None):
         pass
 
-    def _change_column(self, tablesname, collumn , new_collumns):
+    def _insert_value(self, data,aid=None, aname=None db=None, table=None):
         pass
+
 
 
 LICAPY_DATABASES = ['Plantae',
