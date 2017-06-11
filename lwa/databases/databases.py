@@ -29,8 +29,32 @@ _DELETE_DATA_BASE = "DROP DATABASE {0}"
 _USE_DATA_BASE = "USE {0}"
 _SHOW_TABLE = "DESC {0}"
 _SHOW_ALL_TABLES = "show tables;"
+_CREATE_TABLE = "CREATE TABLE {0} ({1});"
 _ADD_COLLUMN = ""
+_DELETE_TABLE = ""
 _ADD_VALUE = ""
+_INSERT_VALUE = ""
+
+_protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
+_protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
+                   'i' : ' INT NOT NULL,',
+                   'p' : ' PRIMARY KEY {0}'}
+
+def _query_create_table(name, fields):
+    _funquery = ''
+    for field in fields:
+        if ':' in field:
+            field, code = field.split(':'))
+            _funquery += ' ' + field
+            for c in code:
+                _funquery += _protocol_taxon[c]
+                if field != fields[-1]:
+                    _funquery += ','
+            continue
+        _funquery += ' ' + field + _protocol_noprotocol
+        if field != fields[-1]:
+            _funquery += ','
+    _query = _CREATE_TABLE.format(name, _funquery)
 
 class DBManager:
     # Mysql database manager
@@ -225,6 +249,24 @@ class LicapyDBManager(DBManager):
                 self._create_table(table, content)
 
 
+class LicapyApiDB(object):
+
+    __slots__ = ['dbmanager']
+
+    def __init__(self, dbmanager=None):
+        self.dbmanager = dbmanager
+
+    def insert_object(self, object):
+        pass
+
+    def delete_object(self):
+        pass
+
+    def get_object_data(self, name):
+        pass
+
+    def setup_db_data(self, db):
+        pass
 
 def verify_database(dbname):
     return
