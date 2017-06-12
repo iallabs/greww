@@ -458,6 +458,7 @@ class LicapyDBManager(DBManager):
                 return True
             return False
 
+    @_forall
     def _build_db_architecture(self, db, ecrase=True):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
