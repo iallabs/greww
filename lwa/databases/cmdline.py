@@ -17,3 +17,8 @@ def _treat_command_line(cmdargs):
     if not cmd[0] in _options:
         raise _NotImplementedCommand('Not implemented cmdline')
     return 'yes'
+
+if __name__ == '__main__':
+    print(command)
+    print('hello')
+    print(_treat_command_line(command))
