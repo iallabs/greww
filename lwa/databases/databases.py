@@ -72,7 +72,7 @@ ESSENTIAL_OILS_DB = {'EssoilTree' : ('name', 'pname', 'type', 'id'),
 VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
                    'VegoilData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
 
-LICAP_SPDB = {'LicapyAdmins' : ('user', 'password', 'name', 'email')}
+LICAPY_SPDB = {'LicapyAdmins' : ('user', 'password', 'name', 'email')}
 
 LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             ANIMALIA_DB,
