@@ -273,16 +273,15 @@ class DBManager:
 
 
     def create_database(self, dbname):
-        if self.state == 2:
-            raise _NotAuthorisedMethod('You are already connected to a database *m4')
         with self.connection.cursor() as cursor:
             sql = _CREATE_DATA_BASE.format(dbname)
             cursor.execute(sql)
             print('Created database : ', dbname)
 
     def delete_database(self, dbname):
-        if self.state == 2:
-            raise _NotAuthorisedMethod('You are already connected to a database *m5')
+        if not db in self._databases:
+            print('no database named', dbname)
+            return
         try:
             with self.connection.cursor() as cursor:
                 sql = _DELETE_DATA_BASE.format(dbname)
