@@ -48,16 +48,29 @@ LICAPY_DATABASES = ['Plantae',
 
 LICAPY_SUPPORT_DATABASES = ['LicapyDB']
 
-PLANTAE_DB = {'TreeData' : ('name', 'pname', 'level', 'bul'),
-              'PlantsData' : ('name', 'name', 'pname', 'locations', 'carac')}
+PLANTAE_DB = {'PlantTree' : ('name', 'pname', 'type', 'id'),
+              'PlantData' : ('name', 'location', 'morphology', 'synonyms')}
 
-ANIMALIA_DB = {}
-FUNGI_DB = {}
-CHROMISTA_DB = {}
-VIRUS_DB = {}
-BACTERIA_DB = {}
-ESSENTIAL_OILS_DB = {}
-VEGETAL_OILS_DB = {}
+ANIMALIA_DB = {'AnimalTree' : ('name', 'pname', 'type', 'id'),
+               'AnimalData' : ('name', 'location', 'morphology', 'synonyms')}
+
+FUNGI_DB = {'FungiTree' : ('name', 'pname', 'type', 'id'),
+            'FungiData' : ('name', 'location', 'morphology', 'synonyms')}
+
+CHROMISTA_DB = {'ChromistaTree' : ('name', 'pname', 'type', 'id'),
+                'ChromistaData' : ('name', 'location', 'morphology', 'synonyms')}
+
+VIRUS_DB = {'VirusTree' : ('name', 'pname', 'type', 'id'),
+            'VirusData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
+
+BACTERIA_DB = {'BacteriaTree' : ('name', 'pname', 'type', 'id'),
+               'BacteriaData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
+
+ESSENTIAL_OILS_DB = {'EssoilTree' : ('name', 'pname', 'type', 'id'),
+                     'EssoilData' : ('name', 'pathology', 'origine','morphology', 'synonyms')}
+
+VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
+                   'VegoilData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
 
 LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             ANIMALIA_DB,
@@ -361,7 +374,7 @@ class LicapyDBManager(DBManager):
     # Licapy DataBase manager
 
     def __init__(self, cnxargs=(), db=LICAPY_DATABASES, sdb=LICAPY_SUPPORT_DATABASES):
-        DBManager.__init__(connection=None, connection_args=cnxargs)
+        DBManager.__init__(self, connection=None, connection_args=cnxargs)
         if self.state == 2:
             raise _NotAuthorisedOperation('LicapyDBManager should connect to mysql')
         self.db = db + sdb
