@@ -139,7 +139,9 @@ def _certify(d, _format):
 def _firstraws(func):
     def pick_args(*args, **kwargs):
         result = func(*args, **kwargs)
-        return [i[0] for i in result]
+        if result:
+            return [i[0] for i in result]
+        return []
     return pick_args
 
 
