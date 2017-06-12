@@ -4,7 +4,7 @@ import sys
 
 from lwa.databases.databases import LicapyDBManager
 
-_lic = LicapyDBManager(cnxargs=('localhost', 'root', 'uehMLMRw', ''))
+_lic = LicapyDBManager(cnxargs=('localhost', 'root', 'uehMLMRw', ''), show=False)
 
 command = []
 
@@ -16,17 +16,17 @@ def build():
     _lic._build_all_architecture()
 
 def rebuild():
-    _lic._rebuild_database
+    _lic.rebuild_database
 
 def destroy():
-    _lic._destroy_all()
+    _lic.destroy_all
 
 def show_content(*args):
     a = list(args)
     if len(a) == 2:
         m, n = a[0], a[1]
         _lic.use_database(m)
-        _lic._show_table(n, show=True)
+        return _lic._show_table(n, show=True)
     return False
 
 def show_fields(*args):
