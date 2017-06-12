@@ -294,7 +294,8 @@ class DBManager:
         except:
             raise _NotAuthorisedOperation('Cant select :', dbname)
 
-    def _table_columns(self, table, simple=True):
+    @_firstraws
+    def _table_columns(self, table, show=True):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         if not table in self._dbtables:
@@ -304,8 +305,6 @@ class DBManager:
             sql = _SHOW_TABLE.format(table)
             cursor.execute(sql)
             result = cursor.fetchall()
-            if simple:
-                return [i[0] for i in result]
             return result
 
     def _create_table(self, tablename, columns, show=False):
