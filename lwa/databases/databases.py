@@ -484,7 +484,8 @@ class LicapyDBManager(DBManager):
 
     def _build_all_architecture(self):
         for _ in self.db:
-            self._build_db_architecture(_, ecrase=True)
+            if _:
+                self._build_db_architecture(_, ecrase=True)
 
     @property
     @_validpd
@@ -495,7 +496,7 @@ class LicapyDBManager(DBManager):
     @property
     @_validpd
     def rebuild_database(self):
-        self.destroy_all and self._build_db and self._build_all_architecture
+        self.destroy_all and self._build_db() and self._build_all_architecture()
 
 #####################################
 
