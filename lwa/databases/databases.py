@@ -297,6 +297,9 @@ class DBManager:
     def _table_columns(self, table, simple=True):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
+        if not table in self._dbtables:
+            if show: print(table, '  doesnt exist in database tables')
+            return
         with self.connection.cursor() as cursor:
             sql = _SHOW_TABLE.format(table)
             cursor.execute(sql)
@@ -305,20 +308,23 @@ class DBManager:
                 return [i[0] for i in result]
             return result
 
-    def _create_table(self, tablename, columns):
+    def _create_table(self, tablename, columns, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         try:
             with self.connection.cursor() as cursor:
                 sql = _query_create_table(tablename, columns)
                 cursor.execute(sql)
-                print('Created table : ', tablename , 'with fields', columns)
+                if show: print('Created table : ', tablename , 'with fields', columns)
         except:
             raise _NotAuthorisedOperation('Cant create table ', tablename)
 
-    def _show_table(self, tablename):
+    def _show_table(self, tablename, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
+        if not table in self._dbtables:
+            if show: print(tablename, '  doesnt exist in database tables')
+            return
         try:
             with self.connection.cursor() as cursor:
                 sql = _SHOW_TABLE_VALUES.format(tablename)
@@ -328,42 +334,54 @@ class DBManager:
         except:
             raise _NotAuthorisedOperation('Cant show table ', tablename)
 
-    def _delete_table(self, tablename):
+    def _delete_table(self, tablename, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
+        if not table in self._dbtables:
+            if show: print(tablename, '  doesnt exist in database tables')
+            return
         try:
             with self.connection.cursor() as cursor:
                 sql = _DELETE_TABLE.format(tablename)
                 cursor.execute(sql)
-                print('Deleted table : ', tablename)
+                if show: print('Deleted table : ', tablename)
         except:
             raise _NotAuthorisedOperation('Cant delete table ', tablename)
 
-    def _add_columns(self, tablename, column, typ):
+    def _add_columns(self, tablename, column, typ, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
+        if not tablename in self._dbtables:
+            if show: print(tablename, '  doesnt exist in database tables')
+            return
         with self.connection.cursor() as cursor:
             sql = _ADD_COLUMN.format(tablename, column, typ)
             cursor.execute(sql)
-            print('Added Field : ', tablename)
+            if show: print('Added Field : ', tablename)
 
-    def _del_column(self, tablename, collumn):
+    def _del_column(self, tablename, collumn, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
+        if not tablename in self._dbtables:
+            if show: print(tablename, '  doesnt exist in database tables')
+            return
         with self.connection.cursor() as cursor:
             sql = _DELETE_COLUMN.format(tablename, column)
             cursor.execute(sql)
-            print('Deleted Field : ', tablename)
+            if show: print('Deleted Field : ', tablename)
 
-    def _change_column(self, tablename, column , new_column, new_type):
+    def _change_column(self, tablename, column , new_column, new_type, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
+        if not tablename in self._dbtables:
+            if show: print(tablename, '  doesnt exist in database tables')
+            return
         with self.connection.cursor() as cursor:
             sql = _CHANGE_COLUMN.format(tablename, column, new_column, new_type)
             cursor.execute(sql)
             print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
 
-    def _add_value(self, dataunit, table=None):
+    def _add_value(self, dataunit, table=None, show=True):
         if dataunit.db is None:
             print('Select a database or set dataunit db')
             return
@@ -373,6 +391,9 @@ class DBManager:
             self.use_database(db)
         if table is None:
             print('Select a table')
+            return
+        if not table in self._dbtables:
+            if show: print(table, '  doesnt exist in database tables')
             return
         if _include_list(dataunit.keys, self._table_columns(table)):
             with self.connection.cursor() as cursor:
@@ -398,6 +419,12 @@ class LicapyDBManager(DBManager):
         self.db = db + sdb
         if self._verify_db():
             print('Licapy databases are all created in mysql!')
+            for d in db:
+                if self._verify_db_hierarchy(d):
+                    print('Database (',d ,') tables are set correctly')
+                else:
+                    print('Database (',d ,') doesnt follow it protocol')
+
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
 
