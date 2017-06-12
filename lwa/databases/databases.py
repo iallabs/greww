@@ -136,6 +136,30 @@ def _certify(d, _format):
     return op
 
 
+def _firstraws(func):
+    def pick_args(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return [i[0] for i in result]
+    return pick_args
+
+
+def _compare_l1(ln, lp):
+    for i in ln:
+        if not i in lp:
+            return False
+    return True
+
+# decorator
+def _forall(func):
+    def pick_args(*args, **kwargs):
+        if args:
+            for i in args:
+                if i:
+                    print('pickled to function', i)
+                    result = func(i, **kwargs)
+        return result
+    return pick_args
+
 class DataUnit(object):
     # Data unit store a dict of fields and their contents
     # at _args
@@ -217,6 +241,7 @@ class DBManager:
             self.db = databases
 
     @property
+    @_firstraws
     def _databases(self):
         if self.state == 2:
             raise _NotAuthorisedMethod('You are already connected to a database *p3')
@@ -227,6 +252,7 @@ class DBManager:
             return result
 
     @property
+    @_firstraws
     def _dbtables(self):
         if self.state == 1:
             raise _NotAuthorisedMethod('Connected to a database before using')
@@ -360,25 +386,10 @@ class DBManager:
         pass
 
 
-
-def _compare_l1(ln, lp):
-    for i in ln:
-        if not i in lp:
-            return False
-    return True
-
-# decorator
-def _forall(func):
-    def pick_args(*args, **kwargs):
-        if args:
-            for i in args:
-                print('pickled to function', i)
-                result = func(i, **kwargs)
-        return result
+#################################
 
 class LicapyDBManager(DBManager):
     # Licapy DataBase manager
-
     def __init__(self, cnxargs=(), db=LICAPY_DATABASES, sdb=LICAPY_SUPPORT_DATABASES):
         DBManager.__init__(self, connection=None, connection_args=cnxargs)
         if self.state == 2:
@@ -388,10 +399,8 @@ class LicapyDBManager(DBManager):
             print('Licapy databases are all created in mysql!')
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
-
     def _verify_db(self):
         return _compare_l1(self.db, self._databases)
-
     def _build_db(self, ecrase=False):
         dbs = self._databases
         for database in self.db:
@@ -401,8 +410,6 @@ class LicapyDBManager(DBManager):
                     self.create_database(database)
             else:
                 self.create_database(database)
-
-    @_forall
     def _verify_db_hierarchy(self, db):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -414,8 +421,6 @@ class LicapyDBManager(DBManager):
             if _compare_l1(content, self._table_columns(table)):
                 return True
             return False
-
-    @_forall
     def _build_db_architecture(self, db, ecrase=True):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -433,6 +438,7 @@ class LicapyDBManager(DBManager):
                 self._delete_table(table)
                 self._create_table(table, content)
 
+#####################################
 
 class LicapyApiDB(object):
 
