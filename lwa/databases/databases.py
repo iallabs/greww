@@ -271,6 +271,7 @@ class DBManager:
             cursor.execute(sql)
             print('Created database : ', dbname)
 
+    @_forall
     def delete_database(self, dbname):
         if self.state == 2:
             raise _NotAuthorisedMethod('You are already connected to a database *m5')
@@ -342,7 +343,7 @@ class DBManager:
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         with self.connection.cursor() as cursor:
-            sql = _ADD_FIELD.format(tablename, column, typ)
+            sql = _ADD_COLUMN.format(tablename, column, typ)
             cursor.execute(sql)
             print('Added Field : ', tablename)
 
@@ -399,8 +400,10 @@ class LicapyDBManager(DBManager):
             print('Licapy databases are all created in mysql!')
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
+
     def _verify_db(self):
         return _compare_l1(self.db, self._databases)
+
     def _build_db(self, ecrase=False):
         dbs = self._databases
         for database in self.db:
@@ -410,6 +413,7 @@ class LicapyDBManager(DBManager):
                     self.create_database(database)
             else:
                 self.create_database(database)
+
     def _verify_db_hierarchy(self, db):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -421,6 +425,7 @@ class LicapyDBManager(DBManager):
             if _compare_l1(content, self._table_columns(table)):
                 return True
             return False
+
     def _build_db_architecture(self, db, ecrase=True):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -432,11 +437,11 @@ class LicapyDBManager(DBManager):
             return
         self.use_database(db)
         for table, content in architecture.items():
-            if not table in self._dbtables:
-                self._create_table(table, content)
-            if _compare_l1(content, self._table_columns(table)) and ecrase:
+            if table in self._dbtables:
                 self._delete_table(table)
                 self._create_table(table, content)
+                continue
+            self._create_table(table, content)
 
 #####################################
 
