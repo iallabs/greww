@@ -46,10 +46,10 @@ class __NotImplementedCommand(Exception):
 
 def _treat_command_line(cmdargs):
     # [python licapydb.py show databases]
-    if not cmdargs[0] in list(_options.keys()):
+    if not cmdargs[1] in list(_option.keys()):
         raise _NotImplementedCommand('Not implemented cmdline')
     cmd = list(cmdargs)
-    return _option[cmd[0]](*cmd[1::])
+    return _option[cmd[1]](*cmd[2::])
 
 if __name__ == '__main__':
     print(command)
