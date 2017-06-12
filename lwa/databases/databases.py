@@ -72,6 +72,8 @@ ESSENTIAL_OILS_DB = {'EssoilTree' : ('name', 'pname', 'type', 'id'),
 VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
                    'VegoilData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
 
+LICAP_SPDB = {'LicapyAdmins' : ('user', 'password', 'name', 'email')}
+
 LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             ANIMALIA_DB,
                             FUNGI_DB,
@@ -79,7 +81,8 @@ LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             VIRUS_DB,
                             BACTERIA_DB,
                             ESSENTIAL_OILS_DB,
-                            VEGETAL_OILS_DB]
+                            VEGETAL_OILS_DB,
+                            LICAPY_SPDB]
 
 
 def _connect_mysql(host, user, pw):
@@ -245,8 +248,6 @@ class DBManager:
     @property
     @_firstraws
     def _databases(self):
-        if self.state == 2:
-            raise _NotAuthorisedMethod('You are already connected to a database *p3')
         with self.connection.cursor() as cursor:
             sql = _SHOW_DATA_BASES
             cursor.execute(sql)
@@ -286,18 +287,18 @@ class DBManager:
             raise _NotAuthorisedMethod('Cant delete :', dbname)
 
 
-    def use_database(self, dbname):
+    def use_database(self, dbname, show=False):
         try:
             with self.connection.cursor() as cursor:
                 sql = _USE_DATA_BASE.format(dbname)
                 cursor.execute(sql)
                 self.state = 2
-                print('Selected database : ', dbname)
+                if show: print('Selected database : ', dbname)
         except:
             raise _NotAuthorisedOperation('Cant select :', dbname)
 
     @_firstraws
-    def _table_columns(self, table, show=True):
+    def _table_columns(self, table, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
         if not table in self._dbtables:
@@ -428,6 +429,8 @@ class LicapyDBManager(DBManager):
 
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
+            print('Processing co-builder')
+            self._build_db_architecture(self.db, ecrase=False)
 
     def _verify_db(self):
         return _compare_l1(self.db, self._databases)
@@ -465,7 +468,7 @@ class LicapyDBManager(DBManager):
             return
         self.use_database(db)
         for table, content in architecture.items():
-            if table in self._dbtables:
+            if table in self._dbtables and ecrase:
                 self._delete_table(table)
                 self._create_table(table, content)
                 continue
