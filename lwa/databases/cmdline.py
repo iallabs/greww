@@ -2,39 +2,47 @@
 import sys
 #from .databases import LicapyDBManager
 
+from lwa.databases.databases import LicapyDBManager
+
+_lic = LicapyDBManager(cnxargs=('localhost', 'root', 'uehMLMRw', ''))
+
 command = []
 
 for arg in sys.argv:
     command += [arg]
 
 def build():
-    print('build')
-    pass
+    _lic._build_db()
+    _lic._build_all_architecture()
 
 def rebuild():
-    print('rebuild')
-    pass
+    _lic._rebuild_database
 
 def destroy():
-    print('destroy')
+    _lic._destroy_all()
+
+def show_content(*args):
+    a = list(args)
+    if len(a) == 2:
+        m, n = a[0], a[1]
+        _lic.use_database(m)
+        _lic._show_table(n, show=True)
+    return False
+
+def show_fields(*args):
     pass
 
-def show_content():
-    print('show c')
+def show_tables(*args):
     pass
 
-def show_fields():
-    pass
-
-def show_tables():
-    pass
-
-def show_database():
+def show_database(*args):
     pass
 
 _option = {'--build' : build,
            '--rebuild' : rebuild,
            '--destroy' : destroy,
+           '--state' : stat,
+           '--search' : search,
            '-s' : show_content,
            '-t' : show_tables,
            '-f' : show_fields,
