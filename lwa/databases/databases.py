@@ -43,8 +43,8 @@ LICAPY_DATABASES = ['Plantae',
                     'Chromista',
                     'Virus',
                     'Bacteria',
-                    'Essential Oils',
-                    'Vegatal Oils']
+                    'EssentialOils',
+                    'VegatalOils']
 
 LICAPY_SUPPORT_DATABASES = ['LicapyDB']
 
