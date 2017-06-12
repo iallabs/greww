@@ -147,6 +147,12 @@ def _firstraws(func):
         return []
     return pick_args
 
+def _validpd(func):
+    def pick_args(*args, **kwargs):
+        print('passord : NOPASSWORD')
+        result = func(*args, **kwargs)
+        return result
+    return pick_args
 
 def _compare_l1(ln, lp):
     for i in ln:
@@ -161,7 +167,7 @@ def _forall(func):
             for i in args:
                 if i:
                     print('pickled to function', i)
-                    result = func(i)
+                    result = func(*i, **kwargs)
         return result
     return pick_args
 
@@ -274,7 +280,6 @@ class DBManager:
             cursor.execute(sql)
             print('Created database : ', dbname)
 
-    @_forall
     def delete_database(self, dbname):
         if self.state == 2:
             raise _NotAuthorisedMethod('You are already connected to a database *m5')
@@ -445,6 +450,7 @@ class LicapyDBManager(DBManager):
             else:
                 self.create_database(database)
 
+
     def _verify_db_hierarchy(self, db):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -457,7 +463,7 @@ class LicapyDBManager(DBManager):
                 return True
             return False
 
-    @_forall
+
     def _build_db_architecture(self, db, ecrase=True):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -469,11 +475,28 @@ class LicapyDBManager(DBManager):
             return
         self.use_database(db)
         for table, content in architecture.items():
-            if table in self._dbtables and ecrase:
-                self._delete_table(table)
-                self._create_table(table, content)
+            if table in self._dbtables:
+                if ecrase:
+                    self._delete_table(table)
+                    self._create_table(table, content)
                 continue
             self._create_table(table, content)
+        print('created db architecture for ', db)
+
+    def _build_all_architecture(self):
+        for _ in self.db:
+            self._build_db_architecture(_, ecrase=True)
+
+    @property
+    @_validpd
+    def destroy_all(self):
+        for _ in self.db:
+            self.delete_database(_)
+
+    @property
+    @_validpd
+    def rebuild_database(self):
+        self.destroy_all and self._build_db and self._build_all_architecture
 
 #####################################
 
