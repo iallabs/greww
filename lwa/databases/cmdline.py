@@ -38,10 +38,16 @@ def show_tables(*args):
 def show_database(*args):
     pass
 
+def state():
+    pass
+
+def search():
+    pass
+
 _option = {'--build' : build,
            '--rebuild' : rebuild,
            '--destroy' : destroy,
-           '--state' : stat,
+           '--state' : state,
            '--search' : search,
            '-s' : show_content,
            '-t' : show_tables,
