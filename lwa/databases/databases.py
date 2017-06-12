@@ -328,7 +328,7 @@ class DBManager:
     def _show_table(self, tablename, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not table in self._dbtables:
+        if not tablename in self._dbtables:
             if show: print(tablename, '  doesnt exist in database tables')
             return
         try:
@@ -343,7 +343,7 @@ class DBManager:
     def _delete_table(self, tablename, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not table in self._dbtables:
+        if not tablename in self._dbtables:
             if show: print(tablename, '  doesnt exist in database tables')
             return
         try:
@@ -418,22 +418,22 @@ class DBManager:
 
 class LicapyDBManager(DBManager):
     # Licapy DataBase manager
-    def __init__(self, cnxargs=(), db=LICAPY_DATABASES):
+    def __init__(self, cnxargs=(), db=LICAPY_DATABASES, show=True):
         DBManager.__init__(self, connection=None, connection_args=cnxargs)
         if self.state == 2:
             raise _NotAuthorisedOperation('LicapyDBManager should connect to mysql')
         self.db = db
         if self._verify_db():
-            print('Licapy databases are all created in mysql!')
+            if show: print('Licapy databases are all created in mysql!')
             for d in self.db:
                 if self._verify_db_hierarchy(d):
-                    print('Database (', d, ') tables are set correctly')
+                    if show: print('Database (', d, ') tables are set correctly')
                 else:
-                    print('Database (', d, ') doesnt follow it protocol')
+                    if show: print('Database (', d, ') doesnt follow it protocol')
 
         else:
-            print('Not all Licapy databases are in mysql use ._build_db')
-            print('Processing co-builder')
+            if show: print('Not all Licapy databases are in mysql use ._build_db')
+            if show: print('Processing co-builder')
             self._build_db()
             self._build_all_architecture()
 
