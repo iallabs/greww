@@ -44,9 +44,9 @@ LICAPY_DATABASES = ['Plantae',
                     'Virus',
                     'Bacteria',
                     'EssentialOils',
-                    'VegatalOils']
+                    'VegatalOils',
+                    'LicapyDB']
 
-LICAPY_SUPPORT_DATABASES = ['LicapyDB']
 
 PLANTAE_DB = {'PlantTree' : ('name', 'pname', 'type', 'id'),
               'PlantData' : ('name', 'location', 'morphology', 'synonyms')}
@@ -279,7 +279,7 @@ class DBManager:
             print('Created database : ', dbname)
 
     def delete_database(self, dbname):
-        if not db in self._databases:
+        if not dbname in self._databases:
             print('no database named', dbname)
             return
         try:
@@ -328,7 +328,7 @@ class DBManager:
     def _show_table(self, tablename, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not table in self._dbtables:
+        if not tablename in self._dbtables:
             if show: print(tablename, '  doesnt exist in database tables')
             return
         try:
@@ -343,7 +343,7 @@ class DBManager:
     def _delete_table(self, tablename, show=False):
         if self.state == 1:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not table in self._dbtables:
+        if not tablename in self._dbtables:
             if show: print(tablename, '  doesnt exist in database tables')
             return
         try:
@@ -418,23 +418,24 @@ class DBManager:
 
 class LicapyDBManager(DBManager):
     # Licapy DataBase manager
-    def __init__(self, cnxargs=(), db=LICAPY_DATABASES, sdb=LICAPY_SUPPORT_DATABASES):
+    def __init__(self, cnxargs=(), db=LICAPY_DATABASES, show=True):
         DBManager.__init__(self, connection=None, connection_args=cnxargs)
         if self.state == 2:
             raise _NotAuthorisedOperation('LicapyDBManager should connect to mysql')
-        self.db = db + sdb
+        self.db = db
         if self._verify_db():
-            print('Licapy databases are all created in mysql!')
-            for d in db:
+            if show: print('Licapy databases are all created in mysql!')
+            for d in self.db:
                 if self._verify_db_hierarchy(d):
-                    print('Database (', d, ') tables are set correctly')
+                    if show: print('Database (', d, ') tables are set correctly')
                 else:
-                    print('Database (', d, ') doesnt follow it protocol')
+                    if show: print('Database (', d, ') doesnt follow it protocol')
 
         else:
-            print('Not all Licapy databases are in mysql use ._build_db')
-            print('Processing co-builder')
-            self._build_db_architecture(self.db, ecrase=False)
+            if show: print('Not all Licapy databases are in mysql use ._build_db')
+            if show: print('Processing co-builder')
+            self._build_db()
+            self._build_all_architecture()
 
     def _verify_db(self):
         return _compare_l1(self.db, self._databases)
@@ -472,7 +473,11 @@ class LicapyDBManager(DBManager):
         if not ecrase and self._verify_db_hierarchy(db):
             print('Database already built correctly')
             return
-        self.use_database(db)
+        try:
+            self.use_database(db)
+        except:
+            self.create_database(db)
+            self.use_database(db)
         for table, content in architecture.items():
             if table in self._dbtables:
                 if ecrase:
@@ -484,7 +489,8 @@ class LicapyDBManager(DBManager):
 
     def _build_all_architecture(self):
         for _ in self.db:
-            self._build_db_architecture(_, ecrase=True)
+            if _:
+                self._build_db_architecture(_, ecrase=False)
 
     @property
     @_validpd
@@ -493,9 +499,10 @@ class LicapyDBManager(DBManager):
             self.delete_database(_)
 
     @property
-    @_validpd
     def rebuild_database(self):
-        self.destroy_all and self._build_db and self._build_all_architecture
+        self.destroy_all
+        self._build_db()
+        self._build_all_architecture()
 
 #####################################
 
