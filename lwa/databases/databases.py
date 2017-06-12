@@ -44,8 +44,7 @@ LICAPY_DATABASES = ['Plantae',
                     'Virus',
                     'Bacteria',
                     'EssentialOils',
-                    'VegatalOils',
-                    'LycapySPBD']
+                    'VegatalOils']
 
 LICAPY_SUPPORT_DATABASES = ['LicapyDB']
 
@@ -73,7 +72,7 @@ ESSENTIAL_OILS_DB = {'EssoilTree' : ('name', 'pname', 'type', 'id'),
 VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
                    'VegoilData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
 
-LICAPY_SPDB = {'LicapyAdmins' : ('user', 'password', 'name', 'email')}
+LICAPY_DB = {'LicapyAdmins' : ('user', 'password', 'name', 'email')}
 
 LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             ANIMALIA_DB,
@@ -83,7 +82,7 @@ LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             BACTERIA_DB,
                             ESSENTIAL_OILS_DB,
                             VEGETAL_OILS_DB,
-                            LICAPY_SPDB]
+                            LICAPY_DB]
 
 
 def _connect_mysql(host, user, pw):
@@ -162,7 +161,7 @@ def _forall(func):
             for i in args:
                 if i:
                     print('pickled to function', i)
-                    result = func(i, **kwargs)
+                    result = func(i)
         return result
     return pick_args
 
@@ -424,9 +423,9 @@ class LicapyDBManager(DBManager):
             print('Licapy databases are all created in mysql!')
             for d in db:
                 if self._verify_db_hierarchy(d):
-                    print('Database (',d ,') tables are set correctly')
+                    print('Database (', d, ') tables are set correctly')
                 else:
-                    print('Database (',d ,') doesnt follow it protocol')
+                    print('Database (', d, ') doesnt follow it protocol')
 
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
