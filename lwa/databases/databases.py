@@ -279,7 +279,7 @@ class DBManager:
             print('Created database : ', dbname)
 
     def delete_database(self, dbname):
-        if not db in self._databases:
+        if not dbname in self._databases:
             print('no database named', dbname)
             return
         try:
