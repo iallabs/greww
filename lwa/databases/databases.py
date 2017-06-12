@@ -44,9 +44,9 @@ LICAPY_DATABASES = ['Plantae',
                     'Virus',
                     'Bacteria',
                     'EssentialOils',
-                    'VegatalOils']
+                    'VegatalOils',
+                    'LicapyDB']
 
-LICAPY_SUPPORT_DATABASES = ['LicapyDB']
 
 PLANTAE_DB = {'PlantTree' : ('name', 'pname', 'type', 'id'),
               'PlantData' : ('name', 'location', 'morphology', 'synonyms')}
@@ -418,14 +418,14 @@ class DBManager:
 
 class LicapyDBManager(DBManager):
     # Licapy DataBase manager
-    def __init__(self, cnxargs=(), db=LICAPY_DATABASES, sdb=LICAPY_SUPPORT_DATABASES):
+    def __init__(self, cnxargs=(), db=LICAPY_DATABASES):
         DBManager.__init__(self, connection=None, connection_args=cnxargs)
         if self.state == 2:
             raise _NotAuthorisedOperation('LicapyDBManager should connect to mysql')
-        self.db = db + sdb
+        self.db = db
         if self._verify_db():
             print('Licapy databases are all created in mysql!')
-            for d in db:
+            for d in self.db:
                 if self._verify_db_hierarchy(d):
                     print('Database (', d, ') tables are set correctly')
                 else:
