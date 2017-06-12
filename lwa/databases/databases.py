@@ -434,6 +434,7 @@ class LicapyDBManager(DBManager):
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
             print('Processing co-builder')
+            self._build_db()
             self._build_all_architecture()
 
     def _verify_db(self):
