@@ -258,8 +258,6 @@ class DBManager:
 
 
     def use_database(self, dbname):
-        if self.state == 2:
-            raise _NotAuthorisedMethod('You are already connected to a database *m6')
         try:
             with self.connection.cursor() as cursor:
                 sql = _USE_DATA_BASE.format(dbname)
@@ -369,6 +367,14 @@ def _compare_l1(ln, lp):
             return False
     return True
 
+# decorator
+def _forall(func):
+    def pick_args(*args, **kwargs):
+        if args:
+            for i in args:
+                print('pickled to function', i)
+                result = func(i, **kwargs)
+        return result
 
 class LicapyDBManager(DBManager):
     # Licapy DataBase manager
@@ -396,6 +402,7 @@ class LicapyDBManager(DBManager):
             else:
                 self.create_database(database)
 
+    @_forall
     def _verify_db_hierarchy(self, db):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
@@ -408,6 +415,7 @@ class LicapyDBManager(DBManager):
                 return True
             return False
 
+    @_forall
     def _build_db_architecture(self, db, ecrase=True):
         L = LICAPY_DATABASES
         architecture = LICAPY_DATABASES_EXPANDS[L.index(db)]
