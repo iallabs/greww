@@ -472,7 +472,11 @@ class LicapyDBManager(DBManager):
         if not ecrase and self._verify_db_hierarchy(db):
             print('Database already built correctly')
             return
-        self.use_database(db)
+        try:
+            self.use_database(db)
+        except:
+            self.create_database(db)
+            self.use_database(db)
         for table, content in architecture.items():
             if table in self._dbtables:
                 if ecrase:
