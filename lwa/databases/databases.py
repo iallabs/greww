@@ -434,7 +434,7 @@ class LicapyDBManager(DBManager):
         else:
             print('Not all Licapy databases are in mysql use ._build_db')
             print('Processing co-builder')
-            self._build_db_architecture(self.db, ecrase=False)
+            self._build_all_architecture()
 
     def _verify_db(self):
         return _compare_l1(self.db, self._databases)
@@ -494,9 +494,10 @@ class LicapyDBManager(DBManager):
             self.delete_database(_)
 
     @property
-    @_validpd
     def rebuild_database(self):
-        self.destroy_all and self._build_db() and self._build_all_architecture()
+        self.destroy_all
+        self._build_db()
+        self._build_all_architecture()
 
 #####################################
 
