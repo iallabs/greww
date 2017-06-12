@@ -1,6 +1,6 @@
 
 import sys
-from .databases import LicapyDBManager
+#from .databases import LicapyDBManager
 
 command = []
 
