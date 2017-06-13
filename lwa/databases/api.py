@@ -42,7 +42,7 @@ VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
 
 LICAPY_DB = {'LicapyAdmins' : ('user', 'password', 'name', 'email'),
              'RHistory' : ('date', 'user', 'command'),
-             'CacheApi' : ('None')}
+             'Cacheapi' : ('None')}
 
 LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             ANIMALIA_DB,

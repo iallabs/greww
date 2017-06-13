@@ -26,7 +26,9 @@ _SHOW_TABLE = "DESC {0};"
 _SHOW_ALL_TABLES = "show tables;"
 _CREATE_TABLE = "CREATE TABLE {0} ({1});"
 _DELETE_TABLE = "DROP TABLE {0};"
-_ADD_COLUMN = "A" + "LTER TABLE" + " {0} " + "ADD" + " {1} " + "{0};"
+_ADD_COLUMN = """
+    ALTER TABLE {0}
+    ADD {1} {2};"""
 _DELETE_COLUMN = "ALTER TABLE {0} DROP COLUMN {1};"
 _CHANGE_COLUMN = "ALTER TABLE {0} CHANGE {1} {2} {3};"
 _ADD_VALUE = "I" + "NSERT INTO {0} VALUES {1};"
@@ -195,7 +197,7 @@ class DBManager:
         except:
             raise _NotAuthorisedOperation('Cant delete table ', table)
 
-    def _add_columns(self, db=None, table=None, column=None, typ='VARCHAR(10)', show=False):
+    def _add_column(self, db=None, table=None, column=None, typ='VARCHAR(10)', show=False):
         if self.state == 1 and db is None:
             raise _NotAuthorisedMethod('Please select a database first')
         if db:
