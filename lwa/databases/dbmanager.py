@@ -124,7 +124,7 @@ class DBManager:
 
     def create_database(self, dbname):
         sql = _CREATE_DATA_BASE.format(dbname)
-        self._execute(sql, rs=false)
+        self._execute(sql, rs=False)
         print('Created database : ', dbname)
 
     def delete_database(self, dbname):
@@ -196,16 +196,18 @@ class DBManager:
         except:
             raise _NotAuthorisedOperation('Cant delete table ', table)
 
-    def _add_columns(self, tablename, column, typ, show=False):
-        if self.state == 1:
+    def _add_columns(self, db=None, table=None, column=None, typ='VARCHAR(10)', show=False):
+        if self.state == 1 and db is None:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not tablename in self._dbtables:
-            if show: print(tablename, '  doesnt exist in database tables')
+        if db:
+            self.use_database(db)
+        if not table in self._dbtables:
+            if show: print(table, '  doesnt exist in database tables')
             return
         with self.connection.cursor() as cursor:
-            sql = _ADD_COLUMN.format(tablename, column, typ)
+            sql = _ADD_COLUMN.format(table, column, typ)
             cursor.execute(sql)
-            if show: print('Added Field : ', tablename)
+            if show: print('Added Field : ', table)
 
     def _del_column(self, tablename, collumn, show=False):
         if self.state == 1:
@@ -224,12 +226,13 @@ class DBManager:
         if not tablename in self._dbtables:
             if show: print(tablename, '  doesnt exist in database tables')
             return
-        with self.connection.cursor() as cursor:
-            sql = _CHANGE_COLUMN.format(tablename, column, new_column, new_type)
-            cursor.execute(sql)
-            print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
+        sql = _CHANGE_COLUMN.format(tablename, column, new_column, new_type)
+        self._execute(sql)
+        if show: print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
 
-    def _add_value(self, dataunit, table=None, show=True):
+    def _add_value(self, dataunit=None, table=None, show=True):
+        if dataunit is None:
+            return
         if dataunit.db is None:
             print('Select a database or set dataunit db')
             return
