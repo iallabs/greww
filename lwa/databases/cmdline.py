@@ -2,7 +2,7 @@
 import sys
 #from .databases import LicapyDBManager
 
-from lwa.databases.databases import LicapyDBManager
+from lwa.databases.api import LicapyDBManager, LicapyApi
 
 _lic = LicapyDBManager(cnxargs=('localhost', 'root', 'uehMLMRw', ''), show=False)
 

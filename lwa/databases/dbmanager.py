@@ -102,108 +102,99 @@ class DBManager:
             self.state = -1
             self.db = databases
 
+    def _execute(self, sql, rs=True):
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql)
+            if rs:
+                result = cursor.fetchall()
+                return result
+
     @property
     @_firstraws
     def _databases(self):
-        with self.connection.cursor() as cursor:
-            sql = _SHOW_DATA_BASES
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            return result
+        return self._execute(_SHOW_DATA_BASES, rs=True)
 
     @property
     @_firstraws
     def _dbtables(self):
         if self.state == 1:
-            raise _NotAuthorisedMethod('Connected to a database before using')
-        with self.connection.cursor() as cursor:
-            sql = _SHOW_ALL_TABLES
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            return result
+            raise _NotAuthorisedMethod('Select a database ')
+        return self._execute(_SHOW_ALL_TABLES, rs=True)
 
 
     def create_database(self, dbname):
-        with self.connection.cursor() as cursor:
-            sql = _CREATE_DATA_BASE.format(dbname)
-            cursor.execute(sql)
-            print('Created database : ', dbname)
+        sql = _CREATE_DATA_BASE.format(dbname)
+        self._execute(sql, rs=false)
+        print('Created database : ', dbname)
 
     def delete_database(self, dbname):
         if not dbname in self._databases:
             print('no database named', dbname)
             return
-        try:
-            with self.connection.cursor() as cursor:
-                sql = _DELETE_DATA_BASE.format(dbname)
-                cursor.execute(sql)
-                print('Deleted database : ', dbname)
-        except:
-            raise _NotAuthorisedMethod('Cant delete :', dbname)
-
+        sql = _DELETE_DATA_BASE.format(dbname)
+        self._execute(sql, rs=False)
+        print('Deleted database : ', dbname)
 
     def use_database(self, dbname, show=False):
-        try:
-            with self.connection.cursor() as cursor:
-                sql = _USE_DATA_BASE.format(dbname)
-                cursor.execute(sql)
-                self.state = 2
-                if show: print('Selected database : ', dbname)
-        except:
-            raise _NotAuthorisedOperation('Cant select :', dbname)
+        if not dbname in self._databases:
+            print('no database named', dbname)
+            return
+        sql = _USE_DATA_BASE.format(dbname)
+        self._execute(sql, rs=False)
+        self.state = 2
+        if show: print('Selected database : ', dbname)
 
     @_firstraws
-    def _table_columns(self, table, show=False):
-        if self.state == 1:
+    def _table_columns(self, table=None, db=None, show=False):
+        if self.state == 1 and db=None:
             raise _NotAuthorisedMethod('Please select a database first')
+        if db:
+            self.use_database(db)
         if not table in self._dbtables:
             if show: print(table, '  doesnt exist in database tables')
             return
-        with self.connection.cursor() as cursor:
-            sql = _SHOW_TABLE.format(table)
-            cursor.execute(sql)
-            result = cursor.fetchall()
-            return result
+        sql = _SHOW_TABLE.format(table)
+        return self._execute(sql, rs=True)
 
-    def _create_table(self, tablename, columns, show=False):
-        if self.state == 1:
+
+    def _create_table(self, db=None, table=None, columns=None, show=False):
+        if self.state == 1 and db is None:
             raise _NotAuthorisedMethod('Please select a database first')
         try:
-            with self.connection.cursor() as cursor:
-                sql = _query_create_table(tablename, columns)
-                cursor.execute(sql)
-                if show: print('Created table : ', tablename , 'with fields', columns)
+            sql = _query_create_table(table, columns)
+            self._execute(sql, rs=False)
+            if show: print('Created table : ', table , 'with fields', columns)
         except:
-            raise _NotAuthorisedOperation('Cant create table ', tablename)
+            raise _NotAuthorisedOperation('Cant create table ', table)
 
-    def _show_table(self, tablename, show=False):
-        if self.state == 1:
+    def _show_table(self, db=None, table=None, show=False):
+        if self.state == 1 and db is None:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not tablename in self._dbtables:
-            if show: print(tablename, '  doesnt exist in database tables')
+        if db:
+            self.use_database(db)
+        if not table in self._dbtables:
+            if show: print(table, '  doesnt exist in database tables')
             return
         try:
-            with self.connection.cursor() as cursor:
-                sql = _SHOW_TABLE_VALUES.format(tablename)
-                cursor.execute(sql)
-                result = cursor.fetchall()
-                return result
+            sql = _SHOW_TABLE_VALUES.format(table)
+            return self._execute(sql, rs=False)
         except:
-            raise _NotAuthorisedOperation('Cant show table ', tablename)
+            raise _NotAuthorisedOperation('Cant show table ', table)
 
-    def _delete_table(self, tablename, show=False):
-        if self.state == 1:
+    def _delete_table(self, db=None, table=None, show=False):
+        if self.state == 1 and db=None:
             raise _NotAuthorisedMethod('Please select a database first')
-        if not tablename in self._dbtables:
-            if show: print(tablename, '  doesnt exist in database tables')
+        if db:
+            self.use_database(db)
+        if not table in self._dbtables:
+            if show: print(table, '  doesnt exist in database tables')
             return
         try:
-            with self.connection.cursor() as cursor:
-                sql = _DELETE_TABLE.format(tablename)
-                cursor.execute(sql)
-                if show: print('Deleted table : ', tablename)
+            sql = _DELETE_TABLE.format(table)
+            self._execute(sql)
+            if show: print('Deleted table : ', table)
         except:
-            raise _NotAuthorisedOperation('Cant delete table ', tablename)
+            raise _NotAuthorisedOperation('Cant delete table ', table)
 
     def _add_columns(self, tablename, column, typ, show=False):
         if self.state == 1:

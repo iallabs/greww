@@ -1,6 +1,9 @@
+#
+import time
 from lwa.databases.dbmanager import DBManager
 from lwa.utils.decorators import _validpd
 from lwa.utils.functions import _compare_l1
+from lwa.databases.dataunit import DataUnit
 
 LICAPY_DATABASES = ['Plantae',
                     'Animalia',
@@ -37,7 +40,9 @@ ESSENTIAL_OILS_DB = {'EssoilTree' : ('name', 'pname', 'type', 'id'),
 VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
                    'VegoilData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
 
-LICAPY_DB = {'LicapyAdmins' : ('user', 'password', 'name', 'email')}
+LICAPY_DB = {'LicapyAdmins' : ('user', 'password', 'name', 'email'),
+             'RHistory' : ('date', 'user', 'command'),
+             'CacheApi' : ('None')}
 
 LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             ANIMALIA_DB,
@@ -149,9 +154,44 @@ requests = {'connect' : None,
             'scan' : None,
             'stats' : None}
 
+def _fast_connect():
+    return LicapyDBManager(cnxargs=('localhost', 'root', 'uehMLMRw', ''), show=False)
+
+
+def _register_request(date=time.ctime(), user='unknown', command=None):
+    with _fast_connect() as lm:
+        du = DataUnit(data=date, user=user, command=command, db='LicapyDB', table='RHistory')
+        lm._add_value(DataUnit)
+
+def _cache_order():
+    with _fast_connect() as lm:
+        du = DataUnit()
+        pass
+
+def _quantify_commands(*args):
+    return sum([str(i) for i in args])
+
+def _register_asroot(func):
+    def pack_args(*args, **kwargs):
+        _register_request(user='root', command)
+    pass
+
+
+class _result(object):
+
+    __slots__ = ['tp', 'content']
+
+    def __init__(self, tp=None, content=None):
+        self.tp = tp
+        self.content = content
+
+    def __repr__(self):
+        return self.tp
+
+
 class LicapyApi(object):
 
-    __slots__ = []
+    __slots__ = ['request', 'result', 'connected']
 
     def __init__(self, cnxargs=()):
         if not cnxargs:
