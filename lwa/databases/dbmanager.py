@@ -146,7 +146,7 @@ class DBManager:
 
     @_firstraws
     def _table_columns(self, table=None, db=None, show=False):
-        if self.state == 1 and db=None:
+        if self.state == 1 and db is None:
             raise _NotAuthorisedMethod('Please select a database first')
         if db:
             self.use_database(db)

@@ -173,7 +173,7 @@ def _quantify_commands(*args):
 
 def _register_asroot(func):
     def pack_args(*args, **kwargs):
-        _register_request(user='root', command)
+        _register_request(user='root', command='')
     pass
 
 

@@ -2,7 +2,7 @@ def _firstraws(func):
     def pick_args(*args, **kwargs):
         result = func(*args, **kwargs)
         if result:
-            return [i[0] for i in result]ss
+            return [i[0] for i in result]
         return []
     return pick_args
 
