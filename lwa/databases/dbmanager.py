@@ -182,7 +182,7 @@ class DBManager:
             raise _NotAuthorisedOperation('Cant show table ', table)
 
     def _delete_table(self, db=None, table=None, show=False):
-        if self.state == 1 and db=None:
+        if self.state == 1 and db is None:
             raise _NotAuthorisedMethod('Please select a database first')
         if db:
             self.use_database(db)
