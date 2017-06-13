@@ -121,7 +121,6 @@ class DBManager:
             raise _NotAuthorisedMethod('Select a database ')
         return self._execute(_SHOW_ALL_TABLES, rs=True)
 
-
     def create_database(self, dbname):
         sql = _CREATE_DATA_BASE.format(dbname)
         self._execute(sql, rs=False)

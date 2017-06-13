@@ -120,9 +120,9 @@ class LicapyDBManager(DBManager):
             if table in self._dbtables:
                 if ecrase:
                     self._delete_table(table)
-                    self._create_table(table, content)
+                    self._create_table(table=table, columns=content)
                 continue
-            self._create_table(table, content)
+            self._create_table(table=table, columns=content)
         print('created db architecture for ', db)
 
     def _build_all_architecture(self):
