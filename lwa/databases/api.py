@@ -54,12 +54,12 @@ LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
                             VEGETAL_OILS_DB,
                             LICAPY_DB]
 
-class LicapyDBManager(DBManager):
+class DBuilder(DBManager):
     # Licapy DataBase manager
     def __init__(self, cnxargs=(), db=LICAPY_DATABASES, show=True):
         DBManager.__init__(self, connection=None, connection_args=cnxargs)
         if self.state == 2:
-            raise _NotAuthorisedOperation('LicapyDBManager should connect to mysql')
+            raise _NotAuthorisedOperation('DBuilder should connect to mysql')
         self.db = db
         if self._verify_db():
             if show: print('Licapy databases are all created in mysql!')
@@ -144,18 +144,11 @@ class LicapyDBManager(DBManager):
 
 #####################################
 
-Authorised_users = []
-
-requests = {'connect' : None,
-            'exit' : None,
-            'adata' : None,
-            'gdata' : None,
-            'gbuild' : None,
-            'scan' : None,
-            'stats' : None}
+class LicapyDBManager(DBuilder):
+    pass
 
 def _fast_connect():
-    return LicapyDBManager(cnxargs=('localhost', 'root', 'uehMLMRw', ''), show=False)
+    return DBuilder(cnxargs=('localhost', 'root', 'uehMLMRw', ''), show=False)
 
 
 def _register_request(date=time.ctime(), user='unknown', command=None):
@@ -168,13 +161,14 @@ def _cache_order():
         du = DataUnit()
         pass
 
-def _quantify_commands(*args):
-    return sum([str(i) for i in args])
+def _quantify_commands(**kwargs):
+    return sum([str(i) + ':' + str(k) for k, i in kwargs.items()])
 
 def _register_asroot(func):
     def pack_args(*args, **kwargs):
-        _register_request(user='root', command='')
-    pass
+        _register_request(user='root', command=_quantify_commands(func=func, **kwargs))
+        return func(*args, **kwargs)
+    return pack_args
 
 
 class _result(object):
@@ -189,17 +183,29 @@ class _result(object):
         return self.tp
 
 
+_requests = {'connect' : None,
+             'exit' : None,
+             'adata' : None,
+             'gdata' : None,
+             'gbuild' : None,
+             'scan' : None,
+             'stats' : None}
+
+
 class LicapyApi(object):
 
-    __slots__ = ['request', 'result', 'connected']
+    __slots__ = ['request', 'connected', 'state', 'output']
 
     def __init__(self, cnxargs=()):
         if not cnxargs:
-            self._show_authorised_users()
             self._exit()
-        self.dbmanager = dbmanager
+        self.dbmanager = None
+        self.state = -1
+        self.connected = False
+        self.output = = None
 
     @property
+    @_register_asroot
     def _connect(self):
         pass
 
@@ -207,5 +213,16 @@ class LicapyApi(object):
     def _exit(self):
         pass
 
-    def _request(self, request=None):
-        pass
+    @_register_asroot
+    def _request(self, request=None, data=None):
+        if request is None:
+            return
+        if request in list(_requests.keys()):
+            if request == 'connect':
+                pass
+            if request == 'exit':
+                pass
+            if request == 'adata':
+                pass
+            if request == 'gdata':
+                pass
