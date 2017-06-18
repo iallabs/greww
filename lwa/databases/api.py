@@ -156,6 +156,20 @@ def _register_request(date=time.ctime(), user='unknown', command=None):
         du = DataUnit(data=date, user=user, command=command, db='LicapyDB', table='RHistory')
         lm._add_value(DataUnit)
 
+def _register_asroot(func):
+    def pack_args(*args, **kwargs):
+        _register_request(user='root', command=_quantify_commands(func=func, **kwargs))
+        return func(*args, **kwargs)
+    return pack_args
+
+def _register(func, user=None):
+    if user==None:
+        return
+    def pack_args(*args, **kwargs):
+        _register_request(user=user, command=_quantify_commands(func=func, **kwargs))
+        return func(*args, **kwargs)
+    return pack_args
+
 def _cache_order():
     with _fast_connect() as lm:
         du = DataUnit()
@@ -164,11 +178,6 @@ def _cache_order():
 def _quantify_commands(**kwargs):
     return sum([str(i) + ':' + str(k) for k, i in kwargs.items()])
 
-def _register_asroot(func):
-    def pack_args(*args, **kwargs):
-        _register_request(user='root', command=_quantify_commands(func=func, **kwargs))
-        return func(*args, **kwargs)
-    return pack_args
 
 
 class _result(object):
@@ -194,7 +203,7 @@ _requests = {'connect' : None,
 
 class LicapyApi(object):
 
-    __slots__ = ['request', 'connected', 'state', 'output']
+    __slots__ = ['dbmanager', 'connected', 'state', 'output']
 
     def __init__(self, cnxargs=()):
         if not cnxargs:
