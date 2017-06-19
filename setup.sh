@@ -13,11 +13,18 @@ configfiles () {
     cp /lib/ialdbhierarchy.json /home/ubuntu/config
 }
 
-makealiases () {
 
+makealiases () {
+    bash smalias.sh
 }
+
+###################################################
 
 setup () {
     req && configfiles && setupy
     makealiases
 }
+
+#####################################################
+
+setup

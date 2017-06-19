@@ -1,10 +1,26 @@
 # this is databases connector to python
 import pymysql.cursors
 import json
+import argparse
 
-INSTANCES = '/home/ubuntu/jsons/mysqlinst.json'
-ARCHITECTURES = ''
+INSTANCES = '/home/ubuntu/config/mysqlinst.json'
+ARCHITECTURES = '/home/ubuntu/config/mysqlinst.json'
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-l', '--logs')
+    parser.add_argument('-a', '--architecture')
+    arsg = parser.parse_args()
+
+    if args.logs:
+        if args.logs == 'ALL':
+            return get_all_logs()
+        return get_instance_logs(args.logs)
+
+    if args.architecture:
+        if args.architecture == 'ALL':
+            return get_all_architectures()
+        return get_instance_logs(args.architecture)
 
 def get_instance_logs(instance, instance_id=None, instance_name=None):
     hostname = None
@@ -86,3 +102,6 @@ def get_db_architecture(architecture):
                 tables += [table]
 
     return tables
+
+if __name__= "__main__":
+    main()

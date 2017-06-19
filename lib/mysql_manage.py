@@ -331,3 +331,6 @@ def cleanup_architecture(instance=None):
 def rebuild_architecture(instance=None):
     cleanup_architecture(instance=instance)
     build_architecture(instance=instance)
+
+def instance_stats(instance=None):
+    pass
