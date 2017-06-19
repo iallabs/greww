@@ -2,16 +2,16 @@
 import pymysql.cursors
 import json
 
-INSTANCES = '/home/ubuntu/private/mysqlinst.json'
-AUTH_FILE = '/Home/ubuntu/private/mysqlat.json'
+INSTANCES = '/home/ubuntu/jsons/mysqlinst.json'
+ARCHITECTURES = ''
 
 
-def get_instance_logs(instance_id=None, instance_name=None):
+def get_instance_logs(instance, instance_id=None, instance_name=None):
     hostname = None
     port = None
     password = None
     username = None
-    instance = instance_id or instance_name
+    instance = instance_id or instance_name or instance
 
     if not instance:
         err = ("No id or name given")
@@ -20,50 +20,69 @@ def get_instance_logs(instance_id=None, instance_name=None):
     with open(INSTANCES) as f:
         gen = json.loads(f.read())
 
-    for entry in gen.iteritems():
-        if instance == entry[0]:
-            hostname = entry[1]['logs']['host']
-            port = entry[1]['logs']['port']
+    for entry in list(gen.keys()):
+        if instance == entry:
+            hostname = gen[entry]['host']
+            port = gen[entry]['port']
+            username = gen[entry]['username']
+            password = gen[entry]['password']
 
-    if hostname is None or port is None:
-        err = ("Coulnd find hostname or port in INSTANCES")
-        raise NameError(err)
-
-    with open(AUTH_FILE) as f:
-        gen = json.loads(f.read())
-
-    for entry in gen.iteritems():
-        if instance == entry[0]:
-            username = entry[1]['username']
-            password = entry[1]['password']
-
-    if username is None or password is None:
-        err = ("Couldnt find username or password in AUTH_FILE")
+    if hostname is None:
+        err = ("Coulnd find instance")
         raise NameError(err)
 
     return hostname, port, username, password
 
 def get_all_logs(ignore=None):
-    inst = []
+    instances = []
     logs = []
-    y = None
 
     with open(INSTANCES) as f:
         gen = json.loads(f.read())
 
-    with open(AUTH_FILE) as f2:
-        gen2 = json.loads(f2.read())
+    y = list(gen.keys())
+    if ignore:
+        y2 = []
+        for e in y:
+            if e in ignore:
+                continue
+            y2 += [e]
+        y = y2
+        del y2
 
-    for entry in gen.iteritems():
-        inst += [(entry[0],
-                  entry[1]['logs']['host'],
-                  entry[1]['logs']['port'])]
+    for entry in y:
+        instances += [entry]
+        logs += [(gen[entry]['host'],
+                  gen[entry]['port'],
+                  gen[entry]['username'],
+                  gen[entry]['password'])]
 
-    for instance in inst:
-        _name = instance[0]
-        for entry2 in gen2.iteritems():
-            if _name == entry2[0]:
-                y = instance + (entry2[1]['username'], entry2[1]['password'])
-                logs += [y]
+    return instances, logs
 
-    return instance
+def get_all_architectures():
+    tables = []
+    dbs = []
+
+    with open(ARCHITECTURES) as f:
+        gen = json.loads(f.read())
+
+    for entry in list(gen.keys()):
+        dbs += [entry]
+        for table in gen[entry]:
+            tables += [table]
+
+    return tables, dbs
+
+def get_db_architectures(architecture):
+    tables = []
+
+    with open(ARCHITECTURES) as f:
+        gen = json.loads(f.read())
+
+    for entry in list(gen.keys()):
+        if entry == architecture:
+            dbs = entry
+            for table in gen[entry]:
+                tables += [table]
+
+    return tables

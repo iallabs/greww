@@ -1,5 +1,6 @@
-from lwa.utils.decorators import _firstraws, _validpd, _forall
-from lwa.utils.functions import _certify, _include_list, _equal_list, _compare_l1
+from lib.utils.decorators import _firstraws, _validpd, _forall
+from lib.utils.functions import _certify, _include_list, _equal_list, _compare_l1
+from lib.mysql_connect import mysql_connect
 
 databases = ['testdb']
 
@@ -59,188 +60,188 @@ def _query_create_table(name, fields):
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
 
-class DBManager:
-    # Mysql database manager
+def execute_sql_query(instance=None, sql=sql, rs=False):
+    if instance is None:
+        connect = mysql_connect(local=True)
+    connect = mysql_connect(instance=instance)
 
-    __slots__ = ['connection', 'state', 'db']
-
-    def __init__(self, connection=None, connection_args=()):
-        if connection_args:
-            host, user, pw, db = connection_args
-            if db:
-                try:
-                    self.connection = _connect_withdb(host, user, pw, db)
-                    self.state = 2
-                    self.db = [db]
-                    print("Connected to mysql successfully.")
-                    print("Connected to database : ", db)
-                except:
-                    raise _ConnectionFailled('Failed to connect *i1')
-            else:
-                try:
-                    self.connection = _connect_mysql(host, user, pw)
-                    self.state = 1
-                    self.db = databases
-                    print("Connected to mysql successfully.")
-                except:
-                    raise _ConnectionFailled('Failed to connect *i2')
-        elif connection:
-            self.connection = connection
-            print('Connected to connection_obj', connection)
-            self.state = -1
-            self.db = databases
-
-    def _execute(self, sql, rs=True):
-        with self.connection.cursor() as cursor:
-            cursor.execute(sql)
-            if rs:
-                result = cursor.fetchall()
-                return result
-
-    @property
-    @_firstraws
-    def _databases(self):
-        return self._execute(_SHOW_DATA_BASES, rs=True)
-
-    @property
-    @_firstraws
-    def _dbtables(self):
-        if self.state == 1:
-            raise _NotAuthorisedMethod('Select a database ')
-        return self._execute(_SHOW_ALL_TABLES, rs=True)
-
-    def create_database(self, dbname):
-        sql = _CREATE_DATA_BASE.format(dbname)
-        self._execute(sql, rs=False)
-        print('Created database : ', dbname)
-
-    def delete_database(self, dbname):
-        if not dbname in self._databases:
-            print('no database named', dbname)
-            return
-        sql = _DELETE_DATA_BASE.format(dbname)
-        self._execute(sql, rs=False)
-        print('Deleted database : ', dbname)
-
-    def use_database(self, dbname, show=False):
-        if not dbname in self._databases:
-            print('no database named', dbname)
-            return
-        sql = _USE_DATA_BASE.format(dbname)
-        self._execute(sql, rs=False)
-        self.state = 2
-        if show: print('Selected database : ', dbname)
-
-    @_firstraws
-    def _table_columns(self, table=None, db=None, show=False):
-        if self.state == 1 and db is None:
-            raise _NotAuthorisedMethod('Please select a database first')
-        if db:
-            self.use_database(db)
-        if not table in self._dbtables:
-            if show: print(table, '  doesnt exist in database tables')
-            return
-        sql = _SHOW_TABLE.format(table)
-        return self._execute(sql, rs=True)
-
-
-    def _create_table(self, db=None, table=None, columns=None, show=False):
-        if self.state == 1 and db is None:
-            raise _NotAuthorisedMethod('Please select a database first')
-        try:
-            sql = _query_create_table(table, columns)
-            self._execute(sql, rs=False)
-            if show: print('Created table : ', table , 'with fields', columns)
-        except:
-            raise _NotAuthorisedOperation('Cant create table ', table)
-
-    def _show_table(self, db=None, table=None, show=False):
-        if self.state == 1 and db is None:
-            raise _NotAuthorisedMethod('Please select a database first')
-        if db:
-            self.use_database(db)
-        if not table in self._dbtables:
-            if show: print(table, '  doesnt exist in database tables')
-            return
-        try:
-            sql = _SHOW_TABLE_VALUES.format(table)
-            return self._execute(sql, rs=False)
-        except:
-            raise _NotAuthorisedOperation('Cant show table ', table)
-
-    def _delete_table(self, db=None, table=None, show=False):
-        if self.state == 1 and db is None:
-            raise _NotAuthorisedMethod('Please select a database first')
-        if db:
-            self.use_database(db)
-        if not table in self._dbtables:
-            if show: print(table, '  doesnt exist in database tables')
-            return
-        try:
-            sql = _DELETE_TABLE.format(table)
-            self._execute(sql)
-            if show: print('Deleted table : ', table)
-        except:
-            raise _NotAuthorisedOperation('Cant delete table ', table)
-
-    def _add_column(self, db=None, table=None, column=None, typ='VARCHAR(10)', show=False):
-        if self.state == 1 and db is None:
-            raise _NotAuthorisedMethod('Please select a database first')
-        if db:
-            self.use_database(db)
-        if not table in self._dbtables:
-            if show: print(table, '  doesnt exist in database tables')
-            return
-        with self.connection.cursor() as cursor:
-            sql = _ADD_COLUMN.format(table, column, typ)
-            cursor.execute(sql)
-            if show: print('Added Field : ', table)
-
-    def _del_column(self, tablename, collumn, show=False):
-        if self.state == 1:
-            raise _NotAuthorisedMethod('Please select a database first')
-        if not tablename in self._dbtables:
-            if show: print(tablename, '  doesnt exist in database tables')
-            return
-        with self.connection.cursor() as cursor:
-            sql = _DELETE_COLUMN.format(tablename, column)
-            cursor.execute(sql)
-            if show: print('Deleted Field : ', tablename)
-
-    def _change_column(self, tablename, column , new_column, new_type, show=False):
-        if self.state == 1:
-            raise _NotAuthorisedMethod('Please select a database first')
-        if not tablename in self._dbtables:
-            if show: print(tablename, '  doesnt exist in database tables')
-            return
-        sql = _CHANGE_COLUMN.format(tablename, column, new_column, new_type)
-        self._execute(sql)
-        if show: print('Change Field in ', tablename, ' : ', column ,' --> ', new_column)
-
-    def _add_value(self, dataunit=None, table=None, show=True):
-        if dataunit is None:
-            return
-        if dataunit.db is None:
-            print('Select a database or set dataunit db')
-            return
-        db = dataunit.db
-        table = dataunit.table or table
-        if self.state == 1:
-            self.use_database(db)
-        if table is None:
-            print('Select a table')
-            return
-        if not table in self._dbtables:
-            if show: print(table, '  doesnt exist in database tables')
-            return
-        if _include_list(dataunit.keys, self._table_columns(table)):
-            with self.connection.cursor() as cursor:
-                sql = _ADD_VALUE.format(table, dataunit.quantify)
-                cursor.execute(sql)
-                print('added value')
-
+    with connect.cursor() as cursor:
+        if type(sql) == list:
+            for query in sql:
+                cursor.execute(query)
         else:
-            raise _IncompatibleDataUnit('Not compatible data unit')
+            cursor.execute(sql)
+        if rs:
+            return cursor.fetchall()
 
-    def _insert_value(self, dataunit, aid=None, aname=None, db=None, table=None):
-        pass
+@_firstraws
+def instance_databases(instance=None):
+    return execute_sql_query(instance=instance, sql=_SHOW_DATA_BASES, rs=True)
+
+
+@_firstraws
+def instance_tables(instance=None, db=None):
+    if db == 'ALL':
+        databases = instance_databases(instance=instance)
+        return [instance_tables(instance=instance, db=d) for d in databases]
+
+    if db:
+        execute_sql_query(instance=instance,
+                          sql=[_USE_DATA_BASE.format(db),
+                               _SHOW_ALL_TABLES],
+                          rs=True)
+
+    return instance_tables(db='ALL')
+
+def instance_create_db(instance=None, db=None):
+    if db is None:
+        err = ('db is None')
+        raise NameError(err)
+
+    execute_sql_query(instance=instance, sql=_CREATE_DATA_BASE.format(db), rs=False)
+
+
+def instance_delete_db(instance=None, db=None):
+    if db is None:
+        err = ('db is None')
+        raise NameError(err)
+
+    execute_sql_query(instance=instance, sql=_DELETE_DATA_BASE.format(db), rs=False)
+
+
+def instance_exit_db(instance=None, db=None):
+    if db is None:
+        err = ('db is None')
+        raise NameError(err)
+    if not db in instance_databases(instance=instance):
+        return False
+    return True
+
+
+def instance_select_db(instance=None, db=None):
+    if db is None:
+        err = ('db is None')
+        raise NameError(err)
+
+    if not instance_exit_db(instance=instance, db=db):
+        err = ('Database not found')
+        raise NameError(err)
+
+    execute_sql_query(instance=instance, sql=_USE_DATA_BASE.format(db), rs=False)
+
+
+def database_tables(instance=None, db=None):
+    if db is None:
+        err = ('db is None')
+        raise NameError(err)
+
+    return instance_tables(instance=instance, db=db)
+
+@_firstraws
+def table_fields(instance=None, db=None, table=None):
+    if db is None or table is None:
+        err = ('db or table is None')
+        raise NameError(err)
+
+    return execute_sql_query(instance=instance,
+                             sql=[_USE_DATA_BASE.format(db),
+                                  _SHOW_TABLE.format(table)],
+                             rs=True)
+
+
+def create_table(instance=None, db=None, table=None, fields=['id']):
+    if db is None or table is None:
+        err = ('db or table is None')
+        raise NameError(err)
+
+    if not instance_exit_db(instance=instance, db=db)
+        err = ('db doesnt exist')
+        raise NameError(err)
+
+    if database_exist_table(instance=instance,
+                           db=db,
+                           table=table):
+        err = ('table exist already')
+        raise NameError(err)
+
+    execute_sql_query(instance=instance,
+                      sql=[_USE_DATA_BASE.format(db),
+                           _query_create_table(table, fields)]
+                      rs=False)
+
+def table_values(instance=None, db=None, table=None):
+    if db is None or table is None:
+        err = ('db or table is None')
+        raise NameError(err)
+
+    if not instance_exit_db(instance=instance, db=db)
+        err = ('db doesnt exist')
+        raise NameError(err)
+
+    if not database_exist_table(instance=instance,
+                               db=db,
+                               table=table):
+        err = ('table doesnt exist')
+        raise NameError(err)
+
+    return execute_sql_query(instance=instance,
+                             sql=[_USE_DATA_BASE.format(db),
+                                  _SHOW_TABLE_VALUES.format(table)],
+                             rs=True)
+
+def delete_table(instance=None, db=None, table=None):
+    if db is None or table is None:
+        err = ('db or table is None')
+        raise NameError(err)
+
+    if not instance_exit_db(instance=instance, db=db)
+        err = ('db doesnt exist')
+        raise NameError(err)
+
+    if not database_exist_table(instance=instance,
+                               db=db,
+                               table=table):
+        err = ('table doesnt exist')
+        raise NameError(err)
+
+    execute_sql_query(instance=instance,
+                      sql=[_USE_DATA_BASE.format(db),
+                           _DELETE_TABLE.format(table)],
+                      rs=False)
+
+
+def add_field():
+    pass
+
+def del_field():
+    pass
+
+def change_field():
+    pass
+
+
+def add_value(instance=None, db=None, table=None, value=None):
+    if db is None or table is None:
+        err = ('db or table is None')
+        raise NameError(err)
+
+    if not instance_exit_db(instance=instance, db=db)
+        err = ('db doesnt exist')
+        raise NameError(err)
+
+    if not database_exist_table(instance=instance,
+                               db=db,
+                               table=table):
+        err = ('table doesnt exist')
+        raise NameError(err)
+
+    if value is None:
+        return
+    else:
+        value=tuple(value)
+
+    try:
+        execute_sql_query(instance=instance,
+                          sql=[_USE_DATA_BASE.format(db),
+                               _ADD_VALUE.format(table, values),
+                          rs=False)

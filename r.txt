@@ -1,0 +1,48 @@
+LICAPY_DATABASES = ['Plantae',
+                    'Animalia',
+                    'Fungi',
+                    'Chromista',
+                    'Virus',
+                    'Bacteria',
+                    'EssentialOils',
+                    'VegatalOils',
+                    'LicapyDB']
+
+
+PLANTAE_DB = {'PlantTree' : ('name', 'pname', 'type', 'id'),
+              'PlantData' : ('name', 'location', 'morphology', 'synonyms')}
+
+ANIMALIA_DB = {'AnimalTree' : ('name', 'pname', 'type', 'id'),
+               'AnimalData' : ('name', 'location', 'morphology', 'synonyms')}
+
+FUNGI_DB = {'FungiTree' : ('name', 'pname', 'type', 'id'),
+            'FungiData' : ('name', 'location', 'morphology', 'synonyms')}
+
+CHROMISTA_DB = {'ChromistaTree' : ('name', 'pname', 'type', 'id'),
+                'ChromistaData' : ('name', 'location', 'morphology', 'synonyms')}
+
+VIRUS_DB = {'VirusTree' : ('name', 'pname', 'type', 'id'),
+            'VirusData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
+
+BACTERIA_DB = {'BacteriaTree' : ('name', 'pname', 'type', 'id'),
+               'BacteriaData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
+
+ESSENTIAL_OILS_DB = {'EssoilTree' : ('name', 'pname', 'type', 'id'),
+                     'EssoilData' : ('name', 'pathology', 'origine','morphology', 'synonyms')}
+
+VEGETAL_OILS_DB = {'VegoilTree' : ('name', 'pname', 'type', 'id'),
+                   'VegoilData' : ('name', 'pathology', 'origine', 'morphology', 'synonyms')}
+
+LICAPY_DB = {'LicapyAdmins' : ('user', 'password', 'name', 'email'),
+             'RHistory' : ('date', 'user', 'command'),
+             'Cacheapi' : ('None')}
+
+             LICAPY_DATABASES_EXPANDS = [PLANTAE_DB,
+                                         ANIMALIA_DB,
+                                         FUNGI_DB,
+                                         CHROMISTA_DB,
+                                         VIRUS_DB,
+                                         BACTERIA_DB,
+                                         ESSENTIAL_OILS_DB,
+                                         VEGETAL_OILS_DB,
+                                         LICAPY_DB]
