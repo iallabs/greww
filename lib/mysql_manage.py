@@ -1,8 +1,7 @@
-# this is databases connector to python
-
-import pymysql.cursors
 from lwa.utils.decorators import _firstraws, _validpd, _forall
 from lwa.utils.functions import _certify, _include_list, _equal_list, _compare_l1
+
+databases = ['testdb']
 
 class _ConnectionFailled(Exception):
     pass
@@ -16,7 +15,6 @@ class _IncompatibleDataUnit(Exception):
 class _NotAuthorisedOperation(Exception):
     pass
 
-databases = ['testdb']
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
 _CREATE_DATA_BASE = "CREATE DATABASE {0};"
@@ -45,20 +43,6 @@ _protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
                    'p' : ' PRIMARY KEY {0} '}
 
 
-def _connect_mysql(host, user, pw):
-    connection = pymysql.connect(host=host,
-                                 user=user,
-                                 password=pw)
-    return connection
-
-def _connect_withdb(host, user, pw , db):
-    connection = pymysql.connect(host=host,
-                                 user=user,
-                                 password=pw,
-                                 db=db)
-    return connection
-
-
 def _query_create_table(name, fields):
     _funquery = ''
     for field in fields:
@@ -74,8 +58,6 @@ def _query_create_table(name, fields):
         _funquery += ' ' + field + _protocol_noprotocol
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
-
-
 
 class DBManager:
     # Mysql database manager
