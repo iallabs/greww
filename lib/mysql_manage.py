@@ -1,6 +1,7 @@
 from lib.utils.decorators import _firstraws, _validpd, _forall
 from lib.utils.functions import _certify, _include_list, _equal_list, _compare_l1
 from lib.mysql_connect import mysql_connect
+from lib.mysql_logs import get_db_architecture
 
 databases = ['testdb']
 
@@ -98,6 +99,10 @@ def instance_create_db(instance=None, db=None):
         err = ('db is None')
         raise NameError(err)
 
+    if db in instance_databases(instance=instance):
+        err = ('db exist already')
+        raise Exception(err)
+
     execute_sql_query(instance=instance, sql=_CREATE_DATA_BASE.format(db), rs=False)
 
 
@@ -105,6 +110,10 @@ def instance_delete_db(instance=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
+
+    if not db in instance_databases(instance=instance):
+        err = ('db doesnt exist')
+        raise Exception(err)
 
     execute_sql_query(instance=instance, sql=_DELETE_DATA_BASE.format(db), rs=False)
 
@@ -243,5 +252,82 @@ def add_value(instance=None, db=None, table=None, value=None):
     try:
         execute_sql_query(instance=instance,
                           sql=[_USE_DATA_BASE.format(db),
-                               _ADD_VALUE.format(table, values),
+                               _ADD_VALUE.format(table, values)],
                           rs=False)
+
+def get_architecture(instance=None):
+    res = {}
+    tb = None
+    db = instance_databases(instance=instance)
+    for database in db:
+        for table in database_tables(instance=instance, db=database):
+            res[database][table] = table_fields(instance=instance,
+                                                db=db,
+                                                table=table)
+    return res
+
+def assert_architecture(instance=None):
+    Arc1 = get_architecture(instance=instance)
+    Arc2 = get_db_architecture(instance=instance)
+    missing_db = []
+    missing_tb = []
+    missing_fd = []
+
+    def compare_tb(a, b):
+        def compare_db(a, b):
+            lb = (list.b.keys())
+            for k in list(a.keys()):
+                if not k in lb:
+                    missing_db.append(k)
+                else:
+                    match_db += [k]
+            return missing_db, match_db
+        x, y = compare_db(a, b)
+        for db in y:
+            w, z = compare_db(a[db], b[db])
+            if w:
+                missing_tb += [(db, w)]
+                continue
+            else:
+                for uw in z:
+                    for f in table_fields(instance=instance,
+                                          db=db,
+                                          table=uw):
+                        if f in a[uw][f]:
+                            continue
+                        missing_fd += [f]
+    compare_tb(a, b)
+    if not missing_db:
+        return True
+    if not missing_fd:
+        if not missing_tb:
+            return (missing_db,)
+        return missing_db, missing_tb
+    return missing_db, missing_tb, missing_fd
+
+def build_instance_architecure(instance=None, ecrase=False):
+    if _equal_list(assert_architecture(instance=instance),
+                   list[get_architecture(instance=instance).keys()) or ecrase:
+        build_architecture(instance=instance)
+
+def build_architecture(instance=None):
+    Arc = get_db_architecture(instance=instance)
+    for db in list(Arc.keys()):
+        instance_create_db(db)
+        for table, fields in Arc[db].items():
+            create_table(instance=instance,
+                         db=db,
+                         table=table,
+                         fields=fields)
+
+
+def cleanup_architecture(instance=None):
+    Arc = get_db_architecture(instance=instance)
+    _db = instance_databases(instance=instance)
+    for db in list(Arc.keys()):
+        if db in _db:
+            instance_delete_db(instance=instance, db=db)
+
+def rebuild_architecture(instance=None):
+    cleanup_architecture(instance=instance)
+    build_architecture(instance=instance)

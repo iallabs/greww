@@ -14,7 +14,7 @@ def create_and_dump(name, data):
 
 def costum_instance_data(name=None, host=None, port=None, username=None, password=None):
     if name is None:
-        err = ("Please add name key")
+        err = ("Name is None")
         raise NameError(err)
     data = {
                 name : {
@@ -23,6 +23,14 @@ def costum_instance_data(name=None, host=None, port=None, username=None, passwor
                             'username' : username,
                             'password' : password
                         }
+            }
+    return data
+
+def costum_db_architecture(name=None, tables):
+    if name is None:
+        err = ("Name is None")
+    data = {
+                name : tables
             }
     return data
 

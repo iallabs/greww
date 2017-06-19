@@ -73,7 +73,7 @@ def get_all_architectures():
 
     return tables, dbs
 
-def get_db_architectures(architecture):
+def get_db_architecture(architecture):
     tables = []
 
     with open(ARCHITECTURES) as f:
