@@ -1,4 +1,27 @@
 import json
+import argparse
+from lib.mysql_logs import INSTANCES, ARCHITECTURES
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-j', '--newj', type=str)
+    parser.add_argument('-a', '--add', type=tuple)
+    parser.add_argument('-f', '--file')
+    parser.add_argument('-n', '--name')
+    parser.add_argument('-t', '--type')
+    arsg = parser.parse_args()
+
+    if args.newj:
+        if args.name:
+            create_json_file(args['name'])
+
+    if args.add:
+        if args.file:
+            if args.type = 'logs':
+                add_element_tojson(args['file'], costum_instance_data(args['add']))
+            if args.type = 'arc':
+                add_element_tojson(args['file'],costum_db_architecture(args['add']))
+
 
 def create_json_file(name, secure=True):
     if secure:
@@ -45,6 +68,9 @@ def add_element_tojson(element, _file):
         with open(_file, 'w') as f:
             data = element
             json.dump(data, f)
+
+if __name__ == "__main__":
+    maint()
 
 # instance
 #

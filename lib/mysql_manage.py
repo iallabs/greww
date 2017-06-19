@@ -1,21 +1,7 @@
-from lib.utils.decorators import _firstraws, _validpd, _forall
-from lib.utils.functions import _certify, _include_list, _equal_list, _compare_l1
+from lib.utils.decorators import _firstraws
+
 from lib.mysql_connect import mysql_connect
 from lib.mysql_logs import get_db_architecture
-
-databases = ['testdb']
-
-class _ConnectionFailled(Exception):
-    pass
-
-class _NotAuthorisedMethod(Exception):
-    pass
-
-class _IncompatibleDataUnit(Exception):
-    pass
-
-class _NotAuthorisedOperation(Exception):
-    pass
 
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
