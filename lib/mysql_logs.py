@@ -10,17 +10,21 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--logs')
     parser.add_argument('-a', '--architecture')
+    parser.add_argument('-b', '--basearc')
     arsg = parser.parse_args()
 
     if args.logs:
         if args.logs == 'ALL':
             return get_all_logs()
-        return get_instance_logs(args.logs)
+        return get_instance_logs(args['logs'])
 
     if args.architecture:
         if args.architecture == 'ALL':
-            return get_all_architectures()
-        return get_instance_logs(args.architecture)
+            return get_all_architectures(args['architecture'])
+        return get_instance_logs(args['architecture'])
+
+    if args.basearc:
+        return get_db_architecture()
 
 def get_instance_logs(instance, instance_id=None, instance_name=None):
     hostname = None
@@ -89,7 +93,7 @@ def get_all_architectures():
 
     return tables, dbs
 
-def get_db_architecture(architecture):
+def get_db_architecture():
     tables = []
 
     with open(ARCHITECTURES) as f:
