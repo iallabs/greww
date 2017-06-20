@@ -1,7 +1,45 @@
 from lib.utils.decorators import _firstraws
-
 from lib.mysql_connect import mysql_connect
 from lib.mysql_logs import get_db_architecture
+import argparse
+
+def main():
+    vm=None
+    db='ALL'
+    table=None
+    content=None
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--vmachine')
+    parser.add_argument('-i', '--info')
+    parser.add_argument('-t', '--table')
+    parser.add_argument('-d', '--database')
+    parser.add_argmuent('-c', '--content')
+    parser.add_argument('-a', '--element')
+    parser.add_argument('-f', '--find')
+    arsg = parser.parse_args()
+
+    if parser.info:
+        if parser.vmachine:
+            vm = parser['vmachine']
+        if parser.database:
+            db = parser['database']
+        if parser.table:
+            db = parser['table']
+
+        if table and not db:
+            err = ('Select a data base : -d --database')
+            raise Exception(err)
+        elif table and db:
+            return fetch_info_table(instance=vm)
+        elif not table and db:
+            return fetch_info_db(instance=vm)
+        return fetch_info_vm(instance=vm)
+
+    if parser.find:
+        pass
+
+    if parser.add:
+        pass
 
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
@@ -320,3 +358,7 @@ def rebuild_architecture(instance=None):
 
 def instance_stats(instance=None):
     pass
+
+
+if __name__= "__main__":
+    main()

@@ -1,6 +1,6 @@
 #
 req () {
-    pip install -r requirements.txt
+    pip install -r r.txt
 }
 
 setupy () {
@@ -8,9 +8,8 @@ setupy () {
 }
 
 configfiles () {
-    mkdir /home/ubuntu/config
-    cp /lib/ialint.json /home/ubuntu/config
-    cp /lib/ialdbhierarchy.json /home/ubuntu/config
+    cp /lib/ialint.json /home/ubuntu/jsons
+    cp /lib/ialdbhierarchy.json /home/ubuntu/jsons
 }
 
 
@@ -26,5 +25,3 @@ setup () {
 }
 
 #####################################################
-
-setup

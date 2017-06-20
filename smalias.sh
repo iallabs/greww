@@ -2,13 +2,13 @@
 
 iallog () {
     # return IAL db logs
-    # parameters : instance name or id
+    # parameters : instance name or id from ialinst.json
     python3 /lib/mysql_logs -l $1
 }
 
 ialarc () {
     # return instance db architecture
-    # parameters : instance name or id
+    # parameters : instance name or id from ialhierarchy.json
     python3 /lib/mysql_logs -a $1
 }
 
