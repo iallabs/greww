@@ -30,10 +30,10 @@ def main():
             err = ('Select a data base : -d --database')
             raise Exception(err)
         elif table and db:
-            return fetch_info_table(instance=vm)
+            return fetch_info(instance=vm, db=db)
         elif not table and db:
-            return fetch_info_db(instance=vm)
-        return fetch_info_vm(instance=vm)
+            return fetch_info(instance=vm, db=db, table=table)
+        return fetch_info(instance=vm)
 
     if parser.find:
         pass
@@ -358,6 +358,53 @@ def rebuild_architecture(instance=None):
 
 def instance_stats(instance=None):
     pass
+
+def fetch_table(instance=None, db=None, table=None):
+    if table:
+        if db is None:
+            err = ('Select a database -d')
+            raise Exception(err)
+        t = table_fields(instance=instance,
+                         db=db,
+                         table=table)
+        return "-------- TB : ", table, " -- fields : ", str(t)
+
+def fetch_db(instance=None, db=None):
+    if db is None:
+        err = ('Select a database')
+        raise Exception(err)
+    t = database_tables(instance=instance,
+                        db=db)
+    return " )))))))))) DB : " + db + " -- tables : " + str(t)
+
+def fetch_vm(instance=None):
+    return str("######################## VM " +
+               instance +
+               " ############################\n" +
+               "### Databases : ")
+
+
+def fetch_info(instance=None, db=None, table=None):
+    if table:
+        if db is None:
+            err = ('Select a database -d')
+            raise Exception(err)
+        print()
+        return
+    else:
+        if db:
+            tables, p = fetch_db(instance=instance, db=db)
+            print(p)
+            for i in tables:
+                print(fetch_table(instance=instance,
+                                  db=db,
+                                  table=i))
+        else:
+            print(fetch_vm(instance=instance))
+            for d in db:
+                fetch_info(instance=instance, db=d)
+
+
 
 
 if __name__= "__main__":
