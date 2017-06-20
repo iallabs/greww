@@ -14,7 +14,7 @@ def main():
     parser.add_argument('-t', '--table')
     parser.add_argument('-d', '--database')
     parser.add_argmuent('-c', '--content')
-    parser.add_argument('-a', '--element')
+    parser.add_argument('-a', '--elements')
     parser.add_argument('-f', '--find')
     arsg = parser.parse_args()
 
@@ -24,7 +24,9 @@ def main():
         if parser.database:
             db = parser['database']
         if parser.table:
-            db = parser['table']
+            table = parser['table']
+            if table == None:
+
 
         if table and not db:
             err = ('Select a data base : -d --database')
@@ -404,8 +406,26 @@ def fetch_info(instance=None, db=None, table=None):
             for d in db:
                 fetch_info(instance=instance, db=d)
 
+def find_in_table(instance=None,
+                  db=None,
+                  table=None,
+                  target_fields=None,
+                  targets=None):
+    if not (target_fields and targets_fields):
+        err = ('Targets error')
+        raise NameError(err)
+    if len(target_fields) != len(targets):
+        err = ('Targets match error')
+        raise NameError(err)
+    matches = []
 
 
+def find_matches(instance=None, db=None):
+    pass
+
+
+def find(instance=instance, db=None, table=None, target_fields=None, targets=None):
+    pass
 
 if __name__= "__main__":
     main()
