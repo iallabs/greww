@@ -1,7 +1,9 @@
 import json
 import argparse
 from lib.mysql_logs import INSTANCES, ARCHITECTURES
+
 import os
+
 os.chdir('/Users/IAL/Documents/GitHub/mysql_utils')
 
 def main():
@@ -28,6 +30,8 @@ def main():
                 add_element_tojson(args.file, costum_db_architecture(args.add))
 
 
+def set_direction(direction):
+    os.chdir(direction)
 
 def create_file(name, secure=True):
     if secure:
