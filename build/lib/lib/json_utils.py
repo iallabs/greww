@@ -23,9 +23,9 @@ def main():
     if args.add:
         if args.file:
             if args.type == 'logs':
-                add_element_tojson(args.file, costum_instance_data(args.add))
+                add_element_tojson(args['file'], costum_instance_data(args['add']))
             if args.type == 'arc':
-                add_element_tojson(args.file, costum_db_architecture(args.add))
+                add_element_tojson(args['file'],costum_db_architecture(args['add']))
 
 
 def create_file(name, secure=True):
