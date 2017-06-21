@@ -16,13 +16,15 @@ def main():
 
     if args.logs:
         if args.logs == 'ALL':
-            return get_all_logs()
-        print(get_instance_logs(instance=args.logs))
+            print(get_all_logs())
+        else:
+            print(get_instance_logs(instance=args.logs))
 
     if args.architecture:
         if args.architecture == 'ALL':
             print(get_all_architectures())
-        print(get_instance_logs(args.architecture))
+        else:
+            print(get_instance_logs(args.architecture))
 
     if args.basearc:
         print(get_db_architecture())
@@ -50,7 +52,6 @@ def get_instance_logs(instance=None):
     if hostname is None:
         err = ("Coulnd find instance")
         raise NameError(err)
-    print(hostname, port, username, password)
     return (hostname, port, username, password)
 
 def get_all_logs(ignore=None):
