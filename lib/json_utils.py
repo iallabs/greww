@@ -28,6 +28,7 @@ def main():
                 add_element_tojson(args.file, costum_db_architecture(args.add))
 
 
+
 def create_file(name, secure=True):
     if secure:
         try:
@@ -68,6 +69,25 @@ def costum_db_architecture(name=None, tables=None):
             }
     return data
 
+def costum_slaver(name=None, ip=None, pem=None):
+    pass
+
+def one_costum(**kwargs, for_=None):
+    if not for_:
+        return
+    if not kwargs:
+        return
+    keys = list(kwargs.keys())
+    for_ = list(for_)
+    if not _include_list(keys, for_):
+        return
+    res = {}
+    for key in for_:
+        res[key] = kwarg[key]
+    return res
+
+
+
 def add_element_tojson(element, _file):
     try:
         with open(_file) as f:
@@ -79,6 +99,8 @@ def add_element_tojson(element, _file):
         with open(_file, 'w') as f:
             data = element
             json.dump(data, f)
+
+
 
 if __name__ == "__main__":
     main()
