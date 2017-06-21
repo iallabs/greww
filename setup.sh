@@ -8,8 +8,8 @@ setupy () {
 }
 
 configfiles () {
-    cp /lib/ialint.json /home/ubuntu/jsons
-    cp /lib/ialdbhierarchy.json /home/ubuntu/jsons
+    cp /lib/instances.json /home/ubuntu/jsons
+    cp /lib/hierarchy.json /home/ubuntu/jsons
 }
 
 
@@ -25,3 +25,6 @@ setup () {
 }
 
 #####################################################
+
+setup
+exit(0)

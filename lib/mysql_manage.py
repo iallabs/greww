@@ -292,6 +292,9 @@ def get_architecture(instance=None):
                                                 table=table)
     return res
 
+def adjust_db_architecture(instance=None):
+    pass
+
 def assert_architecture(instance=None):
     Arc1 = get_architecture(instance=instance)
     Arc2 = get_db_architecture(instance=instance)
@@ -358,6 +361,7 @@ def rebuild_architecture(instance=None):
     cleanup_architecture(instance=instance)
     build_architecture(instance=instance)
 
+
 def instance_stats(instance=None):
     pass
 
@@ -419,13 +423,25 @@ def find_in_table(instance=None,
         raise NameError(err)
     matches = []
 
+def find_matches(instance=None, db=None, target_fields=None, targets=None):
+    pass
 
-def find_matches(instance=None, db=None):
+def find(instance=None, db=None, table=None, target_fields=None, targets=None):
+    pass
+
+def jsonise_table(instance=None, db=None, table=None, file=None):
+    pass
+
+def josenise_database(instance=None, db=None, table=None, file=None):
+    pass
+
+def prepare_backend_migration(instance=None):
+    pass
+
+def backend_db_jsonisation(instance=None, direction=None):
     pass
 
 
-def find(instance=instance, db=None, table=None, target_fields=None, targets=None):
-    pass
 
 if __name__= "__main__":
     main()
