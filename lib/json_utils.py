@@ -3,8 +3,13 @@ import argparse
 from lib.mysql_logs import INSTANCES, ARCHITECTURES
 
 import os
+default='/Users/IAL/Documents/GitHub/mysql_utils'
 
-os.chdir('/Users/IAL/Documents/GitHub/mysql_utils')
+def set_direction(direction):
+    os.chdir(direction)
+
+set_direction(direction=default)
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -29,9 +34,6 @@ def main():
             if args.type == 'arc':
                 add_element_tojson(args.file, costum_db_architecture(args.add))
 
-
-def set_direction(direction):
-    os.chdir(direction)
 
 def create_file(name, secure=True):
     if secure:
@@ -76,17 +78,17 @@ def costum_db_architecture(name=None, tables=None):
 def costum_slaver(name=None, ip=None, pem=None):
     pass
 
-def one_costum(**kwargs, for_=None):
-    if not for_:
+def one_costum(forr=None, **kwargs):
+    if not forr:
         return
     if not kwargs:
         return
     keys = list(kwargs.keys())
-    for_ = list(for_)
-    if not _include_list(keys, for_):
+    forr = list(forr)
+    if not _include_list(keys, forr):
         return
     res = {}
-    for key in for_:
+    for key in forr:
         res[key] = kwarg[key]
     return res
 

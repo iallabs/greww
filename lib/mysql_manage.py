@@ -9,24 +9,22 @@ def main():
     table=None
     content=None
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--vmachine')
-    parser.add_argument('-i', '--info')
+    parser.add_argument('-v', '--vmachine', type=str)
+    parser.add_argument('-i', '--info', action="store_true", default=False)
     parser.add_argument('-t', '--table')
     parser.add_argument('-d', '--database')
-    parser.add_argmuent('-c', '--content')
+    parser.add_argument('-c', '--content')
     parser.add_argument('-a', '--elements')
     parser.add_argument('-f', '--find')
-    arsg = parser.parse_args()
+    args = parser.parse_args()
 
-    if parser.info:
-        if parser.vmachine:
-            vm = parser['vmachine']
-        if parser.database:
-            db = parser['database']
-        if parser.table:
-            table = parser['table']
-            if table == None:
-
+    if args.info:
+        if args.vmachine:
+            vm = args.vmachine
+        if args.database:
+            db = args.database
+        if args.table:
+            table = args.table
 
         if table and not db:
             err = ('Select a data base : -d --database')
@@ -65,6 +63,7 @@ _ADD_VALUE = "I" + "NSERT INTO {0} VALUES {1};"
 _SHOW_TABLE_VALUES = "S" + "ELECT * FROM {0};"
 _FIND_VALUES_TABLE = ""
 _INSERT_VALUE = ""
+_WHERE_STM = ""
 
 
 _protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
@@ -89,7 +88,7 @@ def _query_create_table(name, fields):
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
 
-def execute_sql_query(instance=None, sql=sql, rs=False):
+def execute_sql_query(instance=None, sql=None, rs=False):
     if instance is None:
         connect = mysql_connect(local=True)
     connect = mysql_connect(instance=instance)
@@ -191,7 +190,7 @@ def create_table(instance=None, db=None, table=None, fields=['id']):
         err = ('db or table is None')
         raise NameError(err)
 
-    if not instance_exit_db(instance=instance, db=db)
+    if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
 
@@ -203,7 +202,7 @@ def create_table(instance=None, db=None, table=None, fields=['id']):
 
     execute_sql_query(instance=instance,
                       sql=[_USE_DATA_BASE.format(db),
-                           _query_create_table(table, fields)]
+                           _query_create_table(table, fields)],
                       rs=False)
 
 def table_values(instance=None, db=None, table=None):
@@ -211,7 +210,7 @@ def table_values(instance=None, db=None, table=None):
         err = ('db or table is None')
         raise NameError(err)
 
-    if not instance_exit_db(instance=instance, db=db)
+    if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
 
@@ -231,7 +230,7 @@ def delete_table(instance=None, db=None, table=None):
         err = ('db or table is None')
         raise NameError(err)
 
-    if not instance_exit_db(instance=instance, db=db)
+    if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
 
@@ -262,7 +261,7 @@ def add_value(instance=None, db=None, table=None, value=None):
         err = ('db or table is None')
         raise NameError(err)
 
-    if not instance_exit_db(instance=instance, db=db)
+    if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
 
@@ -277,11 +276,10 @@ def add_value(instance=None, db=None, table=None, value=None):
     else:
         value=tuple(value)
 
-    try:
-        execute_sql_query(instance=instance,
-                          sql=[_USE_DATA_BASE.format(db),
-                               _ADD_VALUE.format(table, values)],
-                          rs=False)
+    execute_sql_query(instance=instance,
+                      sql=[_USE_DATA_BASE.format(db),
+                           _ADD_VALUE.format(table, values)],
+                      rs=False)
 
 def get_architecture(instance=None):
     res = {}
@@ -338,7 +336,7 @@ def assert_architecture(instance=None):
 
 def build_instance_architecure(instance=None, ecrase=False):
     if _equal_list(assert_architecture(instance=instance),
-                   list[get_architecture(instance=instance).keys()) or ecrase:
+                   list(get_architecture(instance=instance).keys())) or ecrase:
         build_architecture(instance=instance)
 
 def build_architecture(instance=None):
@@ -415,15 +413,24 @@ def fetch_info(instance=None, db=None, table=None):
 def find_in_table(instance=None,
                   db=None,
                   table=None,
-                  target_fields=None,
-                  targets=None):
-    if not (target_fields and targets_fields):
+                  **kwargs):
+    if not (table and db):
         err = ('Targets error')
         raise NameError(err)
-    if len(target_fields) != len(targets):
-        err = ('Targets match error')
-        raise NameError(err)
+
     matches = []
+    keys = list(kwargs.keys())
+    if not _include_list(keys,
+                         table_fields(instance=instance,
+                                      db=db),
+                                      table=table):
+        err = ('kwargs matching error')
+        raise Exception(err)
+
+    execute_sql_query(instance=instance,
+                      sql=[_USE_DATA_BASE.format(db),
+                           _FIND_VALUES_TABLE.format(table,
+                                                     _WHERE_STM(kwargs))])
 
 def find_matches(instance=None, db=None, target_fields=None, targets=None):
     pass
@@ -445,5 +452,5 @@ def backend_db_jsonisation(instance=None, direction=None):
 
 
 
-if __name__= "__main__":
+if __name__ == "__main__":
     main()

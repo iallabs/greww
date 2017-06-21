@@ -4,7 +4,7 @@ import json
 import argparse
 import os
 
-INSTANCES = '/Users/IAL/Documents/GitHub/mysql_utils/lib/instances.json'
+INSTANCES = 'instances.json'
 ARCHITECTURES = 'hierarchy.json'
 
 def main():
@@ -12,22 +12,22 @@ def main():
     parser.add_argument('-l', '--logs')
     parser.add_argument('-a', '--architecture')
     parser.add_argument('-b', '--basearc')
-    arsg = parser.parse_args()
+    args = parser.parse_args()
 
     if args.logs:
         if args.logs == 'ALL':
             return get_all_logs()
-        return get_instance_logs(args['logs'])
+        print(get_instance_logs(instance=args.logs))
 
     if args.architecture:
         if args.architecture == 'ALL':
-            return get_all_architectures(args['architecture'])
-        return get_instance_logs(args['architecture'])
+            print(get_all_architectures())
+        print(get_instance_logs(args.architecture))
 
     if args.basearc:
-        return get_db_architecture()
+        print(get_db_architecture())
 
-def get_instance_logs(instance):
+def get_instance_logs(instance=None):
     hostname = None
     port = None
     password = None
@@ -50,8 +50,8 @@ def get_instance_logs(instance):
     if hostname is None:
         err = ("Coulnd find instance")
         raise NameError(err)
-
-    return hostname, port, username, password
+    print(hostname, port, username, password)
+    return (hostname, port, username, password)
 
 def get_all_logs(ignore=None):
     instances = []
