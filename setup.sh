@@ -8,8 +8,8 @@ setupy () {
 }
 
 configfiles () {
-    cp /lib/instances.json /home/ubuntu/jsons
-    cp /lib/hierarchy.json /home/ubuntu/jsons
+    cp /lib/instances.json /home/ubuntu/data
+    cp /lib/hierarchy.json /home/ubuntu/data
 }
 
 

@@ -62,10 +62,11 @@ this_instance () {
     echo file.txt lien 1
 }
 
-prepare_backend_migration () {
-    mysqldump abstract_mysql_syntax $(this_instance) $1 > /home/ubunt/output
+prepare_backend_storage_db () {
+    mkdir /home/ubunt/output/backend_temp.sql
+    mysqldump abstract_mysql_syntax $(this_instance) $1 > /home/ubunt/output/backend_temp.sql
 }
 
-prepare_backend_migration_all () {
+prepare_backend_storage () {
 
 }
