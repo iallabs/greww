@@ -40,7 +40,12 @@ def main():
             a = instance_tables(instance=vm, db=db)
             print(a)
 
+    print('########')
+    print(fetch_info(instance=vm))
+    print('########')
+    print(fetch_info(instance=vm, db=db))
     return
+
     if parser.find:
         pass
 
@@ -136,7 +141,9 @@ def instance_create_db(instance=None, db=None):
         err = ('db exist already')
         raise Exception(err)
 
-    execute_sql_query(instance=instance, sql=_CREATE_DATA_BASE.format(db), rs=False)
+    execute_sql_query(instance=instance,
+                      sql=_CREATE_DATA_BASE.format(db),
+                      rs=False)
 
 
 def instance_delete_db(instance=None, db=None):
@@ -148,7 +155,9 @@ def instance_delete_db(instance=None, db=None):
         err = ('db doesnt exist')
         raise Exception(err)
 
-    execute_sql_query(instance=instance, sql=_DELETE_DATA_BASE.format(db), rs=False)
+    execute_sql_query(instance=instance,
+                      sql=_DELETE_DATA_BASE.format(db),
+                      rs=False)
 
 
 def instance_exit_db(instance=None, db=None):
@@ -186,7 +195,7 @@ def table_fields(instance=None, db=None, table=None):
         raise NameError(err)
 
     return execute_sql_query(instance=instance,
-                             sql=[ATA_BASE.format(db),
+                             sql=[_USE_DATA_BASE.format(db),
                                   _SHOW_TABLE.format(table)],
                              rs=True)
 
@@ -379,7 +388,7 @@ def fetch_table(instance=None, db=None, table=None):
         t = table_fields(instance=instance,
                          db=db,
                          table=table)
-        return "-------- TB : ", table, " -- fields : ", str(t)
+        return "               #-------- TB : ", table, " -- fields : ", str(t)
 
 def fetch_db(instance=None, db=None):
     if db is None:
@@ -387,7 +396,7 @@ def fetch_db(instance=None, db=None):
         raise Exception(err)
     t = database_tables(instance=instance,
                         db=db)
-    return t, " )))))))))) DB : " + db + " -- tables : " + str(t)
+    return t, " ->->->->->->) DB : " + db + " -- tables : " + str(t)
 
 def fetch_vm(instance=None):
     return str("######################## VM " +
@@ -413,6 +422,7 @@ def fetch_info(instance=None, db=None, table=None):
                                   table=i))
         else:
             print(fetch_vm(instance=instance))
+            db = instance_databases(instance=instance)
             for d in db:
                 fetch_info(instance=instance, db=d)
 
@@ -448,6 +458,9 @@ def jsonise_table(instance=None, db=None, table=None, file=None):
     pass
 
 def josenise_database(instance=None, db=None, table=None, file=None):
+    pass
+
+def affect_json_database(instance=None):
     pass
 
 def prepare_backend_migration(instance=None):
