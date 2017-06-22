@@ -36,20 +36,6 @@ def main():
             pretty_info(instance=vm, expand=args.expand)
             return
 
-
-
-        if vm and expand:
-            pretty_info(instance=vm)
-        if args.tables:
-            tb = args.tables
-        if args.database:
-            db = args.database
-        if args.contenttable:
-            content=True
-        print(vm,dbs,db,tb,content)
-        if vm and db:
-            pretty_info(instance=vm, db=db, table=tb, expand=content)
-
     if parser.find:
         pass
 
