@@ -450,15 +450,6 @@ def jsonise_table(instance=None, db=None, table=None, file=None):
 def josenise_database(instance=None, db=None, table=None, file=None):
     pass
 
-def affect_json_database(instance=None):
-    pass
-
-def prepare_backend_migration(instance=None):
-    pass
-
-def backend_db_jsonisation(instance=None, direction=None):
-    pass
-
 
 
 if __name__ == "__main__":

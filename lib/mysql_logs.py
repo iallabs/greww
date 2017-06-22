@@ -4,14 +4,21 @@ import json
 import argparse
 import os
 
+default='/Users/IAL/Documents/GitHub/mysql_utils/lib'
+
+def set_direction(direction):
+    os.chdir(direction)
+
+set_direction(direction=default)
+
+
 INSTANCES = 'instances.json'
 ARCHITECTURES = 'hierarchy.json'
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--logs')
-    parser.add_argument('-a', '--architecture')
-    parser.add_argument('-b', '--basearc')
+    parser.add_argument('-a', '--basearc')
     args = parser.parse_args()
 
     if args.logs:

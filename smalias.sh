@@ -6,16 +6,22 @@ iallog () {
     python3 /lib/mysql_logs -l $1
 }
 
-ialarc () {
-    # return instance db architecture
-    # parameters : instance name or id from ialhierarchy.json
-    python3 /lib/mysql_logs -a $1
+ialuser () {
+    python3 /lib/mysql_logs -u $1
 }
 
-ialarcb () {
-    # return ial dabases architecture
-    # no parameters
-    python /lib/mysql_logs -d
+ialpd () {
+    python3 /lib/mysql_logs -pd $1
+}
+
+abstract_mysql_syntax () {
+    echo -u $(ialuser $1) -p $(ialpd $1)
+}
+
+ialarc () {
+    # return instance base db architecture
+    # parameters : instance name or id from ialhierarchy.json
+    python3 /lib/mysql_logs -a $1
 }
 
 # jsons
@@ -37,11 +43,29 @@ feedjson () {
 feediallogs () {
     # feed ialinst.json file
     # parameters values (tuple)
-    feedjson $1 logs /home/ubuntu/config/ialinst.json
+    feedjson $1 logs /home/ubuntu/data/instances.json
 }
 
 feedialarc () {
     # feed ialdbhierarchy.json file
     # parameters values (tuple)
-    feedjson $1 arc /home/ubuntu/config/ialdbhierarchy.json
+    feedjson $1 arc /home/ubuntu/data/hierarchy.json
+}
+
+# mysql_manage
+
+info_msql_instance () {
+    python3 /lib/mysql_manage.py -i $1
+}
+
+this_instance () {
+    echo file.txt lien 1
+}
+
+prepare_backend_migration () {
+    mysqldump abstract_mysql_syntax $(this_instance) $1 > /home/ubunt/output
+}
+
+prepare_backend_migration_all () {
+
 }
