@@ -1,50 +1,54 @@
 from lib.utils.decorators import _firstraws
-from lib.mysql_connect import mysql_connect
+from lib.mysql_connect import mysql_connect, THIS_INSTANCE
 from lib.mysql_logs import get_db_architecture
+
 import argparse
 
 def main():
     vm=None
-    db='ALL'
     table=None
-    tdb=None
-    dbs=None
-    content=None
+    tb=None
+    db=None
+    expand=None
+    tcontent=False
+    content=False
     parser = argparse.ArgumentParser()
-    parser.add_argument('-vm', '--vmachine', type=str)
+    parser.add_argument('-vm', '--virtualmachine', type=str, default=THIS_INSTANCE)
     parser.add_argument('-i', '--info', action="store_true", default=False)
-    parser.add_argument('-tb', '--dbtables', action="store_true", default=False)
-    parser.add_argument('-db', '--databases', action="store_true", default=False)
-    parser.add_argument('-d', '--database', type=str)
-    parser.add_argument('-c', '--content')
+    parser.add_argument('-X', '--expand', action="store_true", default=False)
+    parser.add_argument('-tb', '--table', type=str)
+    parser.add_argument('-db', '--database', type=str)
     parser.add_argument('-a', '--elements')
     parser.add_argument('-f', '--find')
     args = parser.parse_args()
 
-
     if args.info:
-        if args.vmachine:
-            vm = args.vmachine
-        if args.databases:
-            dbs = args.databases
-        if args.dbtables:
-            dtb = args.dbtables
-        if args.database:
-            db = args.database
-
-        if dbs:
-            print(instance_databases(instance=vm))
+        if args.virtualmachine:
+            vm = args.virtualmachine
+            if args.database:
+                db = args.database
+                if args.table:
+                    table = args.table
+                    pretty_info(instance=vm, db=db, table=table, expand=args.expand)
+                    return
+                pretty_info(instance=vm, db=db, expand=args.expand)
+                return
+            pretty_info(instance=vm, expand=args.expand)
             return
 
-        if dtb and db:
-            a = instance_tables(instance=vm, db=db)
-            print(a)
 
-    print('########')
-    print(fetch_info(instance=vm))
-    print('########')
-    print(fetch_info(instance=vm, db=db))
-    return
+
+        if vm and expand:
+            pretty_info(instance=vm)
+        if args.tables:
+            tb = args.tables
+        if args.database:
+            db = args.database
+        if args.contenttable:
+            content=True
+        print(vm,dbs,db,tb,content)
+        if vm and db:
+            pretty_info(instance=vm, db=db, table=tb, expand=content)
 
     if parser.find:
         pass
@@ -380,51 +384,51 @@ def rebuild_architecture(instance=None):
 def instance_stats(instance=None):
     pass
 
-def fetch_table(instance=None, db=None, table=None):
-    if table:
-        if db is None:
-            err = ('Select a database -d')
-            raise Exception(err)
-        t = table_fields(instance=instance,
-                         db=db,
-                         table=table)
-        return "               #-------- TB : ", table, " -- fields : ", str(t)
+def print_pretty_databases(instance=None, with_tables=False):
+    print(' #------------------ DATABASES')
+    print('')
+    for db in instance_databases(instance=instance):
+        print(' #------------------', db)
+        if with_tables:
+            print_pretty_tables(instance=instance, db=db)
 
-def fetch_db(instance=None, db=None):
-    if db is None:
-        err = ('Select a database')
-        raise Exception(err)
-    t = database_tables(instance=instance,
-                        db=db)
-    return t, " ->->->->->->) DB : " + db + " -- tables : " + str(t)
+def print_pretty_tables(instance=None, db=None):
+    print(' #---------------------------- : TABLES')
+    print('')
+    for tb in instance_tables(instance=instance, db=db):
+        print(' #---------------------------- : ' + tb)
 
-def fetch_vm(instance=None):
-    return str("######################## VM " +
-               instance +
-               " ############################\n" +
-               "### Databases : ")
+def print_pretty_content(instance=None, db=None, table=None):
+    print('kaka')
 
+def print_pretty_fields(instance=None, db=None, table=None):
+    print(table_fields(instance=instance, db=db, table=table))
 
-def fetch_info(instance=None, db=None, table=None):
-    if table:
-        if db is None:
-            err = ('Select a database -d')
-            raise Exception(err)
-        print()
-        return
-    else:
+def pretty_info(instance=None, db=None, table=None, expand=False):
+    if instance:
+        print(' #-- VM : ', instance)
+        print('')
         if db:
-            tables, p = fetch_db(instance=instance, db=db)
-            print(p)
-            for i in tables:
-                print(fetch_table(instance=instance,
-                                  db=db,
-                                  table=i))
+            print(' #------------- : ', db)
+            print('')
+            if table:
+                print(' #----------------- : ', table)
+                print_pretty_fields(instance=instance, db=db, table=table)
+                if expand:
+                    #print_pretty_content(instance=instance, db=db, table=table)
+                    print('not expand for this option -i -vm -tb')
+            else:
+                if expand:
+                    print('not expand for this option -i -vm -db')
+                else:
+                    print_pretty_tables(instance=instance, db=db)
         else:
-            print(fetch_vm(instance=instance))
-            db = instance_databases(instance=instance)
-            for d in db:
-                fetch_info(instance=instance, db=d)
+            if expand:
+                print_pretty_databases(instance=instance, with_tables=True)
+            else:
+                print_pretty_databases(instance=instance)
+
+
 
 def find_in_table(instance=None,
                   db=None,
