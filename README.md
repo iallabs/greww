@@ -41,7 +41,7 @@ USER$ python3 mysql_manage.py -i -vm IAL-Central //-X to expand
 ```
 
 ```shell
-USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql //-X to expand
+USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql
 #-- VM :  IAL-Central
 
 #------------- :  mysql
@@ -79,5 +79,16 @@ USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql //-X to expand
 #---------------------------- : time_zone_transition
 #---------------------------- : time_zone_transition_type
 #---------------------------- : user
+
+```
+
+```shell
+USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql -tb servers
+ #-- VM :  IAL-Central
+
+ #------------- :  mysql
+
+ #----------------- :  servers
+['Server_name', 'Host', 'Db', 'Username', 'Password', 'Port', 'Socket', 'Wrapper', 'Owner']
 
 ```
