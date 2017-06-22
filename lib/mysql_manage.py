@@ -7,34 +7,40 @@ def main():
     vm=None
     db='ALL'
     table=None
+    tdb=None
+    dbs=None
     content=None
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--vmachine', type=str)
+    parser.add_argument('-vm', '--vmachine', type=str)
     parser.add_argument('-i', '--info', action="store_true", default=False)
-    parser.add_argument('-t', '--table')
-    parser.add_argument('-d', '--database')
+    parser.add_argument('-tb', '--dbtables', action="store_true", default=False)
+    parser.add_argument('-db', '--databases', action="store_true", default=False)
+    parser.add_argument('-d', '--database', type=str)
     parser.add_argument('-c', '--content')
     parser.add_argument('-a', '--elements')
     parser.add_argument('-f', '--find')
     args = parser.parse_args()
 
+
     if args.info:
         if args.vmachine:
             vm = args.vmachine
+        if args.databases:
+            dbs = args.databases
+        if args.dbtables:
+            dtb = args.dbtables
         if args.database:
             db = args.database
-        if args.table:
-            table = args.table
 
-        if table and not db:
-            err = ('Select a data base : -d --database')
-            raise Exception(err)
-        elif table and db:
-            return fetch_info(instance=vm, db=db)
-        elif not table and db:
-            return fetch_info(instance=vm, db=db, table=table)
-        return fetch_info(instance=vm)
+        if dbs:
+            print(instance_databases(instance=vm))
+            return
 
+        if dtb and db:
+            a = instance_tables(instance=vm, db=db)
+            print(a)
+
+    return
     if parser.find:
         pass
 
@@ -92,7 +98,7 @@ def execute_sql_query(instance=None, sql=None, rs=False):
     if instance is None:
         connect = mysql_connect(local=True)
     connect = mysql_connect(instance=instance)
-
+    res = None
     with connect.cursor() as cursor:
         if type(sql) == list:
             for query in sql:
@@ -100,7 +106,8 @@ def execute_sql_query(instance=None, sql=None, rs=False):
         else:
             cursor.execute(sql)
         if rs:
-            return cursor.fetchall()
+            res = cursor.fetchall()
+            return res
 
 @_firstraws
 def instance_databases(instance=None):
@@ -109,17 +116,16 @@ def instance_databases(instance=None):
 
 @_firstraws
 def instance_tables(instance=None, db=None):
-    if db == 'ALL':
+    if db:
+        if db == 'ALL':
+            return instance_tables(instance=instance, db=None)
+        return execute_sql_query(instance=instance,
+                                 sql=[_USE_DATA_BASE.format(db), _SHOW_ALL_TABLES],
+                                 rs=True)
+    else:
         databases = instance_databases(instance=instance)
         return [instance_tables(instance=instance, db=d) for d in databases]
 
-    if db:
-        execute_sql_query(instance=instance,
-                          sql=[_USE_DATA_BASE.format(db),
-                               _SHOW_ALL_TABLES],
-                          rs=True)
-
-    return instance_tables(db='ALL')
 
 def instance_create_db(instance=None, db=None):
     if db is None:
@@ -163,7 +169,7 @@ def instance_select_db(instance=None, db=None):
         err = ('Database not found')
         raise NameError(err)
 
-    execute_sql_query(instance=instance, sql=_USE_DATA_BASE.format(db), rs=False)
+    execute_sql_query(instance=instance, sql=ATA_BASE.format(db), rs=False)
 
 
 def database_tables(instance=None, db=None):
@@ -180,7 +186,7 @@ def table_fields(instance=None, db=None, table=None):
         raise NameError(err)
 
     return execute_sql_query(instance=instance,
-                             sql=[_USE_DATA_BASE.format(db),
+                             sql=[ATA_BASE.format(db),
                                   _SHOW_TABLE.format(table)],
                              rs=True)
 
@@ -201,7 +207,7 @@ def create_table(instance=None, db=None, table=None, fields=['id']):
         raise NameError(err)
 
     execute_sql_query(instance=instance,
-                      sql=[_USE_DATA_BASE.format(db),
+                      sql=[ATA_BASE.format(db),
                            _query_create_table(table, fields)],
                       rs=False)
 
@@ -221,7 +227,7 @@ def table_values(instance=None, db=None, table=None):
         raise NameError(err)
 
     return execute_sql_query(instance=instance,
-                             sql=[_USE_DATA_BASE.format(db),
+                             sql=[ATA_BASE.format(db),
                                   _SHOW_TABLE_VALUES.format(table)],
                              rs=True)
 
@@ -241,7 +247,7 @@ def delete_table(instance=None, db=None, table=None):
         raise NameError(err)
 
     execute_sql_query(instance=instance,
-                      sql=[_USE_DATA_BASE.format(db),
+                      sql=[ATA_BASE.format(db),
                            _DELETE_TABLE.format(table)],
                       rs=False)
 
@@ -277,7 +283,7 @@ def add_value(instance=None, db=None, table=None, value=None):
         value=tuple(value)
 
     execute_sql_query(instance=instance,
-                      sql=[_USE_DATA_BASE.format(db),
+                      sql=[ATA_BASE.format(db),
                            _ADD_VALUE.format(table, values)],
                       rs=False)
 
@@ -381,7 +387,7 @@ def fetch_db(instance=None, db=None):
         raise Exception(err)
     t = database_tables(instance=instance,
                         db=db)
-    return " )))))))))) DB : " + db + " -- tables : " + str(t)
+    return t, " )))))))))) DB : " + db + " -- tables : " + str(t)
 
 def fetch_vm(instance=None):
     return str("######################## VM " +
@@ -428,7 +434,7 @@ def find_in_table(instance=None,
         raise Exception(err)
 
     execute_sql_query(instance=instance,
-                      sql=[_USE_DATA_BASE.format(db),
+                      sql=[ATA_BASE.format(db),
                            _FIND_VALUES_TABLE.format(table,
                                                      _WHERE_STM(kwargs))])
 

@@ -29,7 +29,8 @@ def main():
     if args.basearc:
         print(get_db_architecture())
 
-def get_instance_logs(instance=None):
+def get_instance_logs(instance):
+    return ('localhost', '', 'root', 'uehMLMRw')
     hostname = None
     port = None
     password = None
@@ -52,6 +53,7 @@ def get_instance_logs(instance=None):
     if hostname is None:
         err = ("Coulnd find instance")
         raise NameError(err)
+
     return (hostname, port, username, password)
 
 def get_all_logs(ignore=None):
