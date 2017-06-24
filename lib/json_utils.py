@@ -30,7 +30,28 @@ def main():
 
     if args.add:
         if args.file:
-            add_element_tojson(costum_instance(args.add), args.file, direction=args.path)
+            add_element_tojson(costum_instance(**_kwarg_it(*args.add, tp='instance')), args.file, direction=args.path)
+
+
+def _kwarg_it(*args, tp='instance'):
+    if tp == 'instance':
+        instance_keys = ['name',
+                         'idd',
+                         'host',
+                         'port',
+                         'user',
+                         'password',
+                         'ip',
+                         'pem',
+                         'dns',
+                         'hierarchy',
+                         'slaves']
+        k = 0
+        res = {}
+        for i in args:
+            res[instance_keys[k]] = i
+            k += 1
+        return res
 
 
 
