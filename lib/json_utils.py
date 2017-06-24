@@ -17,7 +17,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--new', type=str)
     parser.add_argument('-t', '--type', type=str, default='json')
-    parser.add_argument('-a', '--add', type=tuple)
+    parser.add_argument('-a', '--add', type=str)
     parser.add_argument('-p', '--path', type=str, default='/home/ubuntu/data')
     parser.add_argument('-f', '--file', type=str)
     args = parser.parse_args()
@@ -28,10 +28,10 @@ def main():
         else:
             err = ('type not implemented')
             raise Exception(err)
-
+é
     if args.add:
         if args.file:
-            add_element_tojson(costum_instance(**_kwarg_it(*args.add, tp='instance')), args.file, direction=args.path)
+            add_element_tojson(costum_instance(**_kwarg_it(*tuple(args.add.split(',')), tp='instance')), args.file, direction=args.path)
 
 
 def _kwarg_it(*args, tp='instance'):
