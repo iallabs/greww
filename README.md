@@ -3,9 +3,15 @@ IAL python kit for mysql and json operations
 
 
 # installation
-gitdv mysql_utils
+
+```shell
+git clone https://github.com/ImperialAlphaLab/mysql_utils
+source /.setup.sh
+setup_mysql_utils
+```
 
 # use
+
 ```shell
 USER$ mysql_utils -h
 mysql_utils top level options:
@@ -82,6 +88,7 @@ USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql
 
 ```
 
+
 ```shell
 USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql -tb servers
  #-- VM :  IAL-Central
@@ -92,3 +99,11 @@ USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql -tb servers
 ['Server_name', 'Host', 'Db', 'Username', 'Password', 'Port', 'Socket', 'Wrapper', 'Owner']
 
 ```
+
+# Json & file management
+
+create json file at path
+
+feed json file at path
+
+instance feed
