@@ -31,8 +31,8 @@ def main():
 
     if args.add:
         if args.file:
-            kar = *tuple(args.add.split(','))
-            add_element_tojson(costum_instance(**_kwarg_it(kar, tp='instance')), args.file, direction=args.path)
+            kar = tuple(args.add.split(','))
+            add_element_tojson(costum_instance(**_kwarg_it(*kar, tp='instance')), args.file, direction=args.path)
 
 
 def _kwarg_it(*args, tp='instance'):

@@ -4,6 +4,7 @@ import json
 import argparse
 import os
 
+
 default='/home/ubuntu/data'
 
 #
@@ -15,7 +16,6 @@ set_direction(direction=default)
 
 
 INSTANCES = 'instances.json'
-ARCHITECTURES = 'hierarchy.json'
 
 def main():
     parser = argparse.ArgumentParser()
@@ -39,7 +39,6 @@ def main():
         print(get_db_architecture())
 
 def get_instance_logs(instance):
-    return ('localhost', '', 'root', 'uehMLMRw')
     hostname = None
     port = None
     password = None
@@ -52,12 +51,9 @@ def get_instance_logs(instance):
     with open(INSTANCES) as f:
         gen = json.loads(f.read())
 
-    for entry in list(gen.keys()):
-        if instance == entry:
-            hostname = gen[entry]['host']
-            port = gen[entry]['port']
-            username = gen[entry]['username']
-            password = gen[entry]['password']
+    for entry in gen:
+        if instance == entry['instance']:
+            hostname, port, username, password = tuple(entry['mysqllogs'].values())
 
     if hostname is None:
         err = ("Coulnd find instance")
@@ -66,6 +62,8 @@ def get_instance_logs(instance):
     return (hostname, port, username, password)
 
 def get_all_logs(ignore=None):
+    #TODO: change
+    set_direction(default)
     instances = []
     logs = []
 
@@ -92,6 +90,7 @@ def get_all_logs(ignore=None):
     return instances, logs
 
 def get_all_architectures():
+    set_direction(default)
     tables = []
     dbs = []
 
