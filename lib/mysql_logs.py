@@ -4,7 +4,7 @@ import json
 import argparse
 import os
 
-default='/Users/IAL/Documents/GitHub/mysql_utils/lib'
+default='/home/ubuntu/data'
 
 #
 

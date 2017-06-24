@@ -4,8 +4,8 @@ from lib.mysql_logs import INSTANCES, ARCHITECTURES
 
 import os
 
-default='/Users/IAL/Documents/GitHub/mysql_utils'
-# default = '/home/ubuntu/data'
+# default='/Users/IAL/Documents/GitHub/mysql_utils'
+default = '/home/ubuntu/data'
 
 
 def set_direction(direction):
@@ -18,27 +18,25 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--new', type=str)
     parser.add_argument('-a', '--add', type=tuple)
+    parser.add_argument('-p', '--path', type=str, default='/home/ubuntu/data')
     parser.add_argument('-f', '--file', type=str)
-    parser.add_argument('-t', '--type', type=str)
     args = parser.parse_args()
 
     if args.new:
         if args.type == 'json':
-            create_json_file(args.new)
+            create_json_file(args.new, direction=args.path)
         else:
             err = ('type not implemented')
             raise Exception(err)
-        create_file(args.new, secure=True)
+        create_file(args.new, direction=args.path, secure=True)
 
     if args.add:
         if args.file:
-            if args.type == 'logs':
-                add_element_tojson(args.file, costum_instance_data(args.add))
-            if args.type == 'arc':
-                add_element_tojson(args.file, costum_db_architecture(args.add))
+            add_element_tojson(args.file, costum_instance(args.add))
 
 
-def create_file(name, direction=default secure=True):
+
+def create_file(name, direction=default, secure=True):
     set_direction(direction)
     if secure:
         try:
@@ -49,15 +47,31 @@ def create_file(name, direction=default secure=True):
             open(name, 'a').close()
     open(name, 'a').close()
 
+
 def create_json_file(name, direction=default, secure=True):
     set_direction(direction)
     name = name + '.json'
     create_file(name, secure=secure)
 
-def create_and_dump(name, direction, data):
+
+def add_element_tojson(element, _file , direction):
+    set_direction(direction)
+    try:
+        with open(_file) as f:
+            data = json.load(f)
+            data.update(element)
+        with open(_file, 'w') as f:
+            json.dump(data, f)
+    except:
+        err = 'file dosent exist'
+        raise Exception(err)
+
+
+def create_and_dump(name, direction=default, data=None):
     set_direction(direction)
     create_json_file(name)
-    write_json(name, data)
+    if data:
+        add_element_tojson(name, data)
 
 def costum_instance(name=None,
                     idd=0,
@@ -120,17 +134,6 @@ def one_costum(forr=None, **kwargs):
             res[key] = ""
     return res
 
-def add_element_tojson(element, _file , direction):
-    set_direction(direction)
-    try:
-        with open(_file) as f:
-            data = json.load(f)
-            data.update(element)
-        with open(_file, 'w') as f:
-            json.dump(data, f)
-    except:
-        err = 'file dosent exist'
-        raise Exception(err)
 
 
 if __name__ == "__main__":
