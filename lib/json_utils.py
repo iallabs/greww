@@ -15,7 +15,8 @@ set_direction(direction=default)
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--new', type=str, default='json')
+    parser.add_argument('-n', '--new', type=str)
+    parser.add_argument('-t', '--type', type=str, default='json')
     parser.add_argument('-a', '--add', type=tuple)
     parser.add_argument('-p', '--path', type=str, default='/home/ubuntu/data')
     parser.add_argument('-f', '--file', type=str)
