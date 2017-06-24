@@ -1,6 +1,7 @@
+import mysql.cursor
 from lib.utils.decorators import _firstraws
-from lib.mysql_connect import mysql_connect, THIS_INSTANCE
 from lib.mysql_logs import get_db_architecture
+from lib.mysql_logs import get_instance_logs
 
 import argparse
 
@@ -72,6 +73,19 @@ _protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
                    'i' : ' INT NOT NULL,',
                    'p' : ' PRIMARY KEY {0} '}
 
+THIS_INSTANCE = ''
+
+def mysql_connect(instance=None, local=True):
+    if local and instance is None:
+        instance = THIS_INSTANCE
+    elif instance is None:
+        err = ('No instance given')
+        raise NameError(err)
+    host, port, user, password = get_instance_logs(instance)
+    db = pymysql.connect(host=host,
+                         user=user,
+                         password=password)
+    return db
 
 def _query_create_table(name, fields):
     _funquery = ''

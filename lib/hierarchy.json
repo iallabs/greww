@@ -1,1 +1,0 @@
-{"IALCentraldb": {"ipdata": ["name", "ip", "authority"], "users": ["username", "name", "email", "password"], "slaves": ["slave", "ip", "state", "pem"], "stats": ["date", "records"], "logs": ["date, username"], "history": ["date", "username", "command"]}, "IALBackends": {"Backends": ["Backendsbash"]}}
