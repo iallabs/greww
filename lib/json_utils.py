@@ -54,36 +54,14 @@ def create_json_file(name, direction=default, secure=True):
     name = name + '.json'
     create_file(name, secure=secure)
 
-def create_and_dump(name, data):
+def create_and_dump(name, direction, data):
+    set_direction(direction)
     create_json_file(name)
     write_json(name, data)
 
-def costum_instance_data(name=None, host=None, port=None, username=None, password=None):
-    if name is None:
-        err = ("Name is None")
-        raise NameError(err)
-    data = {
-                name : {
-                            'host' : host,
-                            'port' : port,
-                            'username' : username,
-                            'password' : password
-                        }
-            }
-    return data
-
-def costum_db_architecture(name=None, tables=None):
-    if name is None:
-        err = ("Name is None")
-        raise Exception(err)
-    data = {
-                name : tables
-            }
-    return data
-
 def costum_instance(name=None,
-                    id=0,
-                    type="",
+                    idd=0,
+                    kind="",
                     host="",
                     port="",
                     user="",
@@ -94,37 +72,36 @@ def costum_instance(name=None,
                     dns="",
                     hierarchy=None
                     slaves=None):
-    if name=None:
+    if not name:
         raise Exception('Name is none')
 
     data = {
-              "instance" : "IAL-Central",
-              "id" : "0000",
-              "type" : "",
+              "instance" : name,
+              "id" : idd,
+              "type" : kind,
               "mysqllogs" : {
-                            "host" : "",
-                            "port" : "",
-                            "user" : "",
-                            "password" : ""
+                            "host" : host,
+                            "port" : port,
+                            "user" : user,
+                            "password" : password
                          },
               "sshlogs" : {
-                             "ip" : "",
-                             "private" : "",
-                             "dns" : "",
-                             "pem" : ""
+                             "ip" : ip,
+                             "private" : private,
+                             "dns" : dns,
+                             "pem" : pem
                           },
-              "hierarchy" : {
-                               "ipdata" : ["name", "ip", "authority"],
-                               "users" : ["username", "name", "email", "password"],
-                               "slaves" : ["slave", "ip", "state", "pem"],
-                               "stats" : ["date", "records"],
-                               "logs" : ["date, ""username"],
-                               "history" : ["date", "username", "command"]
-                            }
-              "slaves" : []
+              "hierarchy" : hierarchy
+              "slaves" : slaves
     }
 
+    if slaves is None:
+        del data["slaves"]
+    if hierarchy is None:
+        del data["hierarchy"]
+
     return data
+
 
 def one_costum(forr=None, **kwargs):
     if not forr:
@@ -137,10 +114,14 @@ def one_costum(forr=None, **kwargs):
         return
     res = {}
     for key in forr:
-        res[key] = kwarg[key]
+        if key in keys:
+            res[key] = kwarg[key]
+        else:
+            res[key] = ""
     return res
 
-def add_element_tojson(element, _file):
+def add_element_tojson(element, _file , direction):
+    set_direction(direction)
     try:
         with open(_file) as f:
             data = json.load(f)
@@ -148,9 +129,9 @@ def add_element_tojson(element, _file):
         with open(_file, 'w') as f:
             json.dump(data, f)
     except:
-        with open(_file, 'w') as f:
-            data = element
-            json.dump(data, f)
+        err = 'file dosent exist'
+        raise Exception(err)
+
 
 if __name__ == "__main__":
     main()
