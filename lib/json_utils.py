@@ -50,7 +50,7 @@ def create_file(name, direction=default, secure=True):
 def create_json_file(name, direction=default, secure=True):
     set_direction(direction)
     name = name + '.json'
-    create_file(name, secure=secure)
+    create_file(name, direction=direction, secure=secure)
 
 
 def add_element_tojson(element, _file , direction=default):
