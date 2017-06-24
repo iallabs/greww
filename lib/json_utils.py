@@ -3,7 +3,10 @@ import argparse
 from lib.mysql_logs import INSTANCES, ARCHITECTURES
 
 import os
+
 default='/Users/IAL/Documents/GitHub/mysql_utils'
+# default = '/home/ubuntu/data'
+
 
 def set_direction(direction):
     os.chdir(direction)
@@ -35,7 +38,8 @@ def main():
                 add_element_tojson(args.file, costum_db_architecture(args.add))
 
 
-def create_file(name, secure=True):
+def create_file(name, direction=default secure=True):
+    set_direction(direction)
     if secure:
         try:
             with open(name, 'w') as f:
@@ -45,7 +49,8 @@ def create_file(name, secure=True):
             open(name, 'a').close()
     open(name, 'a').close()
 
-def create_json_file(name, secure=True):
+def create_json_file(name, direction=default, secure=True):
+    set_direction(direction)
     name = name + '.json'
     create_file(name, secure=secure)
 
@@ -70,13 +75,56 @@ def costum_instance_data(name=None, host=None, port=None, username=None, passwor
 def costum_db_architecture(name=None, tables=None):
     if name is None:
         err = ("Name is None")
+        raise Exception(err)
     data = {
                 name : tables
             }
     return data
 
-def costum_slaver(name=None, ip=None, pem=None):
-    pass
+def costum_instance(name=None,
+                    id=0,
+                    type="",
+                    host="",
+                    port="",
+                    user="",
+                    password="",
+                    ip="",
+                    private="",
+                    pem="",
+                    dns="",
+                    hierarchy=None
+                    slaves=None):
+    if name=None:
+        raise Exception('Name is none')
+
+    data = {
+              "instance" : "IAL-Central",
+              "id" : "0000",
+              "type" : "",
+              "mysqllogs" : {
+                            "host" : "",
+                            "port" : "",
+                            "user" : "",
+                            "password" : ""
+                         },
+              "sshlogs" : {
+                             "ip" : "",
+                             "private" : "",
+                             "dns" : "",
+                             "pem" : ""
+                          },
+              "hierarchy" : {
+                               "ipdata" : ["name", "ip", "authority"],
+                               "users" : ["username", "name", "email", "password"],
+                               "slaves" : ["slave", "ip", "state", "pem"],
+                               "stats" : ["date", "records"],
+                               "logs" : ["date, ""username"],
+                               "history" : ["date", "username", "command"]
+                            }
+              "slaves" : []
+    }
+
+    return data
 
 def one_costum(forr=None, **kwargs):
     if not forr:
@@ -92,8 +140,6 @@ def one_costum(forr=None, **kwargs):
         res[key] = kwarg[key]
     return res
 
-
-
 def add_element_tojson(element, _file):
     try:
         with open(_file) as f:
@@ -106,8 +152,6 @@ def add_element_tojson(element, _file):
             data = element
             json.dump(data, f)
 
-
-
 if __name__ == "__main__":
     main()
 
@@ -115,17 +159,34 @@ if __name__ == "__main__":
 #
 # sample
 """
-{
-    'IAL-Central' : {
-                        'host' : 'localhost',
-                        'port' : '',
-                     }
-
-     'LicapyWBS' :  {
-                         'host' : 'localhost',
-                         'port' : '',
-                    }
-}
+[
+    {
+        "instance" : "IAL-Central",
+        "id" : "0000",
+        "type" : "",
+        "mysqllogs" : {
+                         "host" : "",
+                         "port" : "",
+                         "user" : "",
+                         "password" : ""
+        },
+        "sshlogs" : {
+                        "ip" : "",
+                        "private" : "",
+                        "dns" : "",
+                        "pem" : ""
+        },
+        "hierarchy" : {
+                         "ipdata" : ["name", "ip", "authority"],
+                         "users" : ["username", "name", "email", "password"],
+                         "slaves" : ["slave", "ip", "state", "pem"],
+                         "stats" : ["date", "records"],
+                         "logs" : ["date, ""username"],
+                         "history" : ["date", "username", "command"]
+        }
+        "slaves" : []
+    }
+]
 """
 
 # architecture sample
