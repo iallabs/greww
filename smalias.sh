@@ -1,5 +1,4 @@
 # logs
-
 iallog () {
     # return IAL db logs
     # parameters : instance name or id from ialinst.json
@@ -25,6 +24,8 @@ ialarc () {
 }
 
 # jsons
+
+
 
 newjson () {
     # create json file
