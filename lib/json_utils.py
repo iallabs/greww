@@ -28,10 +28,11 @@ def main():
         else:
             err = ('type not implemented')
             raise Exception(err)
-é
+
     if args.add:
         if args.file:
-            add_element_tojson(costum_instance(**_kwarg_it(*tuple(args.add.split(',')), tp='instance')), args.file, direction=args.path)
+            kar = *tuple(args.add.split(','))
+            add_element_tojson(costum_instance(**_kwarg_it(kar, tp='instance')), args.file, direction=args.path)
 
 
 def _kwarg_it(*args, tp='instance'):
@@ -79,7 +80,7 @@ def add_element_tojson(element, _file , direction=default):
     try:
         with open(_file) as f:
             data = json.load(f)
-            data.update(element)
+            data.append(element)
         with open(_file, 'w') as f:
             json.dump(data, f)
     except:
