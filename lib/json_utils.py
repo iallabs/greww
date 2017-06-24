@@ -4,7 +4,7 @@ import argparse
 import os
 
 # default='/Users/IAL/Documents/GitHub/mysql_utils'
-default = '/home/ubuntu/data'
+default = '/Users/JAJAJAJJAJAJAJ/Desktop/data'
 
 
 def set_direction(direction):
@@ -18,7 +18,7 @@ def main():
     parser.add_argument('-n', '--new', type=str)
     parser.add_argument('-t', '--type', type=str, default='json')
     parser.add_argument('-a', '--add', type=str)
-    parser.add_argument('-p', '--path', type=str, default='/home/ubuntu/data')
+    parser.add_argument('-p', '--path', type=str, default=default)
     parser.add_argument('-f', '--file', type=str)
     args = parser.parse_args()
 
@@ -57,7 +57,7 @@ def _kwarg_it(*args, tp='instance'):
 
 
 
-def create_file(name, direction=default, secure=True):
+def create_file(name, direction=default, secure=Tru, init=None):
     set_direction(direction)
     if secure:
         try:
@@ -66,13 +66,20 @@ def create_file(name, direction=default, secure=True):
                 raise Exception(err)
         except:
             open(name, 'a').close()
+            if init:
+                with open(name, 'w') as f:
+                    json.dump(init, f)
     open(name, 'a').close()
+    if init:
+        with open(name, 'w') as f:
+            json.dump(init, f)
 
 
 def create_json_file(name, direction=default, secure=True):
     set_direction(direction)
     name = name + '.json'
     create_file(name, direction=direction, secure=secure)
+
 
 
 def add_element_tojson(element, _file , direction=default):
