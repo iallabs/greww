@@ -1,6 +1,5 @@
 import json
 import argparse
-from lib.mysql_logs import INSTANCES, ARCHITECTURES
 
 import os
 
@@ -17,6 +16,7 @@ set_direction(direction=default)
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--new', type=str)
+    parser.add_argument('-n', '--new', type=str, default='json')
     parser.add_argument('-a', '--add', type=tuple)
     parser.add_argument('-p', '--path', type=str, default='/home/ubuntu/data')
     parser.add_argument('-f', '--file', type=str)
@@ -28,11 +28,10 @@ def main():
         else:
             err = ('type not implemented')
             raise Exception(err)
-        create_file(args.new, direction=args.path, secure=True)
 
     if args.add:
         if args.file:
-            add_element_tojson(args.file, costum_instance(args.add))
+            add_element_tojson(costum_instance(args.add), args.file, direction=args.path)
 
 
 
@@ -54,7 +53,7 @@ def create_json_file(name, direction=default, secure=True):
     create_file(name, secure=secure)
 
 
-def add_element_tojson(element, _file , direction):
+def add_element_tojson(element, _file , direction=default):
     set_direction(direction)
     try:
         with open(_file) as f:
@@ -84,7 +83,7 @@ def costum_instance(name=None,
                     private="",
                     pem="",
                     dns="",
-                    hierarchy=None
+                    hierarchy=None,
                     slaves=None):
     if not name:
         raise Exception('Name is none')
@@ -105,7 +104,7 @@ def costum_instance(name=None,
                              "dns" : dns,
                              "pem" : pem
                           },
-              "hierarchy" : hierarchy
+              "hierarchy" : hierarchy,
               "slaves" : slaves
     }
 
