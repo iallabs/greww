@@ -6,6 +6,8 @@ import os
 
 default='/Users/IAL/Documents/GitHub/mysql_utils/lib'
 
+#
+
 def set_direction(direction):
     os.chdir(direction)
 
