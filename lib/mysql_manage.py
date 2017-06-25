@@ -1,9 +1,10 @@
-import mysql.cursor
+import pymysql.cursors
 from lib.utils.decorators import _firstraws
-from lib.mysql_logs import get_db_architecture
-from lib.mysql_logs import get_instance_logs
+from iallogs.instancelogs import get_instance_sql
 
 import argparse
+
+THIS_INSTANCE = ''
 
 def main():
     vm=None
@@ -14,13 +15,14 @@ def main():
     tcontent=False
     content=False
     parser = argparse.ArgumentParser()
-    parser.add_argument('-vm', '--virtualmachine', type=str, default=THIS_INSTANCE)
     parser.add_argument('-i', '--info', action="store_true", default=False)
-    parser.add_argument('-X', '--expand', action="store_true", default=False)
+    parser.add_argument('-vm', '--virtualmachine', type=str, default=THIS_INSTANCE)
     parser.add_argument('-tb', '--table', type=str)
     parser.add_argument('-db', '--database', type=str)
-    parser.add_argument('-a', '--elements')
+    parser.add_argument('-X', '--expand', action="store_true", default=False)
     parser.add_argument('-f', '--find')
+    parser.add_argument('-w', '--wkwargs')
+    parser.add_argument('-c', '--count')
     args = parser.parse_args()
 
     if args.info:
@@ -67,13 +69,10 @@ _FIND_VALUES_TABLE = ""
 _INSERT_VALUE = ""
 _WHERE_STM = ""
 
-
 _protocol_noprotocol = ' VARCHAR(10) NOT NULL,'
 _protocol_taxon = {'s' : ' VARCHAR(10) NOT NULL,',
                    'i' : ' INT NOT NULL,',
                    'p' : ' PRIMARY KEY {0} '}
-
-THIS_INSTANCE = ''
 
 def mysql_connect(instance=None, local=True):
     if local and instance is None:
@@ -81,7 +80,7 @@ def mysql_connect(instance=None, local=True):
     elif instance is None:
         err = ('No instance given')
         raise NameError(err)
-    host, port, user, password = get_instance_logs(instance)
+    host, port, user, password = get_instance_sql(instance)
     db = pymysql.connect(host=host,
                          user=user,
                          password=password)
@@ -122,7 +121,6 @@ def execute_sql_query(instance=None, sql=None, rs=False):
 def instance_databases(instance=None):
     return execute_sql_query(instance=instance, sql=_SHOW_DATA_BASES, rs=True)
 
-
 @_firstraws
 def instance_tables(instance=None, db=None):
     if db:
@@ -135,34 +133,27 @@ def instance_tables(instance=None, db=None):
         databases = instance_databases(instance=instance)
         return [instance_tables(instance=instance, db=d) for d in databases]
 
-
 def instance_create_db(instance=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
-
     if db in instance_databases(instance=instance):
         err = ('db exist already')
         raise Exception(err)
-
     execute_sql_query(instance=instance,
                       sql=_CREATE_DATA_BASE.format(db),
                       rs=False)
-
 
 def instance_delete_db(instance=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
-
     if not db in instance_databases(instance=instance):
         err = ('db doesnt exist')
         raise Exception(err)
-
     execute_sql_query(instance=instance,
                       sql=_DELETE_DATA_BASE.format(db),
                       rs=False)
-
 
 def instance_exit_db(instance=None, db=None):
     if db is None:
@@ -172,24 +163,19 @@ def instance_exit_db(instance=None, db=None):
         return False
     return True
 
-
 def instance_select_db(instance=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
-
     if not instance_exit_db(instance=instance, db=db):
         err = ('Database not found')
         raise NameError(err)
-
     execute_sql_query(instance=instance, sql=ATA_BASE.format(db), rs=False)
-
 
 def database_tables(instance=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
-
     return instance_tables(instance=instance, db=db)
 
 @_firstraws
@@ -197,28 +183,23 @@ def table_fields(instance=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-
     return execute_sql_query(instance=instance,
                              sql=[_USE_DATA_BASE.format(db),
                                   _SHOW_TABLE.format(table)],
                              rs=True)
 
-
 def create_table(instance=None, db=None, table=None, fields=['id']):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-
     if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
-
     if database_exist_table(instance=instance,
                            db=db,
                            table=table):
         err = ('table exist already')
         raise NameError(err)
-
     execute_sql_query(instance=instance,
                       sql=[ATA_BASE.format(db),
                            _query_create_table(table, fields)],
@@ -228,17 +209,14 @@ def table_values(instance=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-
     if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
-
     if not database_exist_table(instance=instance,
                                db=db,
                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
-
     return execute_sql_query(instance=instance,
                              sql=[ATA_BASE.format(db),
                                   _SHOW_TABLE_VALUES.format(table)],
@@ -248,53 +226,36 @@ def delete_table(instance=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-
     if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
-
     if not database_exist_table(instance=instance,
                                db=db,
                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
-
     execute_sql_query(instance=instance,
                       sql=[ATA_BASE.format(db),
                            _DELETE_TABLE.format(table)],
                       rs=False)
 
 
-def add_field():
-    pass
-
-def del_field():
-    pass
-
-def change_field():
-    pass
-
-
 def add_value(instance=None, db=None, table=None, value=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-
     if not instance_exit_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
-
     if not database_exist_table(instance=instance,
                                db=db,
                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
-
     if value is None:
         return
     else:
         value=tuple(value)
-
     execute_sql_query(instance=instance,
                       sql=[ATA_BASE.format(db),
                            _ADD_VALUE.format(table, values)],
@@ -320,7 +281,6 @@ def assert_architecture(instance=None):
     missing_db = []
     missing_tb = []
     missing_fd = []
-
     def compare_tb(a, b):
         def compare_db(a, b):
             lb = (list.b.keys())
@@ -380,7 +340,6 @@ def rebuild_architecture(instance=None):
     cleanup_architecture(instance=instance)
     build_architecture(instance=instance)
 
-
 def instance_stats(instance=None):
     pass
 
@@ -428,8 +387,6 @@ def pretty_info(instance=None, db=None, table=None, expand=False):
             else:
                 print_pretty_databases(instance=instance)
 
-
-
 def find_in_table(instance=None,
                   db=None,
                   table=None,
@@ -437,7 +394,6 @@ def find_in_table(instance=None,
     if not (table and db):
         err = ('Targets error')
         raise NameError(err)
-
     matches = []
     keys = list(kwargs.keys())
     if not _include_list(keys,
@@ -446,7 +402,6 @@ def find_in_table(instance=None,
                                       table=table):
         err = ('kwargs matching error')
         raise Exception(err)
-
     execute_sql_query(instance=instance,
                       sql=[ATA_BASE.format(db),
                            _FIND_VALUES_TABLE.format(table,
@@ -457,13 +412,6 @@ def find_matches(instance=None, db=None, target_fields=None, targets=None):
 
 def find(instance=None, db=None, table=None, target_fields=None, targets=None):
     pass
-
-def jsonise_table(instance=None, db=None, table=None, file=None):
-    pass
-
-def josenise_database(instance=None, db=None, table=None, file=None):
-    pass
-
 
 
 if __name__ == "__main__":
