@@ -90,7 +90,7 @@ _CHANGE_COLUMN = """
     ALTER TABLE {0}
     CHANGE {1} {2} {3};"""
 _ADD_VALUE = "I" + "NSERT INTO {0} VALUES ({1});"
-_ADD_VALUE_NP = "I" + "NSERT ({0}) INTO {1} VALUES"
+_ADD_VALUE_WK = "I" + "NSERT INTO {0} ({1}) VALUES ({2});"
 _SHOW_TABLE_VALUES = "S" + "ELECT * FROM {0};"
 _FIND_VALUES_TABLE = ""
 _INSERT_VALUE = ""
@@ -301,40 +301,60 @@ def add_value(instance=None, db=None, table=None, value=None):
         raise NameError(err)
     if value is None:
         return
-    if len(value) > len(table_fields(instance=instance,
+    ltf = len(table_fields(instance=instance,
                                      db=db,
-                                     table=table)):
+                                     table=table))
+    if len(value) > ltf:
         err = ('Too much argument')
         raise Exception(err)
-    elif len(value) == len(table_fields(instance=instance,
-                                      db=db,
-                                      table=table)):
+    elif len(value) == ltf
         vi = '"' + str(value[0]) + '"'
         for v in value[1::]:
             if v is None:
                 vi += ",NULL"
             else:
                 vi += "," + '"' + str(v) + '"'
-
-        print(vi)
         execute_sql_query(instance=instance,
                           sql=[_USE_DATA_BASE.format(db), _ADD_VALUE.format(table, vi)],
                           rs=False,
                           commit=True)
         return
-    k = len(value) - len(table_fields(instance=instance,
-                                      db=db,
-                                      table=table))
+    k = len(value) - ltf
     nv = value
     k = abs(k)
     while k != 0:
-        print(k)
         nv += [None]
         k -= 1
     add_value(instance=instance,
               db=db,
               table=table,
               value=nv)
+
+def add_value_wk(instance=None, db=db, table=table, **kwargs):
+    if db is None or table is None:
+        err = ('db or table is None')
+        raise NameError(err)
+    if not instance_exist_db(instance=instance, db=db):
+        err = ('db doesnt exist')
+        raise NameError(err)
+    if not database_exist_table(instance=instance,
+                               db=db,
+                               table=table):
+        err = ('table doesnt exist')
+        raise NameError(err)
+    keys = list(kwargs.values())
+    fields = table_fields(instance=instance,
+                          db=db,
+                          table=table)
+    if len(keys) > len(fields):
+        err = ('Too much arguments')
+        raise Exception(err)
+    op1 = ""
+    op2 = ""
+    for f in fields:
+        if f in keys:
+            op1 += f + ","
+            op2 + str(kwargs[f]) + ","
 
 
 
