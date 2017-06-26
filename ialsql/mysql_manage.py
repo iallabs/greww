@@ -89,7 +89,7 @@ _DELETE_COLUMN = """
 _CHANGE_COLUMN = """
     ALTER TABLE {0}
     CHANGE {1} {2} {3};"""
-_ADD_VALUE = "I" + "NSERT INTO {0} VALUES {1};"
+_ADD_VALUE = "I" + "NSERT INTO {0} VALUES ({1});"
 _ADD_VALUE_NP = "I" + "NSERT ({0}) INTO {1} VALUES"
 _SHOW_TABLE_VALUES = "S" + "ELECT * FROM {0};"
 _FIND_VALUES_TABLE = ""
@@ -301,13 +301,43 @@ def add_value(instance=None, db=None, table=None, value=None):
         raise NameError(err)
     if value is None:
         return
-    else:
-        value=tuple(value)
-    return execute_sql_query(instance=instance,
-                             sql=[_USE_DATA_BASE.format(db),
-                             _ADD_VALUE.format(table, value)],
-                             rs=True,
-                             commit=True)
+    if len(value) > len(table_fields(instance=instance,
+                                     db=db,
+                                     table=table)):
+        err = ('Too much argument')
+        raise Exception(err)
+    elif len(value) == len(table_fields(instance=instance,
+                                      db=db,
+                                      table=table)):
+        vi = '"' + str(value[0]) + '"'
+        for v in value[1::]:
+            if v is None:
+                vi += ",NULL"
+            else:
+                vi += "," + '"' + str(v) + '"'
+
+        print(vi)
+        execute_sql_query(instance=instance,
+                          sql=[_USE_DATA_BASE.format(db), _ADD_VALUE.format(table, vi)],
+                          rs=False,
+                          commit=True)
+        return
+    k = len(value) - len(table_fields(instance=instance,
+                                      db=db,
+                                      table=table))
+    nv = value
+    k = abs(k)
+    while k != 0:
+        print(k)
+        nv += [None]
+        k -= 1
+    add_value(instance=instance,
+              db=db,
+              table=table,
+              value=nv)
+
+
+
 
 def get_architecture(instance=None):
     res = {}
