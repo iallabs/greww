@@ -152,6 +152,9 @@ def _query_create_table(name, fields):
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
 
+def _query_select_table(table, fields_to_select, **where_kwargs):
+    pass
+
 def execute_sql_query(instance=None, sql=None, rs=False, commit=False):
     if instance is None:
         connect = mysql_connect(local=True)
@@ -356,7 +359,7 @@ def add_value_wk(instance=None, db=None, table=None, **kwargs):
             op1 += f + ","
             op2 += '"' + str(kwargs[f]) + '"' + ","
     op1 += keys[-1]
-    op2 += '"' + str(kwargs[keys[-1]]) + '"' 
+    op2 += '"' + str(kwargs[keys[-1]]) + '"'
     print(op1, op2)
     print(_ADD_VALUE_WK.format(table, op1, op2))
     execute_sql_query(instance=instance,
@@ -511,14 +514,15 @@ def find_in_table(instance=None,
                            _FIND_VALUES_TABLE.format(table,
                                                      _WHERE_STM(kwargs))])
 
-def select_from_table(instance=None, db=None, table=None, code=None):
+def select_from_table(instance=None,
+                      db=None,
+                      table=None,
+                      targets='ALL',
+                      targets_fields='ALL',
+                      **kwargs):
+
     pass
 
-def find_matches(instance=None, db=None, target_fields=None, targets=None):
-    pass
-
-def find(instance=None, db=None, table=None, target_fields=None, targets=None):
-    pass
 
 
 if __name__ == "__main__":
