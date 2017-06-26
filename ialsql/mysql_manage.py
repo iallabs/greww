@@ -352,11 +352,15 @@ def add_value_wk(instance=None, db=db, table=table, **kwargs):
     op1 = ""
     op2 = ""
     for f in fields:
-        if f in keys:
+        if f in keys[:-1]:
             op1 += f + ","
             op2 + str(kwargs[f]) + ","
-
-
+    op1 += keys[-1]
+    op2 += keys[-1]
+    execute_sql_query(instance=instance,
+                      sql=[_USE_DATA_BASE.format(db), _ADD_VALUE_WK.format(table, op1, op2)],
+                      rs=False,
+                      commit=True)
 
 
 def get_architecture(instance=None):
