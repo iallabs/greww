@@ -20,9 +20,5 @@ mysql_cmdline () {
 
 }
 
-mysql_backend_cmdline () {
-
-
-}
 
 $@
