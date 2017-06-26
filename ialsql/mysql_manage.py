@@ -307,7 +307,7 @@ def add_value(instance=None, db=None, table=None, value=None):
     if len(value) > ltf:
         err = ('Too much argument')
         raise Exception(err)
-    elif len(value) == ltf
+    elif len(value) == ltf:
         vi = '"' + str(value[0]) + '"'
         for v in value[1::]:
             if v is None:
@@ -330,7 +330,7 @@ def add_value(instance=None, db=None, table=None, value=None):
               table=table,
               value=nv)
 
-def add_value_wk(instance=None, db=db, table=table, **kwargs):
+def add_value_wk(instance=None, db=None, table=None, **kwargs):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
@@ -342,7 +342,7 @@ def add_value_wk(instance=None, db=db, table=table, **kwargs):
                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
-    keys = list(kwargs.values())
+    keys = list(kwargs.keys())
     fields = table_fields(instance=instance,
                           db=db,
                           table=table)
@@ -354,9 +354,11 @@ def add_value_wk(instance=None, db=db, table=table, **kwargs):
     for f in fields:
         if f in keys[:-1]:
             op1 += f + ","
-            op2 + str(kwargs[f]) + ","
+            op2 += '"' + str(kwargs[f]) + '"' + ","
     op1 += keys[-1]
-    op2 += keys[-1]
+    op2 += '"' + str(kwargs[keys[-1]]) + '"' 
+    print(op1, op2)
+    print(_ADD_VALUE_WK.format(table, op1, op2))
     execute_sql_query(instance=instance,
                       sql=[_USE_DATA_BASE.format(db), _ADD_VALUE_WK.format(table, op1, op2)],
                       rs=False,
