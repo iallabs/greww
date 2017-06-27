@@ -6,72 +6,6 @@ import argparse
 
 THIS_INSTANCE = ''
 
-def main():
-    vm=None
-    table=None
-    tb=None
-    db=None
-    expand=None
-    tcontent=False
-    content=False
-    sl = None
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--info', action="store_true", default=False)
-    parser.add_argument('-vm', '--virtualmachine', type=str)
-    parser.add_argument('-tb', '--table', type=str)
-    parser.add_argument('-db', '--database', type=str)
-    parser.add_argument('-X', '--expand', action="store_true", default=False)
-    parser.add_argument('-S', '--smart', action="store_true", default=False)
-    parser.add_argument('-f', '--find')
-    parser.add_argument('-sl', '--selection')
-    parser.add_argument('-c', '--count')
-    parser.add_argument('-a', '--add')
-    parser.add_argument('-sio', '--serviceio', action="store_true", default=False)
-    args = parser.parse_args()
-
-    vm = args.virtualmachine
-    db = args.database
-    tb = args.table
-    sl = args.selection
-
-    if args.info:
-        if args.virtualmachine:
-            if args.database:
-                if args.table:
-                    pretty_info(instance=vm, db=db, table=table, expand=args.expand)
-                    return
-                pretty_info(instance=vm, db=db, expand=args.expand)
-                return
-            pretty_info(instance=vm, expand=args.expand)
-            return
-        return
-
-    elif args.serviceio:
-        if args.virtualmachine:
-            if args.database:
-                if args.table:
-                    if args.selection:
-                        if args.add:
-                            add_value(instance=vm, db=db, table=tb, smart=args.smart, target=sl)
-                        _us1(select_from_table(instance=vm, db=db, table=tb, target=sl))
-                        return
-                    _us1(table_fields(instance=vm, db=db, table=tb))
-                    return
-                _us1(instance_tables(instance=vm, db=db))
-                return
-            _us1(instance_databases(instance=vm))
-            return
-        print('options -vm -db -tb -sl')
-        return
-
-    if parser.find:
-        pass
-
-    if parser.add:
-        pass
-
-
 _SHOW_DATA_BASES = "SHOW DATABASES;"
 _CREATE_DATA_BASE = "CREATE DATABASE {0};"
 _DELETE_DATA_BASE = "DROP DATABASE {0};"
@@ -111,6 +45,73 @@ _protocol_taxon = {'s' : ' VARCHAR(10),',
                    'u' : ' UNIQUE KEY {0},',
                    'C' : ' DEFAULT CURRENT_TIME_STAMP ON UPDATE CURRENT_TIMESTAMP,',
                    'e' : ' ENUM({0}),'}
+
+def main():
+    vm=None
+    table=None
+    tb=None
+    db=None
+    expand=None
+    tcontent=False
+    content=False
+    sl = None
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--info', action="store_true", default=False)
+    parser.add_argument('-vm', '--virtualmachine', type=str)
+    parser.add_argument('-tb', '--table', type=str)
+    parser.add_argument('-db', '--database', type=str)
+    parser.add_argument('-X', '--expand', action="store_true", default=False)
+    parser.add_argument('-S', '--smart', action="store_true", default=False)
+    parser.add_argument('-f', '--find')
+    parser.add_argument('-sl', '--selection', type=str)
+    parser.add_argument('-c', '--count')
+    parser.add_argument('-a', '--add')
+    parser.add_argument('-sio', '--serviceio', action="store_true", default=False)
+    args = parser.parse_args()
+
+    vm = args.virtualmachine
+    db = args.database
+    tb = args.table
+    sl = args.selection
+
+    if args.info:
+        if args.virtualmachine:
+            if args.database:
+                if args.table:
+                    pretty_info(instance=vm, db=db, table=table, expand=args.expand)
+                    return
+                pretty_info(instance=vm, db=db, expand=args.expand)
+                return
+            pretty_info(instance=vm, expand=args.expand)
+            return
+        return
+
+    elif args.serviceio:
+        if args.virtualmachine:
+            if args.database:
+                if args.table:
+                    if args.selection:
+                        _us1(select_from_table(instance=vm, db=db, table=tb, wstm=sl))
+                        return
+                    _us1(table_fields(instance=vm, db=db, table=tb))
+                    return
+                _us1(instance_tables(instance=vm, db=db))
+                return
+            _us1(instance_databases(instance=vm))
+            return
+        print('options -vm -db -tb -sl')
+        return
+
+    elif parser.find:
+        pass
+
+    elif parser.add:
+        pass
+
+
+
+
 
 def _us0(*args):
     # use to output list or tuple of data as one string
