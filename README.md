@@ -1,6 +1,7 @@
 # mysql_utils
-IAL python kit for mysql and json operations
+IAL python tools for mysql
 
+fast command lines to manage mysql databases and tables
 
 # installation
 
