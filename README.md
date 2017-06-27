@@ -6,54 +6,48 @@ IAL python kit for mysql and json operations
 
 ```shell
 git clone https://github.com/ImperialAlphaLab/mysql_utils
-source /.setup.sh
-setup_mysql_utils
+bash makepkg.sh
+source mysql_utils.sh
 ```
 
-# use
+# Use examples
+### General description
 
 ```shell
+USER$ source mysql_utils.sh
 USER$ mysql_utils -h
-mysql_utils top level options:
-  - Build
-  - Backend
-  - Destroy
-  - Clone
-mysql_utils subfonctions:
-  - Info
-  -
-  -
-mysql_utils bashed_functions
-  -
-  -
-  -
-
+> Top level options
+ -i --information
+ -sio --sysio
+ -a --add
+ -f --find
+> Options
+ -vm --virtualmachine
+ -db --database
+ -tb --table
+ -sl --selection
 ```
 
-
-# examples
+###### IAL-Central databases
 
 ```shell
-USER$ python3 mysql_manage.py -i -vm IAL-Central //-X to expand
+USER$ mysql_utils -i -vm IAL-Central //-X to expand
 #-- VM :  IAL-Central
-
 #------------------ DATABASES
-
 #------------------ information_schema
 #------------------ AMINE
-#------------------ mysql
+#------------------ test1
 #------------------ performance_schema
 #------------------ sys
 ```
 
+###### IAL-Central test1 databases tables
+
 ```shell
-USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql
+USER$ mysql_utils -i -vm IAL-Central -db test1
 #-- VM :  IAL-Central
-
-#------------- :  mysql
-
+#------------- :  test1
 #---------------------------- : TABLES
-
 #---------------------------- : columns_priv
 #---------------------------- : db
 #---------------------------- : engine_cost
@@ -88,22 +82,13 @@ USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql
 
 ```
 
+###### Table fields
 
 ```shell
-USER$ python3 mysql_manage.py -i -vm IAL-Central -db mysql -tb servers
+USER$ source mysql_utils.sh -i -vm IAL-Central -db test1 -tb servers
  #-- VM :  IAL-Central
-
  #------------- :  mysql
-
  #----------------- :  servers
 ['Server_name', 'Host', 'Db', 'Username', 'Password', 'Port', 'Socket', 'Wrapper', 'Owner']
 
 ```
-
-# Json & file management
-
-create json file at path
-
-feed json file at path
-
-instance feed
