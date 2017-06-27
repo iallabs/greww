@@ -157,20 +157,6 @@ def _query_create_table(name, fields):
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
 
-def _str_query(a):
-    return '"' + a + '"'
-
-def _query_select_table(table=None, fts=None, limit=None, **kwargs):
-    if None in [table, fts, limit]:
-        err = ('None as arguments')
-        raise Exception(err)
-    arguments = list(kwargs.values())
-    if not arguments:
-        pass
-
-
-
-
 
 def execute_sql_query(instance=None, sql=None, rs=False, commit=False):
     if instance is None:
@@ -531,14 +517,36 @@ def find_in_table(instance=None,
                            _FIND_VALUES_TABLE.format(table,
                                                      _WHERE_STM(kwargs))])
 
+def _tuplify(*args):
+    res = "({0})"
+    k=""
+    for e in args[1::]:
+        k += "," + e
+    return res.format(str(args[0]) + k)
+
 def select_from_table(instance=None,
                       db=None,
                       table=None,
                       targets='ALL',
                       targets_fields='ALL',
-                      **kwargs):
+                      wstm=None):
 
-    pass
+    if None in [db, table]:
+        err = ('db or table is none')
+        raise Exception(err)
+    if targets == 'ALL' and targets_fields =='ALL' and not wstm:
+        return table_values(instance=instance,
+                            db=db,
+                            table=table)
+    op1 = "*" if targets_fields == 'ALL' else _tuplify(*targets)
+    op2 = table
+    op3 = wstm
+    return execute_sql_query(instance=instance,
+                             sql=[_USE_DATA_BASE.format(db),
+                                  _SELECT_GENERAL.format(op1,
+                                                         op2,
+                                                         op3)],
+                             rs=True)
 
 
 
