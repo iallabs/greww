@@ -89,10 +89,15 @@ _DELETE_COLUMN = """
 _CHANGE_COLUMN = """
     ALTER TABLE {0}
     CHANGE {1} {2} {3};"""
-_ADD_VALUE = "I" + "NSERT INTO {0} VALUES ({1});"
-_ADD_VALUE_WK = "I" + "NSERT INTO {0} ({1}) VALUES ({2});"
-_SHOW_TABLE_VALUES = "S" + "ELECT * FROM {0};"
-_FIND_VALUES_TABLE = ""
+_ADD_VALUE = "INSERT INTO {0} VALUES ({1});"
+_ADD_VALUE_WK = "INSERT INTO {0} ({1}) VALUES ({2});"
+_SHOW_TABLE_VALUES = "SELECT * FROM {0};"
+_SELECT_GENERAL = """
+    SELECT {0}
+    FROM {1}
+    WHERE {2};"""
+
+_SELECT_VALUES_TABLE = "SELECT ({0}) FROM {1} WHERE {2};"
 _INSERT_VALUE = ""
 _WHERE_STM = ""
 
@@ -152,8 +157,20 @@ def _query_create_table(name, fields):
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
 
-def _query_select_table(table, fields_to_select, **where_kwargs):
-    pass
+def _str_query(a):
+    return '"' + a + '"'
+
+def _query_select_table(table=None, fts=None, limit=None, **kwargs):
+    if None in [table, fts, limit]:
+        err = ('None as arguments')
+        raise Exception(err)
+    arguments = list(kwargs.values())
+    if not arguments:
+        pass
+
+
+
+
 
 def execute_sql_query(instance=None, sql=None, rs=False, commit=False):
     if instance is None:
