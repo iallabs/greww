@@ -514,7 +514,7 @@ def find_in_table(instance=None,
         err = ('kwargs matching error')
         raise Exception(err)
     execute_sql_query(instance=instance,
-                      sql=[ATA_BASE.format(db),
+                      sql=[_USE_DATA_BASE.format(db),
                            _FIND_VALUES_TABLE.format(table,
                                                      _WHERE_STM(kwargs))])
 
