@@ -2,6 +2,10 @@
 
 mysql_info () {
     kr="/home/ubuntu/IAL/mysql_utils/ialsql/manage.py"
+    # vm=$1
+    # db=$2
+    # tb=$3
+    # sl=$4
     if [ -z $1 ]; then
         if [ -z $2 ]; then
             if [ -z $3 ]; then
@@ -17,24 +21,28 @@ mysql_info () {
             python3 $kr -i -vm $1
         fi
     fi
-    python3 /home/ubuntu/IAL/mysql_utils/ialsql/manage.py -i
 }
 
 mysql_access () {
-    python3 $1
+    kr="/home/ubuntu/IAL/mysql_utils/ialsql/manage.py"
+    # vm=$1
+    # db=$2
+    # tb=$3
+    # elem=$4
+    # extra=$5
+    python3 $kr
 }
 
-mysql_data () {
-    python3 $1
+mysql_backend () {
+    if [ $1="build" ]; then
+        #
+    elif [ $1="generate" ]; then
+        #
+    fi
 }
 
-jmysql_manage () {
-    python3 $1
-}
 
-mysql_cmdline () {
 
-}
 
 
 $@
