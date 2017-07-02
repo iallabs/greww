@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+output="/home/ubunutu/data"
+
+alias mysql='/bin/'
+
 mysql_info () {
     kr="/home/ubuntu/IAL/mysql_utils/ialsql/manage.py"
     # vm=$1
