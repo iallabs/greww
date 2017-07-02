@@ -4,6 +4,7 @@
 output="/home/ubunutu/data"
 
 alias mysql='/bin/'
+# /usr/local/mysql/bin/mysql -u root -p
 
 mysql_info () {
     kr="/home/ubuntu/IAL/mysql_utils/ialsql/manage.py"
@@ -40,13 +41,11 @@ mysql_access () {
 
 mysql_backend () {
     if [ $1="build" ]; then
-        #
+
     elif [ $1="generate" ]; then
         #
     fi
 }
-
-
 
 
 
