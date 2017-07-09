@@ -8,11 +8,10 @@ def make_cpp_function():
     pass
 
 
-"""
-settings = ctypes.CDLL("/Users/ial/greww/greww/settings.so")
-a=settings.vrcaller
-a.argtypes = [ctypes.c_char_p]
-a.restype = ctypes.c_char_p
 
-print(a('amine'))
-"""
+settings = ctypes.CDLL("/Users/ial/greww/greww/settings.so")
+a=settings.ked
+a.restype=ctypes.c_char_p
+print(a)
+
+print(a())
