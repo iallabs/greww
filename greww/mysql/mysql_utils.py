@@ -1,10 +1,8 @@
 import pymysql.cursors
-from ialsql.utils.decorators import _firstraws
-from iallogs.instancelogs import get_instance_sql
+from greww.mysql.decorators import _firstraws
+from mysql.instancelogs import get_instance_sql
 
 import argparse
-
-THIS_INSTANCE = ''
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
 _CREATE_DATA_BASE = "CREATE DATABASE {0};"
@@ -62,11 +60,7 @@ def main():
     parser.add_argument('-tb', '--table', type=str)
     parser.add_argument('-db', '--database', type=str)
     parser.add_argument('-X', '--expand', action="store_true", default=False)
-    parser.add_argument('-S', '--smart', action="store_true", default=False)
-    parser.add_argument('-f', '--find')
     parser.add_argument('-sl', '--selection', type=str)
-    parser.add_argument('-c', '--count')
-    parser.add_argument('-a', '--add')
     parser.add_argument('-sio', '--serviceio', action="store_true", default=False)
     args = parser.parse_args()
 
@@ -103,13 +97,6 @@ def main():
         print('options -vm -db -tb -sl')
         return
 
-    elif parser.find:
-        pass
-
-    elif parser.add:
-        pass
-
-
 
 
 
@@ -134,7 +121,7 @@ def _decode_sn(sn):
 
 def mysql_connect(instance=None, local=True, with_auto_commit=False):
     if local and instance is None:
-        instance = THIS_INSTANCE
+        instance = NSTANCE
     elif instance is None:
         err = ('No instance given')
         raise NameError(err)

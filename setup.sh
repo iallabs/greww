@@ -1,7 +1,7 @@
 #!/bin/bash
 
 preconfig () {
-    pip3 install pymysql
+    pip install -r requirements.txt
 }
 
 setup () {
