@@ -60,6 +60,7 @@ def call_cpp_object(obj, path=None):
 settings = ctypes.CDLL("/Users/ial/greww/greww/settings.so")
 a=settings.ked
 a.restype=ctypes.c_char_p
+a.argstypes=[ctype.c_int]
 print(a)
 
 print(a())
