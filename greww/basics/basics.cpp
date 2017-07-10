@@ -50,3 +50,13 @@ string achar_to_string(char * achar){
     string k(achar);
     return k;
 }
+
+
+// Grew C++/Python Api modeliser
+
+
+
+// write files
+
+
+// write jsons
