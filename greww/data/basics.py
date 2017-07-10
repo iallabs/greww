@@ -49,21 +49,114 @@ def _rmfile(directory, name):
 
 #####
 
-def _mkfile_with_content(dir=None, name=None, ext=None, content=None):
+def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
     # make file with content
+    if directory is None or name is None:
+        #TODO: execption
+        return 0
+    if ext:
+        name += ext
+    if not _ckdir(directory);
+        #TODO: execption
+        return 0
+    if _ckfile(directory, name):
+        #TODO: execption
+        return 0
+
+    import collections.Iterable
+    _mkfile(directory, name)
+    _stdir(directory)
+
+    with open(name, 'w') as f:
+        if isinstance(theElement, collections.Iterable):
+            for i in content:
+                f.write(i)
+        else:
+            f.write(content)
+
+def _file_lenght():
     pass
 
-def _add_line_to_file(dir=None, name=None, line=None, nline=0, inv=False):
-    pass
 
-def _add_lines_to_file(dir=None, name=None, lines=None, nline=0, inv=False):
-    pass
+def _add_line_to_file(directory=None, name=None, line=None, nline=0, inv=False):
+    # example
+    # file.txt contain 4 lines and we want to add a line beetwin the 3rd and last
+    # line wich means : push line 4 to line 5 ( and all lines after ) and add content
+    # at the 4th line
+    # _add_line_to_file(line="ajajajaj", nline=4)
+    #IDEA: inv parameter (inverse) calculate lines from the end of the file
+    # (add line to last line can be done with nline=0 and inv=True)
+    if not _ckfile(directory, name):
+        #TODO: Exception
+        return
+    if inv:
+        #XXX: Not sure about this
+        nline = _file_lenght(directory, name) - nline
+    # read
+    _stdir(directory)
+    with open(name, 'r') as f:
+        content = f.readlines()
+    # insertion
+    content.insert(nline, line)
+    # recreate
+    _rmfile(directory, name)
+    _mkfile_with_content(directory=directory,
+                         name=name,
+                         content=content)
 
-def _del_line_from_file(dir=None, name=None, line=None, nline=0, inv=False):
-    pass
 
-def _del_lines_from_file(dir=None, name=None, nlines=None, inv=False):
-    pass
+def _add_lines_to_file(directory=None, name=None, lines=None, nline=0, inv=False, inv_writing=False):
+    if not _ckfile(directory, name):
+        #TODO: Exception
+        return
+    if inv:
+        #XXX: Not sure about this
+        nline = _file_lenght(directory, name) - nline
+    # read
+    _stdir(directory)
+    with open(name, 'r') as f:
+        content = f.readlines()
+    # insersion
+    for line in lines:
+        content.insert(nline, line)
+        if inv_writing:
+            nline -= 1
+        else:
+            nline += 1
+    # recreate
+    _rmfile(directory, name)
+    _mkfile_with_content(directory=directory,
+                         name=name,
+                         content=content)
 
-def _replace_lines_in_file(dir=None, name=None, nlines=None, lines=None, inv=False):
+
+def _del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
+    if not _ckfile(directory, name):
+        #TODO: Exception
+        return
+    if inv:
+        #XXX: Not sure about this
+        nline = _file_lenght(directory, name) - nline
+    # read
+    _stdir(directory)
+    with open(name, 'r') as f:
+        content = f.readlines()
+
+    #TODO: to functions module
+    def _incr_list(ln, incr):
+        return [i+incr for i in ln]
+    i = 0
+    while nlines:
+        del content[nlines[i]]
+        nlines = _incr_list(nlines, -1)
+        i += 1
+    # recreate
+    _rmfile(directory, name)
+    _mkfile_with_content(directory=directory,
+                         name=name,
+                         content=content)
+
+
+def _replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, inv=False):
+    #TODO:
     pass
