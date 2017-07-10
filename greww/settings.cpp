@@ -7,7 +7,7 @@ using namespace std;
 
 // activate settings
 
-bool mksettings(true);
+bool make_settings(true);
 
 // os settings
 
