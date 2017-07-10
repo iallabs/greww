@@ -20,7 +20,7 @@ def call_c_function(func, path=None, out_put=None, in_put=None, op=None):
     except:
         raise CppFunctionImport(func, path)
 
-    if out_put: function.restype = Types[out_put] if type(out_put) == str else out_put
+    if out_put: function.restype = [Types[i] if type(i) == str else i for i in out_put] or [output]
     if in_put: function.argstypes = Types[in_put] if type(in_put) == str else in_put
 
     return function
