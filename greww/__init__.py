@@ -1,10 +1,10 @@
 from .utils.cboost import call_cpp_function
-
+"""
 GetSettings = call_cpp_function(GetSettings,
                                 path="settings.so",
                                 int_put="str",
                                 out_put="str")
-
+"""
 
 # General settings
 """
