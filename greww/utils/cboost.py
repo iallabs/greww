@@ -3,7 +3,7 @@ from .exceptions import CppImportException
 
 Types= {'int' : ctypes.c_int,
          'char' : ctypes.c_char,
-         'string' : ctype.c_char_p}
+         'string' : ctypes.c_char_p}
 
 
 # C
