@@ -1,5 +1,6 @@
+print('kaka')
 import pymysql.cursors
-from greww.mysql.decorators import _firstraws
+#from greww.mysql.decorators import _firstraws
 #from mysql.instancelogs import get_instance_sql
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
