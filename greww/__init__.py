@@ -7,7 +7,7 @@ GetSettings = call_cpp_function(GetSettings,
 
 
 # General settings
-
+"""
 GENERAL_SETTINGS = {
     WORKING_DIRECTORY = 1,
     OUTPUT_DIRECTORY = 1,
@@ -24,3 +24,4 @@ MYSQL_SETTINGS = {
 }
 
 SERVER_SETTINGS = {}
+"""
