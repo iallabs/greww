@@ -2,6 +2,12 @@ import os
 
 ####### directorys #######
 
+#TODO: import settings
+
+DDEFAULT = ""
+
+
+
 def _stdir(directory):
     # set os directory
     os.chdir(directory)
@@ -65,8 +71,11 @@ def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
 
     import collections.Iterable
     _mkfile(directory, name)
-    _stdir(directory)
 
+    if not content:
+        return
+
+    _stdir(directory)
     with open(name, 'w') as f:
         if isinstance(theElement, collections.Iterable):
             for i in content:
@@ -74,8 +83,15 @@ def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
         else:
             f.write(content)
 
-def _file_lenght():
-    pass
+def _file_lenght(directory=None, name=None):
+    if directory is None or name is None:
+        #TODO: execption
+        return 0
+    if _ckfile(directory, name):
+        #TODO: execption
+        return 0
+    with open(name, 'w') as f:
+        return len(f.readlines())
 
 
 def _add_line_to_file(directory=None, name=None, line=None, nline=0, inv=False):

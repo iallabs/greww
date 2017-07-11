@@ -1,13 +1,13 @@
 from .utils.cboost import call_cpp_function
-
+"""
 GetSettings = call_cpp_function(GetSettings,
                                 path="settings.so",
                                 int_put="str",
                                 out_put="str")
-
+"""
 
 # General settings
-
+"""
 GENERAL_SETTINGS = {
     WORKING_DIRECTORY = 1,
     OUTPUT_DIRECTORY = 1,
@@ -24,3 +24,4 @@ MYSQL_SETTINGS = {
 }
 
 SERVER_SETTINGS = {}
+"""

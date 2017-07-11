@@ -1,6 +1,6 @@
 import unittest
 
-all_modules = []
+all_modules = ['greww.greww.data.tests.json_tests.py']
 
 def run_with_report(fn, utest=False):
     @timeit

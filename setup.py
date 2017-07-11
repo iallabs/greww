@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='mysql_utils',
+    name='Greww',
     version='0.0.1',
     description='msqlutls',
     author='Imp Alpha lab',
