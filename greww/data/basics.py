@@ -55,6 +55,12 @@ def _rmfile(directory, name):
 
 #####
 
+
+def _mkfile(directory=None, name=None, ext=None):
+    pass
+
+
+
 def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
     # make file with content
     if directory is None or name is None:
