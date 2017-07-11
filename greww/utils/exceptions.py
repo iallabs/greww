@@ -1,0 +1,4 @@
+
+
+class CppImportException(Exception):
+    pass

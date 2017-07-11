@@ -1,5 +1,5 @@
 import ctypes
-from greww.greww.utils.exception import CppImportException
+from greww.greww.utils.exceptions import CppImportException
 
 Types= {'int' : ctypes.c_int,
          'char' : ctypes.c_char,
