@@ -53,6 +53,9 @@ tobincppfile2:
 	done
 
 binarize:
+		echo "hello"
+		ls -la
+		sudo chmod 777 binarize.sh
 		$(shell ./binarize.sh .)
 
 runtests:
