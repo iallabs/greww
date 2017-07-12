@@ -34,8 +34,22 @@ _use_env:
 	# use virtual env
 	source _virtualenv/bin/activate
 
-binarizecppfile:
-	@
+
+tobincppfile:
+	for f in greww/cgreww/*.$CPP_EXT; do
+		  filename=$(basename $f)
+			nameonly="${filename%.*}"
+			binfile=$nameonly$CPP_BIN
+			$(CXX) -shared -o $binfile $filename
+	done
+
+tobincppfile2:
+	for f in greww/cgreww/lib/*.$CPP_EXT; do
+		filename=$(basename $f)
+		nameonly="${filename%.*}"
+		binfile=$nameonly$CPP_BIN
+		$(CXX) -shared -o $binfile $filename
+	done
 
 runtests:
 	@
@@ -47,5 +61,6 @@ clean:
 	rm -f MANIFEST
 	rm -rf build dist
 
+all : tobincppfile tobincppfile2
 
 .PHONY: clean
