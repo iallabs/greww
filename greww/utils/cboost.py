@@ -39,7 +39,7 @@ def call_cpp_function(func, path=None, out_put=None, in_put=None, op=None):
     try:
         function = module.func
     except:
-        raise CppFunctionImport(func, path)
+        raise Exception()
 
     if out_put: function.restype = [Types[i] if type(i) == str else i for i in out_put] or [output]
     if in_put: function.argstypes = Types[in_put] if type(in_put) == str else in_put
