@@ -6,13 +6,13 @@ def jsonize_kwargs(*args, **kwargs):
     keys = list(kwargs.keys())
 
     data = {
-        "args" = A,
+        "args" : A,
     }
     for k in keys:
         data[k] == kwargs[k]
     return data
 
-def update_json_object(*args, **kwargs, _obj=None):
+def update_json_object(*args, obj=None, **kwargs):
     if _obj is None:
         raise #TODO
     obj = _obj
