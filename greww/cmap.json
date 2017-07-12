@@ -1,1 +1,21 @@
-[]
+{
+    "version" : "0.0.0",
+    "cmap" : "",
+    "UID" : "",
+    "lib_path" : "",
+    "test_path" : "",
+    "lib_distribution" : {
+        "basics" : [
+            "GetFunctions",
+            "mkfile",
+            "mkfile_with_content",
+            "file_lenght"
+        ],
+        "iocp" : []
+    },
+    "test_distribution" : {
+        "rien" : "rien"
+    },
+    "_export" : "",
+    "makefile" : "",
+}

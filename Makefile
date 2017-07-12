@@ -93,7 +93,7 @@ mkcpp:
 
 
 
-all: prebuild configuration setup mkcpp
+all: prebuild configuration setup
 
 
 .PHONY: clean
