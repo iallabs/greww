@@ -39,8 +39,8 @@ setup(
     author='Imp Alpha lab',
     author_email='hilalyamine@gmail.com',
     cmdclass={
-        'test' : test_pgreww,
-    }
+        'test' : greww_test_p
+    },
     url='',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
