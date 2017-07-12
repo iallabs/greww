@@ -7,6 +7,7 @@
 
 #ifndef IOCP_H
 #define IOCP_H
+#endif
 
 // To make sure you don't declare the function more than once by including the header
 // multiple times.

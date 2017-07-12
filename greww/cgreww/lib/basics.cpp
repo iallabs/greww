@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-#include <basics.h>
+#include "basics.h"
 
 
 // file management
@@ -12,8 +12,7 @@ using namespace std;
 
 
 const char* GetFunctions(string function){
-
-
+    return "Notimplemented";
 }
 
 
@@ -21,11 +20,10 @@ void mkfile(string directory, string name, string ext){
 
 }
 
-void mkfile_with_content(string directory, string name, ){
+void mkfile_with_content(string directory, string name){
 
 }
 
 int file_lenght(){
-
-
+    return 0;
 }

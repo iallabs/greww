@@ -1,4 +1,4 @@
-# CGrew Makefile
+# CGreww Makefile
 
 
 # Shell
@@ -18,9 +18,9 @@ GREWW_PATH := .
 # OS machine
 OS_TYPE = 'uname -a'
 # CPP EXTENSIONS
-CPP_EXT = ".cpp"
+CPP_EXT = cpp
 # CPP Binaries
-CPP_BIN = ".so"
+CPP_BIN = so
 
 # VENV
 
@@ -36,11 +36,12 @@ _use_env:
 
 
 tobincppfile:
-	for f in greww/cgreww/*.$CPP_EXT; do
+	for f in greww/cgreww/*.$(CPP_EXT); do
 		  filename=$(basename $f)
 			nameonly="${filename%.*}"
-			binfile=$nameonly$CPP_BIN
-			$(CXX) -shared -o $binfile $filename
+			binfile=$(nameonly)$(CPP_BIN)
+			$(CXX) -shared -o $(binfile) $(filename)
+			echo "passed $f"
 	done
 
 tobincppfile2:
@@ -50,6 +51,9 @@ tobincppfile2:
 		binfile=$nameonly$CPP_BIN
 		$(CXX) -shared -o $binfile $filename
 	done
+
+binarize:
+		bash binarize.sh .
 
 runtests:
 	@
@@ -61,6 +65,6 @@ clean:
 	rm -f MANIFEST
 	rm -rf build dist
 
-all : tobincppfile tobincppfile2
+all : binarize
 
 .PHONY: clean

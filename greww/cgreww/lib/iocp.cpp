@@ -15,7 +15,7 @@ string ConvertToUpper(string str){
             str[i] = toupper(str[i]);
         }
     }
-return str;
+    return str;
 }
 
 // string to array of char
@@ -38,7 +38,7 @@ Before we move on calling functions with other parameter types, we have to learn
 
 // see https://docs.python.org/2/library/ctypes.html#fundamental-data-types
 
-const char * string_to_achar(string str){
+char * string_to_achar(string str){
     char res[str.size() + 1];
     strcpy(res, str.c_str());
     return res;
