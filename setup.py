@@ -21,7 +21,7 @@ class greww_test_p(Command):
 
     def run(self):
         from greww.utils.runtests import run_all_tests
-        runtests.run_all_tests()
+        run_all_tests()
 
 
 with open('README.md') as f:
