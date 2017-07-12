@@ -55,8 +55,7 @@ tobincppfile2:
 binarize:
 		echo "hello"
 		$(shell ls -la)
-		sudo chmod 777 binarize.sh
-		$(shell greww/cgreww/binarize.sh .)
+		$(shell bash /home/ubuntu/greww/cgreww/binarize.sh .)
 
 runtests:
 	@
