@@ -56,7 +56,7 @@ binarize:
 		echo "hello"
 		$(shell ls -la)
 		sudo chmod 777 binarize.sh
-		$(shell ./binarize.sh .)
+		$(shell greww/cgreww/binarize.sh .)
 
 runtests:
 	@
