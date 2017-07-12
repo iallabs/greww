@@ -12,7 +12,7 @@ AUTHORS = ""
 # Compiler
 CXX ?= g++
 # CPP files
-CGREW_PATH = ""
+CGREW = "greww/cgreww"
 # Path to source directory
 GREWW_PATH := .
 # OS machine
@@ -41,20 +41,8 @@ CPP_BIN = ".so"
 
 # SHARED COMPILE CPP
 
-tobincppfile:
-	for f in greww/cgreww/*.$CPP_EXT; do
-		filename=$(basename $f)
-		nameonly="${filename%.*}"
-		binfile=$nameonly$CPP_BIN
-		$(CXX) -shared -o $binfile $filename
-	done
-
 cleanbincpp:
 	rm -rf greww/cgreww/*.so
-
-
-
-
 
 ##### PYTHON
 
@@ -62,6 +50,9 @@ prebuild:
 	@echo "Preparing Greww build"
 	@echo "Installing requirements"
 	pip install -r requirements.txt
+
+cbuild:
+	make -f $(CGREW) Makefile all
 
 configuration:
 	echo "Configuring machine"
@@ -97,9 +88,12 @@ clean:
 #endif
 #	make clean
 
+mkcpp:
+	make -f greww/cgreww/Makefile all
+
 
 
 all: prebuild configuration setup
-	
+
 
 .PHONY: clean

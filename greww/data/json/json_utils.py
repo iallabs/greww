@@ -12,7 +12,7 @@ DDEFAULT = ""
 
 
 def create_json_file(directory=DDEFAULT, name=None, kind=None):
-    ct = '[]' if kind == list or '{}'
+    ct = '[]' if kind == list else "{}"
     _mkfile_with_content(directory=directory,
                          name=name,
                          ext='json',

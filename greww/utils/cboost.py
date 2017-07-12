@@ -52,10 +52,6 @@ def call_cpp_object(obj, path=None):
 
 
 
-def call_all_cpp_functions(path):
-    pass
-
-
 # call_cpp_function(ked, path="/Users/ial/greww/greww/settings.so", out_put=ctypes.c_char_p)
 """
 settings = ctypes.CDLL("/Users/ial/greww/greww/settings.so")

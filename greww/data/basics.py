@@ -7,7 +7,6 @@ import os
 DDEFAULT = ""
 
 
-
 def _stdir(directory):
     # set os directory
     os.chdir(directory)
@@ -68,7 +67,7 @@ def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
         return 0
     if ext:
         name += ext
-    if not _ckdir(directory);
+    if not _ckdir(directory):
         #TODO: execption
         return 0
     if _ckfile(directory, name):

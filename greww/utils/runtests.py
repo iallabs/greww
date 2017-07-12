@@ -1,6 +1,8 @@
 import unittest
+from greww.utils.runtime import timeit
 
-all_modules = ['greww.greww.data.tests.json_tests.py']
+all_modules = ['greww.data.tests.json_tests']
+
 
 def run_with_report(fn, utest=False):
     @timeit
@@ -24,8 +26,8 @@ def run_modules(test_module):
     for t in test_module:
         try:
             # If the module defines a suite() function, call it to get the suite.
-            mod = __import__(t, globals(), locals(), ['functions'])
-            suitefn = getattr(mod, 'functions')
+            mod = __import__(t, globals(), locals(), ['ftests'])
+            suitefn = getattr(mod, 'ftests')
             functions = [getattr(mod, i) for i in suitefn]
             print(functions)
             run_functions(*functions)
@@ -40,21 +42,14 @@ def run_modules(test_module):
 def run_all_modules():
     run_modules(all_modules)
 
-
+"""
 #@rtdecorator
 def run_functionszz(*funcs):
     f = list(funcs)
     for i in f:
         i()
     print('end')
-
-def run_test(path, func, timeit=False):
-    # path format : pfbiology.core.tests.file_test-func
-    b = path.split('.')
-    eval('import ' + path)
-    eval(b[-1] + '.func()')
-    print('test_successfull')
-
+"""
 
 def run_all_tests():
     run_modules(all_modules)
