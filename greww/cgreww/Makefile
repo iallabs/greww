@@ -53,7 +53,7 @@ tobincppfile2:
 	done
 
 binarize:
-		bash binarize.sh .
+		bash ./binarize.sh .
 
 runtests:
 	@
