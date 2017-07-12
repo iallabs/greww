@@ -4,25 +4,30 @@ import os
 
 #TODO: import settings
 
-DDEFAULT = ""
+DEFAULT = "/Users"
+#/home/ubuntu/greww
 
 
-def _stdir(directory):
+def lsdir(directory):
+    return os.listdir(directory)
+
+
+def stdir(directory):
     # set os directory
     os.chdir(directory)
 
-def _ckdir(directory):
+def ckdir(directory):
     # check directory
     return os.path.exists(directory)
 
-def _mkdir(directory):
+def mkdir(directory):
     # make directory
     if _ckdir(directory):
         #TODO: maybe an Exception here
         return 0
     os.makedirs(directory)
 
-def _rmdir(directory, all=False):
+def rmdir(directory, all=False):
     # remove directory
     if rec:
         import shutil
@@ -33,11 +38,11 @@ def _rmdir(directory, all=False):
 
 ######### files ##########
 
-def _ckfile(directory, name):
+def ckfile(directory, name):
     # check file
     return _ckdir(directory + name)
 
-def _mkfile(directory, name, ext=None):
+def mkfile(directory, name, ext=None):
     # make file
     if _ckfile(directory, name):
         #TODO: maybe an Exception here
@@ -45,7 +50,7 @@ def _mkfile(directory, name, ext=None):
     _file = open(directory + name, 'w').close()
 
 
-def _rmfile(directory, name):
+def rmfile(directory, name):
     # remove file
     if not _ckfile(directory, name):
         #TODO: Exception
@@ -55,12 +60,11 @@ def _rmfile(directory, name):
 #####
 
 
-def _mkfile(directory=None, name=None, ext=None):
+def mkfile(directory=None, name=None, ext=None):
     pass
 
 
-
-def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
+def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     # make file with content
     if directory is None or name is None:
         #TODO: execption
@@ -88,7 +92,7 @@ def _mkfile_with_content(directory=None, name=None, ext=None, content=None):
         else:
             f.write(content)
 
-def _file_lenght(directory=None, name=None):
+def file_lenght(directory=None, name=None):
     if directory is None or name is None:
         #TODO: execption
         return 0
@@ -99,7 +103,7 @@ def _file_lenght(directory=None, name=None):
         return len(f.readlines())
 
 
-def _add_line_to_file(directory=None, name=None, line=None, nline=0, inv=False):
+def add_line_to_file(directory=None, name=None, line=None, nline=0, inv=False):
     # example
     # file.txt contain 4 lines and we want to add a line beetwin the 3rd and last
     # line wich means : push line 4 to line 5 ( and all lines after ) and add content
@@ -126,7 +130,7 @@ def _add_line_to_file(directory=None, name=None, line=None, nline=0, inv=False):
                          content=content)
 
 
-def _add_lines_to_file(directory=None, name=None, lines=None, nline=0, inv=False, inv_writing=False):
+def add_lines_to_file(directory=None, name=None, lines=None, nline=0, inv=False, inv_writing=False):
     if not _ckfile(directory, name):
         #TODO: Exception
         return
@@ -151,7 +155,7 @@ def _add_lines_to_file(directory=None, name=None, lines=None, nline=0, inv=False
                          content=content)
 
 
-def _del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
+def del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
     if not _ckfile(directory, name):
         #TODO: Exception
         return
@@ -178,6 +182,6 @@ def _del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
                          content=content)
 
 
-def _replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, inv=False):
+def replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, inv=False):
     #TODO:
     pass
