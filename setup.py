@@ -39,7 +39,7 @@ setup(
     author='Imp Alpha lab',
     author_email='hilalyamine@gmail.com',
     cmdclass={
-        'test' : test_pgreww
+        'test' : test_pgreww,
     }
     url='',
     license=license,
