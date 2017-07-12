@@ -52,7 +52,7 @@ prebuild:
 	pip install -r requirements.txt
 
 cbuild:
-	make -f $(CGREW) Makefile
+	make -f $(CGREW) Makefile all
 
 configuration:
 	echo "Configuring machine"
@@ -88,9 +88,12 @@ clean:
 #endif
 #	make clean
 
+mkcpp:
+	make -f greww/cgreww/Makefile all
 
 
-all: prebuild configuration setup
+
+all: prebuild configuration setup mkcpp
 
 
 .PHONY: clean
