@@ -13,12 +13,12 @@ import greww.service as SERVICE
 from .exceptions import DefaultImportError
 
 default = {
-    "greww" = GREWW,
-    "utils" = UTILS,
-    "json" = JSON,
-    "mysql" = MYSQL,
-    "data" = DATA,
-    "service" = SERVICE,
+    "greww" : GREWW,
+    "utils" : UTILS,
+    "json" : JSON,
+    "mysql" : MYSQL,
+    "data" : DATA,
+    "service" : SERVICE,
 }
 
 def import_default_value(module, name=None, names=None):
