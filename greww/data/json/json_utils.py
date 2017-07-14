@@ -2,16 +2,6 @@ import json
 from greww.data.basics import (mkfile_with_content,
                                stdir)
 
-import greww.data
-
-def _ignore_c_settings():
-    greww.data.C = False
-
-def _make_c_settings():
-    greww.data.C = True
-
-def c_settings():
-    return greww.data.C
 
 #:TODO Rofl
 
