@@ -1,7 +1,22 @@
 #
 
-class CppImportException(Exception):
+###################################
+# Utils Exceptions
+
+#TODO: make exception hierarchy
+
+
+class CppModuleImport(Exception):
+    def __init__(self, path):
+        self.message = "Can't find path : {0}".format(path)
     pass
 
-class CppFunctionImportException(Exception):
+class CppFunctionImport(Exception):
+    def __init__(self, func):
+        self.message = "Can't find function : {0}".format(function)
+    pass
+
+class DefaultImportError(Exceptions):
+    def __init__(self, value):
+        self.message = "Can't import Default Value {0}".format(value)
     pass
