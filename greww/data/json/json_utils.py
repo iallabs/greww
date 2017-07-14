@@ -7,8 +7,8 @@ from greww.data.basics import (_mkfile_with_content,
 
 #TODO: import settings
 
+C_LIKE_SO = "greww/greww/cgreww/cjson.so"
 
-DDEFAULT = ""
 
 
 def create_json_file(directory=DDEFAULT, name=None, kind=None):

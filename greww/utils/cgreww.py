@@ -1,6 +1,7 @@
 from .cboost import call_cpp_function
 import greww.utils
 
+
 def get_cgrew_function(func):
     pass
 
@@ -10,6 +11,9 @@ def UseCGreww(func, C=False):
         pass
     pass
     return
+
+def ForceCGreww(func):
+    pass
 
 def DenyCGreww(func):
     pass

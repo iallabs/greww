@@ -21,7 +21,6 @@ default = {
     "service" = SERVICE,
 }
 
-
 def import_default_value(module, name=None, names=None):
     if name is None and names is None:
         raise DefaultImportError()
