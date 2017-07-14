@@ -1,7 +1,17 @@
 import json
-from greww.data.basics import (_mkfile_with_content,
-                               _stdir)
+from greww.data.basics import (mkfile_with_content,
+                               stdir)
 
+import greww.data
+
+def _ignore_c_settings():
+    greww.data.C = False
+
+def _make_c_settings():
+    greww.data.C = True
+
+def c_settings():
+    return greww.data.C
 
 #:TODO Rofl
 
@@ -9,7 +19,7 @@ from greww.data.basics import (_mkfile_with_content,
 
 C_LIKE_SO = "greww/greww/cgreww/cjson.so"
 
-
+DDEFAULT = ""
 
 def create_json_file(directory=DDEFAULT, name=None, kind=None):
     ct = '[]' if kind == list else "{}"
@@ -80,6 +90,7 @@ def del_json_object(directory=DDEFAULT, name=None, **kwargs):
             data = json.load(f)
     except:
         #TODO:
+        return
     i = 0
     res = []
     for obj in data:
@@ -97,7 +108,7 @@ def del_json_object(directory=DDEFAULT, name=None, **kwargs):
             json.dump(res, f)
     except:
         #TODO:
-
+        return
 
 def pythonize_json_file(directory=DDEFAULT, name=None):
     if directory is none or name is None:
@@ -109,3 +120,4 @@ def pythonize_json_file(directory=DDEFAULT, name=None):
             return data
     except:
         #TODO:
+        return
