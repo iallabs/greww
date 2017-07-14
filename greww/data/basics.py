@@ -12,7 +12,6 @@ def lsdir(directory):
     return os.listdir(directory)
 
 def stdir(directory):
-
     # set os directory
     os.chdir(directory)
 
@@ -185,3 +184,6 @@ def del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
 def replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, inv=False):
     #TODO:
     pass
+
+def this_file_name():
+    print(__name__)
