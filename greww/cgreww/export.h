@@ -14,6 +14,10 @@ using namespace std;
 
 
 
+//void wrap_function();
+
+// wierd that extern dosent accept wrting functions at .h
+
 const char* get_function_module(string function);
 
 const char* get_object_module(string object);

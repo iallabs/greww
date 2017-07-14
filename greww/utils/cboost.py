@@ -6,28 +6,8 @@ Types= {'int' : ctypes.c_int,
          'string' : ctypes.c_char_p}
 
 
-# C
-
-"""
-def call_c_function(func, path=None, out_put=None, in_put=None, op=None):
-    if path is None:
-        pass
-    try:
-        module = ctypes.CDLL(path)
-    except:
-        raise CppImportException(path)
-    try:
-        function = module.func
-    except:
-        raise CppFunctionImport(func, path)
-
-    if out_put: function.restype = [Types[i] if type(i) == str else i for i in out_put] or [output]
-    if in_put: function.argstypes = Types[in_put] if type(in_put) == str else in_put
-
-    return function
-"""
-
 # C++
+
 
 def call_cpp_function(func, path=None, out_put=None, in_put=None, op=None):
     if path is None:
@@ -37,19 +17,23 @@ def call_cpp_function(func, path=None, out_put=None, in_put=None, op=None):
     except:
         raise CppImportException(path)
     try:
-        function = module.func
+        function = getattr(module, func)
     except:
         raise Exception()
 
-    if out_put: function.restype = [Types[i] if type(i) == str else i for i in out_put] or [output]
-    if in_put: function.argstypes = Types[in_put] if type(in_put) == str else in_put
+    if in_put:
+        function.argstypes = [Types[i] if type(i) == str else i for i in in_put]
+    if out_put:
+        if type(out_put) == str:
+            function.restype = Types[in_put]
+
 
     return function
 
 
+#TODO: CPP Object
 def call_cpp_object(obj, path=None):
     pass
-
 
 
 # call_cpp_function(ked, path="/Users/ial/greww/greww/settings.so", out_put=ctypes.c_char_p)

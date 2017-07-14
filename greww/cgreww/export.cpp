@@ -4,20 +4,19 @@
 #include <string>
 
 #include "export.h"
-#include "iocp.h"
-void wrap_function(){
-    //string a = string(func);
-    //char * b;
-    //strcpy(b, string_to_achar(a));
-    //return b;
-    nothing();
-}
+//#include "iocp.h"
 
 
 using namespace std;
 
 extern "C" {
-
+    void wrap_function(){
+        //string a = string(func);
+        //char * b;
+        //strcpy(b, string_to_achar(a));
+        //return b;
+        cout << "rien";
+    }
 
     /*
     char* get_function_module(string function){
