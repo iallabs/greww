@@ -7,7 +7,6 @@
 
 #ifndef IOCP_H
 #define IOCP_H
-#endif
 
 // To make sure you don't declare the function more than once by including the header
 // multiple times.
@@ -15,8 +14,10 @@
 
 using namespace std;
 
-// conversion
+void nothing();
 
+// conversion
+/*
 string ConvertToUpper(string str);
 
 const char * string_to_achar(string str);
@@ -37,5 +38,7 @@ int * decode_int_array(string str);
 // write result in files
 
 
-
+#endif
 // write result as json
+*/
+#endif

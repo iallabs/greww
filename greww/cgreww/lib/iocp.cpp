@@ -3,11 +3,14 @@
 #include <fstream>
 #include <string>
 
+#include "iocp.h"
+
 using namespace std;
 
-// Conversion
 
-string ConvertToUpper(string str){
+// Conversion
+/*
+void ConvertToUpper(string str){
     //Loop through the size of the string
     for(int i=0;i< str.length();i++) {
         //If the character is not a space
@@ -15,9 +18,8 @@ string ConvertToUpper(string str){
             str[i] = toupper(str[i]);
         }
     }
-    return str;
 }
-
+*/
 // string to array of char
 //XXX: For the moment python ctypes library doesnt support string types
 // every function (if returning a string ) in cpp should be convert it result to char * type
@@ -32,25 +34,29 @@ that contains their data (char * or wchar_t *). Python integers and Python longs
 passed as the platforms default C int type, their value is masked to fit into the C type.
 
 Before we move on calling functions with other parameter types, we have to learn more about
- ctypes data types.
+  ctypes data types.
 */
 
 
 // see https://docs.python.org/2/library/ctypes.html#fundamental-data-types
 
 char * string_to_achar(string str){
-    char res[str.size() + 1];
+    char * res = new char[str.size() + 1];
     strcpy(res, str.c_str());
     return res;
 }
 
 // array of char to string
 
+void nothing() {
+    cout << "hello";
+}
+/*
 string achar_to_string(char * achar){
     string k(achar);
     return k;
 }
-
+*/
 
 // Grew C++/Python Api modeliser
 
