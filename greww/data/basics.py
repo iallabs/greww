@@ -12,7 +12,6 @@ def lsdir(directory):
     return os.listdir(directory)
 
 def stdir(directory):
-
     # set os directory
     os.chdir(directory)
 
