@@ -16,7 +16,13 @@ class CppFunctionImport(Exception):
         self.message = "Can't find function : {0}".format(function)
     pass
 
-class DefaultImportError(Exceptions):
+class DefaultImportError(Exception):
     def __init__(self, value):
         self.message = "Can't import Default Value {0}".format(value)
+    pass
+
+class DecaprecatedFunction(Exception):
+    pass
+
+class MissingSettings(Exception):
     pass

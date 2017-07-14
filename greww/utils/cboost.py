@@ -12,15 +12,13 @@ Exemple : POINTER(c_int) : int*
 """
 
 Types= {'int' : ctypes.c_int,
-         'char' : ctypes.c_char,
-         'string' : ctypes.c_char_p}
+        'char' : ctypes.c_char,
+        'string' : ctypes.c_char_p}
 
 
 # C++
 
-import greww.utils as Q
 
-t = Q.a
 
 
 def call_cpp_function(func, path=None, out_put=None, in_put=None, args=None, kwargs=None):

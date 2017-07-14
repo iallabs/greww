@@ -10,13 +10,13 @@
 using namespace std;
 
 extern "C" {
-    void wrap_function(){
+    char * PyWrapper(char * function);
         //string a = string(func);
         //char * b;
         //strcpy(b, string_to_achar(a));
         //return b;
-        cout << "rien";
-    }
+        //cout << "rien";
+
 
     /*
     char* get_function_module(string function){
@@ -31,4 +31,23 @@ extern "C" {
        return "NotImplemented";
     }
     */
+}
+
+char * PyWrapper(char * function){
+    //char * array = new char * [10];
+    //array[0] = function;
+    //array[1] = target;
+    char * res;
+    if (strcmp(function, "Export") == 0){
+        strcpy(res, "ed");
+        return res;
+    }
+    else {
+        strcpy(res, "ka");
+        return res;
+    }
+}
+
+void Export(){
+
 }
