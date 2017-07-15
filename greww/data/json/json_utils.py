@@ -12,9 +12,9 @@ C_LIKE_SO = "greww/greww/cgreww/cjson.so"
 
 _settings = SETTINGS(__name__, "ALL")
 
-_cgreww_settings = SETTINGS(__name__, "RunDecorator")
+_cgreww_settings = SETTINGS(__name__, "ENVIRENEMENT")
 
-DDEFAULT = _settings["working_directory"]
+DDEFAULT = _settings["WORKING_DIRECTORY"]
 
 @Greww(**_cgreww_settings)
 def create_json_file(directory=DDEFAULT, name=None, kind=None):
