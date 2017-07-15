@@ -1,6 +1,5 @@
 # Json test file
 from greww.data.json.json_utils import create_json_file
-from greww.data.json.json_object import *
 from greww.data.basics import lsdir
 from greww.settings import (SETTINGS,
                             activate_cgreww,

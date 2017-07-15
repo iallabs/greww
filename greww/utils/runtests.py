@@ -54,4 +54,4 @@ def run_functionszz(*funcs):
 """
 
 def run_all_tests():
-    run_modules(all_modules)
+    run_pytests_modules(all_modules)
