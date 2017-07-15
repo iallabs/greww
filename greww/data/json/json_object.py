@@ -1,26 +1,30 @@
 from greww.data.basics import (mkfile_with_content,
-			       stdir)
+			       stdir,
+                               file_content)
 from greww.settings import SETTINGS
 from greww.utils.cgreww import Greww
 import json
 
-_settings = SETTINGS(__name__, "ALL")
+f = __file__.split(
 
-cgreww_settings = _settings("EVIRENEMENT")
+_settings = SETTINGS("json_object", "ALL")
+
+cgreww_settings = _settings("ENVIRENEMENT")
 
 DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
 
 
-
 def jsonize_kwargs(*args, **kwargs):
-    A = list(args)
+    #A = list(args)
     keys = list(kwargs.keys())
-
-    data = {
-        "args" : A,
-    }
-    for k in keys:
-        data[k] == kwargs[k]
+    if not args:
+        data = kwargs
+    else:
+        data = {
+             "args" : A,
+        }
+        for k in keys:
+            data[k] == kwargs[k]
     return data
 
 def update_json_object(*args, obj=None, **kwargs):
@@ -37,3 +41,4 @@ def update_json_object(*args, obj=None, **kwargs):
 
 def get_json_object(file=None, byid=None, **kwarg):
     pass
+

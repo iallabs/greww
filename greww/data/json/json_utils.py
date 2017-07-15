@@ -8,14 +8,14 @@ from greww.utils.cgreww import Greww
 
 #TODO: import settings
 
-_settings = SETTINGS(__name__, "ALL")
+_settings = SETTINGS("json_utils", "ALL")
 
 cgreww_settings = _settings["ENVIRENEMENT"]
 
 DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
 
 #@Greww(**cgreww_settings)
-def create_json_file(directory=_DEFAULT_PATH, name=None, kind=None):
+def create_json_file(directory=DEFAULT_PATH, name=None, kind=None):
     ct = '[]' if kind == list else "{}"
     mkfile_with_content(directory=directory,
                          name=name,

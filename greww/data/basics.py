@@ -1,3 +1,4 @@
+from greww.settings import SETTINGS
 import os
 
 ####### directorys #######
@@ -21,7 +22,7 @@ def ckdir(directory):
 
 def mkdir(directory):
     # make directory
-    if _ckdir(directory):
+    if ckdir(directory):
         #TODO: maybe an Exception here
         return 0
     os.makedirs(directory)
@@ -39,11 +40,11 @@ def rmdir(directory, all=False):
 
 def ckfile(directory, name):
     # check file
-    return _ckdir(directory + name)
+    return ckdir(directory + name)
 
 def mkfile(directory, name, ext=None):
     # make file
-    if _ckfile(directory, name):
+    if ckfile(directory, name):
         #TODO: maybe an Exception here
         return 0
     _file = open(directory + name, 'w').close()
@@ -51,7 +52,7 @@ def mkfile(directory, name, ext=None):
 
 def rmfile(directory, name):
     # remove file
-    if not _ckfile(directory, name):
+    if not ckfile(directory, name):
         #TODO: Exception
         return
     os.remove(directory + name)
@@ -69,33 +70,36 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
         #TODO: execption
         return 0
     if ext:
-        name += ext
-    if not _ckdir(directory):
+        name += "." + ext
+    if not ckdir(directory):
         #TODO: execption
         return 0
-    if _ckfile(directory, name):
+    if ckfile(directory, name):
         #TODO: execption
         return 0
 
-    import collections.Iterable
-    _mkfile(directory, name)
+    import collections
+    mkfile(directory, name)
 
     if not content:
         return
 
-    _stdir(directory)
+    stdir(directory)
     with open(name, 'w') as f:
-        if isinstance(theElement, collections.Iterable):
+        if type(content) == str:
+            f.write(content)
+        elif isinstance(content, collections.Iterable):
             for i in content:
-                f.write(i)
+                f.write(i+"\n")
         else:
             f.write(content)
+
 
 def file_lenght(directory=None, name=None):
     if directory is None or name is None:
         #TODO: execption
         return 0
-    if _ckfile(directory, name):
+    if ckfile(directory, name):
         #TODO: execption
         return 0
     with open(name, 'w') as f:
@@ -110,34 +114,34 @@ def add_line_to_file(directory=None, name=None, line=None, nline=0, inv=False):
     # _add_line_to_file(line="ajajajaj", nline=4)
     #IDEA: inv parameter (inverse) calculate lines from the end of the file
     # (add line to last line can be done with nline=0 and inv=True)
-    if not _ckfile(directory, name):
+    if not ckfile(directory, name):
         #TODO: Exception
         return
     if inv:
         #XXX: Not sure about this
-        nline = _file_lenght(directory, name) - nline
+        nline = file_lenght(directory, name) - nline
     # read
-    _stdir(directory)
+    stdir(directory)
     with open(name, 'r') as f:
         content = f.readlines()
     # insertion
     content.insert(nline, line)
     # recreate
-    _rmfile(directory, name)
-    _mkfile_with_content(directory=directory,
+    rmfile(directory, name)
+    mkfile_with_content(directory=directory,
                          name=name,
                          content=content)
 
 
 def add_lines_to_file(directory=None, name=None, lines=None, nline=0, inv=False, inv_writing=False):
-    if not _ckfile(directory, name):
+    if not ckfile(directory, name):
         #TODO: Exception
         return
     if inv:
         #XXX: Not sure about this
-        nline = _file_lenght(directory, name) - nline
+        nline = file_lenght(directory, name) - nline
     # read
-    _stdir(directory)
+    stdir(directory)
     with open(name, 'r') as f:
         content = f.readlines()
     # insersion
@@ -148,21 +152,21 @@ def add_lines_to_file(directory=None, name=None, lines=None, nline=0, inv=False,
         else:
             nline += 1
     # recreate
-    _rmfile(directory, name)
-    _mkfile_with_content(directory=directory,
+    rmfile(directory, name)
+    mkfile_with_content(directory=directory,
                          name=name,
                          content=content)
 
 
 def del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
-    if not _ckfile(directory, name):
+    if not ckfile(directory, name):
         #TODO: Exception
         return
     if inv:
         #XXX: Not sure about this
-        nline = _file_lenght(directory, name) - nline
+        nline = file_lenght(directory, name) - nline
     # read
-    _stdir(directory)
+    stdir(directory)
     with open(name, 'r') as f:
         content = f.readlines()
 
@@ -175,8 +179,8 @@ def del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
         nlines = _incr_list(nlines, -1)
         i += 1
     # recreate
-    _rmfile(directory, name)
-    _mkfile_with_content(directory=directory,
+    rmfile(directory, name)
+    mkfile_with_content(directory=directory,
                          name=name,
                          content=content)
 
@@ -184,3 +188,12 @@ def del_lines_from_file(directory=None, name=None, nlines=None, inv=False):
 def replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, inv=False):
     #TODO:
     pass
+
+
+def file_size():
+    pass
+
+
+def file_content():
+    pass
+
