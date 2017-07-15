@@ -1,3 +1,0 @@
-#GENERALSETTINGS
-#BASICS_SETTINGS
-DEFAULT="/home/ubuntu/greww"
