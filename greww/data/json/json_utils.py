@@ -1,8 +1,8 @@
 import json
 from greww.data.basics import (mkfile_with_content,
                                stdir)
-
-from greww.utils.settings import c_settings, _ignore_c_settings, _make_c_settings
+from greww.settings import SETTINGS
+from greww.utils.cgreww import Greww
 
 #:TODO Rofl
 
@@ -10,8 +10,13 @@ from greww.utils.settings import c_settings, _ignore_c_settings, _make_c_setting
 
 C_LIKE_SO = "greww/greww/cgreww/cjson.so"
 
-DDEFAULT = ""
+_settings = SETTINGS(__name__, "ALL")
 
+_cgreww_settings = SETTINGS(__name__, "RunDecorator")
+
+DDEFAULT = _settings["working_directory"]
+
+@Greww(**_cgreww_settings)
 def create_json_file(directory=DDEFAULT, name=None, kind=None):
     ct = '[]' if kind == list else "{}"
     _mkfile_with_content(directory=directory,
