@@ -1,30 +1,33 @@
 import json
 from greww.data.basics import (mkfile_with_content,
                                stdir)
-
-from greww.utils.settings import c_settings, _ignore_c_settings, _make_c_settings
+from greww.settings import SETTINGS
+from greww.utils.cgreww import Greww
 
 #:TODO Rofl
 
 #TODO: import settings
 
-C_LIKE_SO = "greww/greww/cgreww/cjson.so"
+_settings = SETTINGS(__name__, "ALL")
 
-DDEFAULT = ""
+cgreww_settings = _settings["ENVIRENEMENT"]
 
-def create_json_file(directory=DDEFAULT, name=None, kind=None):
+DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
+
+#@Greww(**cgreww_settings)
+def create_json_file(directory=_DEFAULT_PATH, name=None, kind=None):
     ct = '[]' if kind == list else "{}"
-    _mkfile_with_content(directory=directory,
+    mkfile_with_content(directory=directory,
                          name=name,
                          ext='json',
                          content=ct)
 
 #Append for json list
-def append_json_object(directory=DDEFAULT, name=None, json=None):
+def append_json_object(directory=DEFAULT_PATH, name=None, json=None):
     if directory is none or name is None:
         return
         #TODO: Exception
-    _stdir(directory)
+    stdir(directory)
     try:
         with open(name) as f:
             data = json.load(f)
@@ -37,11 +40,11 @@ def append_json_object(directory=DDEFAULT, name=None, json=None):
         #TODO: expetion
 
 #Upload for json dict
-def upload_json_object(directory=DDEFAULT, name=None, json=None):
+def upload_json_object(directory=DEFAULT_PATH, name=None, json=None):
     if directory is none or name is None:
         return
         #TODO: Exception
-    _stdir(directory)
+    stdir(directory)
     try:
         with open(name) as f:
             data = json.load(f)
@@ -54,11 +57,11 @@ def upload_json_object(directory=DDEFAULT, name=None, json=None):
         #TODO: expetion
 
 #XXX: this function actually works like all json files are list of json objects
-def count_json_objects(directory=DDEFAULT, name=None):
+def count_json_objects(directory=DEFAULT_PATH, name=None):
     if directory is none or name is None:
         return
         #TODO: Exception
-    _stdir(directory)
+    stdir(directory)
     try:
         with open(name) as f:
             data = json.load(f)
@@ -68,14 +71,14 @@ def count_json_objects(directory=DDEFAULT, name=None):
         #TODO: expetion
 
 #XXX: this function actually works like all json files are list of json objects
-def del_json_object(directory=DDEFAULT, name=None, **kwargs):
+def del_json_object(directory=DEFAULT_PATH, name=None, **kwargs):
     if directory is none or name is None:
         return
         #TODO: Exception
     if not kwargs:
         return
         #
-    _stdir(directory)
+    stdir(directory)
     try:
         with open(name) as f:
             data = json.load(f)
@@ -101,7 +104,7 @@ def del_json_object(directory=DDEFAULT, name=None, **kwargs):
         #TODO:
         return
 
-def pythonize_json_file(directory=DDEFAULT, name=None):
+def pythonize_json_file(directory=DEFAULT_PATH, name=None):
     if directory is none or name is None:
         return
         #TODO: Exception

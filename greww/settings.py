@@ -10,17 +10,28 @@ GENERAL_SETTINGS = {
 
 
 JSON_SETTINGS = {
-    "alias" : ["js" , "json", "JSON_SETTINGS", "json_settings"],
-    "PGREWW" : True,
+    "alias" : ["js" , "json", "JSON_SETTINGS", "json_settings", "json_utils", "json_object", "json_tests"],
+    "sopath" : "greww/greww/cgreww/lib/json_utils.so",
+    "PYGREWW" : True,
     "CGREWW" : False,
-    "FORCE_CGREWW" : False,
     "WORKING_DIRECTORY" : "greww/experience/op",
 }
 
+MYSQL_SETTINGS = {
+    "alias" : ["sql", "mysql", "MYSQL_SETTINGS", "mysql_settings", "mysql_utils", "mysql_search", "mysql_tests"],
+	"sopath" : "greww/greww/cgreww/lib/mysql_utils.so",
+	"PYGREWW" : True,
+	"CGREWW" : False,
+	"WORKING_DIRECTORY" : "greww/experience/op",
+	"MYSQL_LOGS" : ("localhost", "", "root", "uehMLMRw"),
+}
+
+
+
 
 ALL = [GENERAL_SETTINGS,
-       JSON_SETTINGS]
-
+       JSON_SETTINGS,
+	   MYSQL_SETTINGS]
 
 
 def _set_value(settings_name, **kws):
@@ -49,7 +60,6 @@ def deactivate_cgreww(module):
     for i in ALL:
         if module in i["alias"]:
             i["CGREWW"] = False
-            i["FORCE_CGREWW"] = False
 
 def activate_cgreww(module):
     global ALL
@@ -58,4 +68,19 @@ def activate_cgreww(module):
     for i in ALL:
         if module in i["alias"]:
             i["CGREWW"] = True
-            i["FORCE_CGREWW"] = True
+
+def deactivate_pygreww(module):
+    global ALL
+    if module == "ALL":
+	pass
+    for i in ALL:
+	if module in i["alias"]:
+	    i["PYGREWW"] = False
+
+def activate_pygreww(module):
+    global ALL
+    if module == "ALL":
+        pass 
+    for i in ALL:
+        if module in i["alias"]:
+            i["PYGREWW"] = True

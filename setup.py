@@ -42,7 +42,50 @@ class greww_test_c(Command):
 
     def run(self):
         from greww.utils.runtests import c_run_all_tests
-        c_run_all_tests()   
+        c_run_all_tests()
+
+class greww_test_async_cp(Command):
+    """Runs all "C++ and PYTHON" tests (async)  under the greww/folder
+    """
+
+    description = "run all tests"
+    user_options = []  # distutils complains if this is not here.
+
+    def __init__(self, *args):
+        self.args = args[0]  # so we can pass it to other classes
+        Command.__init__(self, *args)
+
+    def initialize_options(self):  # distutils wants this
+        pass
+
+    def finalize_options(self):    # this too
+        pass
+
+    def run(self):
+        from greww.utils.runtests import cp_async_run_all_tests
+        cp_async_run_all_tests()
+
+class greww_test_sync_cp(Command):
+    """Runs all "C++ and PYTHON" tests (sync)  under the greww/folder
+    """
+
+    description = "run all tests"
+    user_options = []  # distutils complains if this is not here.
+
+    def __init__(self, *args):
+        self.args = args[0]  # so we can pass it to other classes
+        Command.__init__(self, *args)
+
+    def initialize_options(self):  # distutils wants this
+        pass
+
+    def finalize_options(self):    # this too
+        pass
+
+    def run(self):
+        from greww.utils.runtests import cp_sync_run_all_tests
+        cp_sync_run_all_tests()
+
 
 class greww_test_async_cp(Command):
     """Runs all "C++ and PYTHON" tests (async)  under the greww/folder
@@ -105,8 +148,13 @@ setup(
     cmdclass={
         'test' : greww_test_p,
         'ctest' : greww_test_c,
+<<<<<<< HEAD
 	'cpasync' : greww_test_async_cp,
 	'cpsync' : greww_test_sync_cp,
+=======
+        'cpasync' : greww_test_async_cp,
+        'cpsync' : greww_test_sync_cp,
+>>>>>>> 8ba43b8534311fed3725704f6f5d004de971e394
     },
     url='',
     license=license,
