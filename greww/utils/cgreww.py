@@ -22,32 +22,17 @@ def _use_cpp_equivalent(name=None, sopath=None, args=None, kwargs=None):
 
 
 #Greww Decorator for all functions
-def Greww(CActive=False, PActive=False, Decaprecated=False, sopath=None):
+def Greww(CGreww=False, PyGreww=False, Decaprecated=False, sopath=None):
     def use_c_like(func):
         def wrap_args(*args, **kwargs):
             if Decaprecated:
                 raise DecaprecatedFunction(func)
-            elif PActive:
+            elif PyGreww:
                 return func(*args, **kwargs)
-            elif CActive:
+            elif CGreww:
                 if sopath is None:
                     raise MissingSettings(func)
                 return _use_cpp_equivalent(name=func.__name__, sopath=sopath, args=args, kwargs=kwargs)
-        return wrap_args
-    return use_c_like
-
-
-def VoidGreww(CActive=False, PActive=False, Decaprecated=False, sopath=None):
-    def use_c_like(func):
-        def wrap_args(*args, **kwargs):
-            if Decaprecated:
-                raise DecaprecatedFunction(func)
-            elif PActive:
-                return func(*args, **kwargs)
-            elif CActive:
-                if sopath is None:
-                    raise MissingSettings(func)
-                _use_cpp_equivalent(name=func.__name__, sopath=sopath, args=args, kwargs=kwargs)
         return wrap_args
     return use_c_like
 
