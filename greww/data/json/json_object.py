@@ -1,5 +1,14 @@
+from greww.data.basics import (mkfile_with_content,
+			       stdir)
+from greww.settings import SETTINGS
+from greww.utils.cgreww import Greww
 import json
-from greww.utils.settings import c_settings, _ignore_c_settings, _make_c_settings
+
+_settings = SETTINGS(__name__, "ALL")
+
+cgreww_settings = _settings("EVIRENEMENT")
+
+DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
 
 
 
@@ -24,3 +33,7 @@ def update_json_object(*args, obj=None, **kwargs):
         for k in list(kwargs.keys()):
             obj[k] = kwargs[k]
     return obj
+
+
+def get_json_object(file=None, byid=None, **kwarg):
+    pass
