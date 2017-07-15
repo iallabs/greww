@@ -24,12 +24,12 @@ def run_functions(*args):
         run_with_report(fnc)
     print('TOTAL')
 
-def run_modules(test_module):
-    for t in test_module:
+def run_pytests_modules(test_modules):
+    for t in test_modules:
         try:
             # If the module defines a suite() function, call it to get the suite.
-            mod = __import__(t, globals(), locals(), ['ftests'])
-            suitefn = getattr(mod, 'ftests')
+            mod = __import__(t, globals(), locals(), ['pytests'])
+            suitefn = getattr(mod, 'pytests')
             functions = [getattr(mod, i) for i in suitefn]
             print(functions)
             run_functions(*functions)
@@ -42,7 +42,7 @@ def run_modules(test_module):
     print('end test')
 
 def run_all_modules():
-    run_modules(all_modules)
+    run_pytests_modules(all_modules)
 
 """
 #@rtdecorator

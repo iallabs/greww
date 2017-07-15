@@ -23,7 +23,7 @@ def create_json_file(directory=DEFAULT_PATH, name=None, kind=None):
                          content=ct)
 
 #Append for json list
-def append_json_object(directory=DEFAULT_PATH, name=None, json=None):
+def append_json_object(directory=DEFAULT_PATH, name=None, obj=None):
     if directory is none or name is None:
         return
         #TODO: Exception
@@ -31,7 +31,7 @@ def append_json_object(directory=DEFAULT_PATH, name=None, json=None):
     try:
         with open(name) as f:
             data = json.load(f)
-            data.append(json)
+            data.append(obj)
         with open(name, 'w') as f:
             json.dump(data)
 
@@ -40,7 +40,7 @@ def append_json_object(directory=DEFAULT_PATH, name=None, json=None):
         #TODO: expetion
 
 #Upload for json dict
-def upload_json_object(directory=DEFAULT_PATH, name=None, json=None):
+def upload_json_object(directory=DEFAULT_PATH, name=None, obj=None):
     if directory is none or name is None:
         return
         #TODO: Exception
@@ -48,7 +48,7 @@ def upload_json_object(directory=DEFAULT_PATH, name=None, json=None):
     try:
         with open(name) as f:
             data = json.load(f)
-            data.upload(json)
+            data.upload(obj)
         with open(name, 'w') as f:
             json.dump(data)
 
