@@ -18,10 +18,16 @@ using namespace std;
 
 // wierd that extern dosent accept wrting functions at .h
 
-const char* get_function_module(string function);
+char * aPyWrapper(char * function);
 
-const char* get_object_module(string object);
+char * kaka(char * ti);
 
-const char* get_value_module(string value);
+
+
+//const char* get_function_module(string function);
+
+//const char* get_object_module(string object);
+
+//const char* get_value_module(string value);
 
 #endif
