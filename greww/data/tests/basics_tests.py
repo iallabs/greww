@@ -5,6 +5,8 @@ from greww.data.basics import (lsdir,
                                mkdir,
                                rmdir,
                                mkfile,
+                               ckfile,
+                               rmfile,
                                mkfile_with_content,
                                file_lenght,
                                file_size,
@@ -14,13 +16,32 @@ from greww.data.basics import (lsdir,
                                replace_lines_in_file,
                                file_content)
 
-pytests = ['test_basics']
+pytests = ['test_dir_basics',
+           'test_file_basics']
 
 ctests = []
 
-DEFAULT="/home/ubuntu"
+_settings = SETTINGS("basics_tests", "ALL")
 
-def test_basics():
-    global DEFAULT
-    print("directory ", lsdir(DEFAULT))
-    assert "greww" in lsdir(DEFAULT)
+path = _settings["WORKING_DIRECTORY"]
+
+test_dir = "greww_test_dir"
+
+test_file= "loul"
+
+ext="txt"
+
+def test_dir_basics():
+    stdir(path)
+    mkdir(test_dir)
+    assert test_dir in lsdir(path)
+    assert ckdir(test_dir)
+    rmdir(test_dir)
+    assert not ckdir(test_dir)
+
+def test_file_basics():
+    stdir(path)
+    mkfile(path, test_file, ext=ext)
+    assert ckfile(path, test_file.join("." + ext))
+
+test_dir_basics()

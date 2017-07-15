@@ -36,3 +36,4 @@ def test_json_object_append():
 def test_json_object_read():
     pass
 
+test_json_file_creation()

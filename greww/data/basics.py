@@ -27,7 +27,7 @@ def mkdir(directory):
         return 0
     os.makedirs(directory)
 
-def rmdir(directory, all=False):
+def rmdir(directory, all=False, rec=False):
     # remove directory
     if rec:
         import shutil
@@ -40,14 +40,14 @@ def rmdir(directory, all=False):
 
 def ckfile(directory, name):
     # check file
-    return ckdir(directory + name)
+    return ckdir(directory + "/" + name)
 
-def mkfile(directory, name, ext=None):
+def mkfile(directory, name=None, ext=None):
     # make file
     if ckfile(directory, name):
         #TODO: maybe an Exception here
         return 0
-    _file = open(directory + name, 'w').close()
+    _file = open(directory + "/" +  name + "." + ext, 'w').close()
 
 
 def rmfile(directory, name):
@@ -57,11 +57,11 @@ def rmfile(directory, name):
         return
     os.remove(directory + name)
 
-#####
-
+####
 
 def mkfile(directory=None, name=None, ext=None):
-    pass
+    stdir(directory)
+    open(name.join("." + ext), "w").close()
 
 
 def mkfile_with_content(directory=None, name=None, ext=None, content=None):
@@ -79,7 +79,7 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
         return 0
 
     import collections
-    mkfile(directory, name)
+    mkfile(directory, name, ext=ext)
 
     if not content:
         return
@@ -90,9 +90,11 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
             f.write(content)
         elif isinstance(content, collections.Iterable):
             for i in content:
-                f.write(i+"\n")
+                f.write(i + "\n")
         else:
             f.write(content)
+
+
 
 
 def file_lenght(directory=None, name=None):
