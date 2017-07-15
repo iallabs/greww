@@ -1,10 +1,9 @@
 from greww.settings import SETTINGS
 from greww.data.basics import (lsdir,
                                stdir,
-                               chdir,
+                               ckdir,
                                mkdir,
                                rmdir,
-                               chkfile,
                                mkfile,
                                mkfile_with_content,
                                file_lenght,
@@ -15,11 +14,13 @@ from greww.data.basics import (lsdir,
                                replace_lines_in_file,
                                file_content)
 
-ftests = ['test_basics']
+pytests = ['test_basics']
+
+ctests = []
 
 DEFAULT="/home/ubuntu"
 
 def test_basics():
     global DEFAULT
-    print("directory ", basics.lsdir(DEFAULT))
-    assert "greww" in basics.lsdir(DEFAULT)
+    print("directory ", lsdir(DEFAULT))
+    assert "greww" in lsdir(DEFAULT)

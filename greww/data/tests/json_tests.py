@@ -8,14 +8,14 @@ from greww.settings import (SETTINGS,
                             deactivate_pygreww)
 
 pytests = ['test_json_file_creation',
-          'test_json_object_creation',
-          'test_json_object_append']
+           'test_json_object_creation',
+           'test_json_object_append']
 
 ctests = []
 
 _settings = SETTINGS("json_utils", "ALL")
 
-path = _settings["WORKINGS_DIRECTORY"]
+path = _settings["WORKING_DIRECTORY"]
 
 #TODO: noobs write tests files
 #CTESTS using greww.settings methods
