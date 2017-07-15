@@ -80,7 +80,7 @@ def deactivate_pygreww(module):
 def activate_pygreww(module):
     global ALL
     if module == "ALL":
-        pass 
+        pass
     for i in ALL:
         if module in i["alias"]:
             i["PYGREWW"] = True
