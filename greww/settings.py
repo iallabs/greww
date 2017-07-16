@@ -27,7 +27,11 @@ MYSQL_SETTINGS = {
     "alias" : ["sql", "mysql", "MYSQL_SETTINGS", "mysql_settings", "mysql_utils", "mysql_search", "mysql_tests"],
     "sopath" : "greww/greww/cgreww/lib/mysql_utils.so",
     "WORKING_DIRECTORY" : "/home/ubuntu/greww/experience/op",
-    "MYSQL_LOGS" : ("localhost", "", "root", "uehMLMRw"),
+    "MYSQL_LOGS" : {
+        "Active" : True,
+        "Logs" : ("localhost", None, "root", "uehMLMRw"),
+        "json_data" : "",
+    },
     "ENVIRENEMENT" : ENVIRENEMENT,
 }
 

@@ -26,3 +26,6 @@ class DecaprecatedFunction(Exception):
 
 class MissingSettings(Exception):
     pass
+
+class MissingMysqlLogs(MissingSettings):
+    pass

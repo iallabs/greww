@@ -1,7 +1,15 @@
-print('kaka')
 import pymysql.cursors
 #from greww.mysql.decorators import _firstraws
-#from mysql.instancelogs import get_instance_sql
+from greww.settings import SETTINGS
+from greww.utils.filters import _filter_raws
+from greww.utils.exceptions import MissingMysqlLogs
+
+_settings = SETTINGS("mysql_utils", "ALL")
+
+WORKING_DIRECTORY = _settings["WORKING_DIRECTORY"]
+
+MYSQL_LOGS = _settings["MYSQL_LOGS"]
+
 
 _SHOW_DATA_BASES = "SHOW DATABASES;"
 _CREATE_DATA_BASE = "CREATE DATABASE {0};"
@@ -43,13 +51,18 @@ _protocol_taxon = {'s' : ' VARCHAR(10),',
                    'C' : ' DEFAULT CURRENT_TIME_STAMP ON UPDATE CURRENT_TIMESTAMP,',
                    'e' : ' ENUM({0}),'}
 
-def mysql_connect(instance=None, local=True, with_auto_commit=False):
-    if local and instance is None:
-        instance = NSTANCE
-    elif instance is None:
-        err = ('No instance given')
-        raise NameError(err)
-    host, port, user, password = get_instance_sql(instance)
+
+def get_instance_sql():
+    pass
+
+
+def mysql_connect(instance=None, mlogs=None, with_auto_commit=False):
+    if mlogs:
+        host, port, user, password = mlogs
+    elif instance:
+        host, port, user, password = get_instance_sql(instance)
+    if host is None:
+        raise MissingMysqlLogs
     cnx = pymysql.connect(host=host,
                           user=user,
                           password=password,
@@ -70,10 +83,15 @@ def _query_create_table(name, fields):
     return _query[0:-3] + _query[-2:]
 
 
-def execute_sql_query(instance=None, sql=None, rs=False, commit=False):
-    if instance is None:
-        connect = mysql_connect(local=True)
-    connect = mysql_connect(instance=instance, with_auto_commit=commit)
+def execute_sql_query(instance=None, mlogs=None, sql=None, rs=False, commit=False):
+    if mlogs:
+        connect = mysql_connect(mlogs=mlogs, with_auto_commit=commit)
+    elif instance:
+        connect = mysql_connect(instance=instance, with_auto_commit=commit)
+    elif MYSQL_LOGS['Active']:
+        connect = mysql_connect(mlogs=MYSQL_LOGS['Logs'])
+    else:
+        raise MissingMysqlLogs()
     res = None
     with connect.cursor() as cursor:
         if type(sql) == list:
@@ -85,11 +103,12 @@ def execute_sql_query(instance=None, sql=None, rs=False, commit=False):
             res = cursor.fetchall()
             return res
 
-@_firstraws
+@_filter_raws(indexes=[0])
 def instance_databases(instance=None):
     return execute_sql_query(instance=instance, sql=_SHOW_DATA_BASES, rs=True)
 
-@_firstraws
+
+@_filter_raws(indexes=[0])
 def instance_tables(instance=None, db=None):
     if db:
         if db == 'ALL':
@@ -143,7 +162,10 @@ def database_tables(instance=None, db=None):
         raise NameError(err)
     return instance_tables(instance=instance, db=db)
 
-@_firstraws
+# indexes : max range indexes = [0, 1, 2, 3, 4, 5]
+# TODO: *
+# [name, type, *, prim, default, *]
+@_filter_raws(indexes=[0])
 def table_fields(instance=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
