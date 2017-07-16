@@ -55,13 +55,13 @@ def rmfile(directory, name):
     if not ckfile(directory, name):
         #TODO: Exception
         return
-    os.remove(directory + name)
+    os.remove(directory + "/" + name)
 
 ####
 
 def mkfile(directory=None, name=None, ext=None):
     stdir(directory)
-    open(name.join("." + ext), "w").close()
+    open(name + "." + ext, "w").close()
 
 
 def mkfile_with_content(directory=None, name=None, ext=None, content=None):
@@ -196,6 +196,11 @@ def file_size():
     pass
 
 
-def file_content():
-    pass
-
+def file_content(directory=None, name=None, expand=True):
+    ckfile(directory, name)
+    stdir(directory)
+    with open(name, "r") as f:
+        if expand:
+            return f.readlines()
+        else:
+            return f.read()

@@ -17,7 +17,8 @@ from greww.data.basics import (lsdir,
                                file_content)
 
 pytests = ['test_dir_basics',
-           'test_file_basics']
+           'test_file_basics',
+           'test_lines_operations']
 
 ctests = []
 
@@ -31,6 +32,8 @@ test_file= "loul"
 
 ext="txt"
 
+f = test_file + "." + ext
+
 def test_dir_basics():
     stdir(path)
     mkdir(test_dir)
@@ -42,6 +45,19 @@ def test_dir_basics():
 def test_file_basics():
     stdir(path)
     mkfile(path, test_file, ext=ext)
-    assert ckfile(path, test_file.join("." + ext))
+    assert ckfile(path, f)
+    rmfile(path, f)
+    assert not ckfile(path, f)
+    mkfile_with_content(directory=path, name=test_file, ext=ext, content=["test", "Greww", "greww"])
+    assert ckfile(path, f)
+    c = file_content(directory=path, name=f, expand=False).split("\n")
+    assert "test" in c and "Greww" in c and "greww" in c
+    assert not "Test" in c
+    rmfile(path, f)
 
-test_dir_basics()
+
+def test_lines_operations():
+    pass
+
+
+test_file_basics()
