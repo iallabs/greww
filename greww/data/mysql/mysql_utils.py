@@ -1,5 +1,4 @@
 import pymysql.cursors
-#from greww.mysql.decorators import _firstraws
 from greww.settings import SETTINGS
 from greww.utils.filters import _filter_raws
 from greww.utils.exceptions import MissingMysqlLogs
@@ -48,7 +47,7 @@ _protocol_taxon = {'s' : ' VARCHAR(10),',
                    'I' : ' INT(25),',
                    'p' : ' PRIMARY KEY (`{0}`),',
                    'u' : ' UNIQUE KEY {0},',
-                   'C' : ' DEFAULT CURRENT_TIME_STAMP ON UPDATE CURRENT_TIMESTAMP,',
+                   'T' : ' DEFAULT CURRENT_TIME_STAMP ON UPDATE CURRENT_TIMESTAMP,',
                    'e' : ' ENUM({0}),'}
 
 
@@ -182,13 +181,13 @@ def create_table(instance=None, db=None, table=None, fields=['id']):
     if not instance_exist_db(instance=instance, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
-    if _table(instance=instance,
-                           db=db,
-                           table=table):
+    if database_exist_table(instance=instance,
+                            db=db,
+                            table=table):
         err = ('table exist already')
         raise NameError(err)
     execute_sql_query(instance=instance,
-                      sql=[ATA_BASE.format(db),
+                      sql=[_USE_DATA_BASE.format(db),
                            _query_create_table(table, fields)],
                       rs=False)
 
@@ -307,13 +306,12 @@ def add_value_wk(instance=None, db=None, table=None, **kwargs):
 
 def get_architecture(instance=None):
     res = {}
-    tb = None
     db = instance_databases(instance=instance)
     for database in db:
         for table in database_tables(instance=instance, db=database):
             res[database][table] = table_fields(instance=instance,
                                                 db=db,
-                                                table=table)
+                                                table=table) or None
     return res
 
 def adjust_db_architecture(instance=None):
@@ -357,7 +355,7 @@ def assert_architecture(instance=None):
         return missing_db, missing_tb
     return missing_db, missing_tb, missing_fd
 
-def build_instance_architecure(instance=None, ecrase=False):
+def build_instance_architecture(instance=None, ecrase=False):
     if _equal_list(assert_architecture(instance=instance),
                    list(get_architecture(instance=instance).keys())) or ecrase:
         build_architecture(instance=instance)
