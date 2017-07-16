@@ -1,7 +1,10 @@
 # Json test file
 from greww.data.json.json_utils import (create_json_file,
                                         append_json_object,
-                                        count_json_objects)
+                                        count_json_objects,
+                                        del_json_object,
+                                        pythonize_json_file,
+                                        get_json_object_from_file)
 from greww.data.json.json_object import (jsonize_kwargs,
                                          update_json_object)
 from greww.data.basics import (lsdir,
@@ -18,7 +21,9 @@ from greww.settings import (SETTINGS,
 
 pytests = ['test_json_file_creation',
            'test_json_object_creation',
-           'test_json_object_append']
+           'test_json_object_append',
+           'test_json_object_delete',
+           'test_json_object_read']
 
 ctests = []
 
@@ -82,14 +87,24 @@ def test_json_object_append():
     rmfile(path, "jlist.json")
 
 def test_json_object_delete():
-    #create_json_file(directory=path, name="jlist", kind=list
-    #append_json_object(directory=path, name="jlist.json", obj=data)
-    #
-    pass
+    create_json_file(directory=path, name="jlist", kind=list)
+    append_json_object(directory=path, name="jlist.json", obj=data)
+    del_json_object(directory=path, name="jlist.json", gender="male", age=5)
+    assert count_json_objects(path, "jlist.json") == 1
+    del_json_object(directory=path, name="jlist.json", age=5)
+    assert count_json_objects(path, "jlist.json") == 0
+    rmfile(path, "jlist.json")
 
 def test_json_object_read():
-    pass
-
+    create_json_file(directory=path, name="jlist", kind=list)
+    append_json_object(directory=path, name="jlist.json", obj=data)
+    data2 = get_json_object_from_file(directory=path, name="jlist.json", age=6)
+    assert not data2
+    data2 = get_json_object_from_file(directory=path, name="jlist.json", age=5, gender="kikou")
+    assert not data2
+    data2 = get_json_object_from_file(directory=path, name="jlist.json", age=5, gender="troll")
+    assert len(data2) > 0
+    rmfile(path, "jlist.json")
 
 test_json_file_creation()
 test_json_object_creation()

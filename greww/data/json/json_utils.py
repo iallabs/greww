@@ -1,6 +1,8 @@
 import json
 from greww.data.basics import (mkfile_with_content,
-                               stdir)
+                               stdir,
+                               rmfile,
+                               ckfile)
 from greww.settings import SETTINGS
 from greww.utils.cgreww import Greww
 
@@ -93,16 +95,10 @@ def del_json_object(directory=DEFAULT_PATH, name=None, **kwargs):
             if not obj[k] == kwargs[k]:
                 res.append(obj)
                 continue
-    rmfile(name)
-    create_json_file(directory=directory,
-                     name=name,
-                     kind=list)
-    try:
-        with open(name, 'w') as f:
-            json.dump(res, f)
-    except:
-        #TODO:
-        return
+    rmfile(directory, name)
+    with open(name, 'w') as f:
+        json.dump(res, f)
+
 
 def pythonize_json_file(directory=DEFAULT_PATH, name=None):
     if directory is None or name is None:
@@ -115,3 +111,27 @@ def pythonize_json_file(directory=DEFAULT_PATH, name=None):
     except:
         #TODO:
         return
+
+def get_json_object_from_file(directory=DEFAULT_PATH, name=None, **kwargs):
+    if directory is None or name is None:
+        return -1
+        #TODO: Exception
+    stdir(directory)
+    if not ckfile(directory, name):
+        return -1
+        #TODO: Exception
+    with open(name, 'r') as f:
+        data = json.load(f)
+    import collections
+    #FIXME: add possibility to get objects from one main json_object
+    results = []
+    w = True
+    for i in data:
+        for k in list(kwargs.keys()):
+            if i[k] != kwargs[k]:
+                w = False
+                break
+        if w:
+             results += [i]
+        w = True
+    return results
