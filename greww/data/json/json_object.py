@@ -10,7 +10,7 @@ f = f.split(".")[1]
 
 _settings = SETTINGS("json_object", "ALL")
 
-cgreww_settings = _settings("ENVIRENEMENT")
+cgreww_settings = _settings["ENVIRENEMENT"]
 
 DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
 
@@ -22,16 +22,15 @@ def jsonize_kwargs(*args, **kwargs):
         data = kwargs
     else:
         data = {
-             "args" : A,
+             "args" : list(args),
         }
         for k in keys:
-            data[k] == kwargs[k]
+            data[k] = kwargs[k]
     return data
 
 def update_json_object(*args, obj=None, **kwargs):
-    if _obj is None:
+    if obj is None:
         raise #TODO
-    obj = _obj
     if args:
         obj['args'] += list(args)
     if kwargs:

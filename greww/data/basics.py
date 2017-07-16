@@ -47,8 +47,10 @@ def mkfile(directory, name=None, ext=None):
     if ckfile(directory, name):
         #TODO: maybe an Exception here
         return 0
-    _file = open(directory + "/" +  name + "." + ext, 'w').close()
-
+    if ext:
+        _file = open(directory + "/" + name + "." + ext, 'w').close()
+    else:
+        _file = open(directory + "/" + name, 'w').close() 
 
 def rmfile(directory, name):
     # remove file
@@ -58,10 +60,6 @@ def rmfile(directory, name):
     os.remove(directory + "/" + name)
 
 ####
-
-def mkfile(directory=None, name=None, ext=None):
-    stdir(directory)
-    open(name + "." + ext, "w").close()
 
 
 def mkfile_with_content(directory=None, name=None, ext=None, content=None):
@@ -78,14 +76,11 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
         #TODO: execption
         return 0
 
-    import collections
-    mkfile(directory, name, ext=ext)
-
-    if not content:
-        return
-
     stdir(directory)
     with open(name, 'w') as f:
+        if not content:
+            return
+        import collections
         if type(content) == str:
             f.write(content)
         elif isinstance(content, collections.Iterable):
@@ -95,16 +90,25 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
             f.write(content)
 
 
+def file_content(directory=None, name=None, expand=True):
+    ckfile(directory, name)
+    stdir(directory)
+    with open(name, "r") as f:
+        if expand:
+            return f.readlines()
+        else:
+            return f.read()
 
 
 def file_lenght(directory=None, name=None):
     if directory is None or name is None:
         #TODO: execption
         return 0
-    if ckfile(directory, name):
+    if not ckfile(directory, name):
         #TODO: execption
-        return 0
-    with open(name, 'w') as f:
+        return -1
+    stdir(directory)
+    with open(name, 'r') as f:
         return len(f.readlines())
 
 
@@ -195,12 +199,3 @@ def replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, in
 def file_size():
     pass
 
-
-def file_content(directory=None, name=None, expand=True):
-    ckfile(directory, name)
-    stdir(directory)
-    with open(name, "r") as f:
-        if expand:
-            return f.readlines()
-        else:
-            return f.read()

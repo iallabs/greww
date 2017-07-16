@@ -24,16 +24,16 @@ def create_json_file(directory=DEFAULT_PATH, name=None, kind=None):
 
 #Append for json list
 def append_json_object(directory=DEFAULT_PATH, name=None, obj=None):
-    if directory is none or name is None:
+    if directory is None or name is None:
         return
         #TODO: Exception
     stdir(directory)
     try:
-        with open(name) as f:
+        with open(name, 'r') as f:
             data = json.load(f)
             data.append(obj)
         with open(name, 'w') as f:
-            json.dump(data)
+            json.dump(data, f)
 
     except:
         raise Exception()
@@ -41,16 +41,16 @@ def append_json_object(directory=DEFAULT_PATH, name=None, obj=None):
 
 #Upload for json dict
 def upload_json_object(directory=DEFAULT_PATH, name=None, obj=None):
-    if directory is none or name is None:
+    if directory is None or name is None:
         return
         #TODO: Exception
     stdir(directory)
     try:
-        with open(name) as f:
+        with open(name, 'r') as f:
             data = json.load(f)
             data.upload(obj)
         with open(name, 'w') as f:
-            json.dump(data)
+            json.dump(data, f)
 
     except:
         raise Exception()
@@ -58,12 +58,12 @@ def upload_json_object(directory=DEFAULT_PATH, name=None, obj=None):
 
 #XXX: this function actually works like all json files are list of json objects
 def count_json_objects(directory=DEFAULT_PATH, name=None):
-    if directory is none or name is None:
+    if directory is None or name is None:
         return
         #TODO: Exception
     stdir(directory)
     try:
-        with open(name) as f:
+        with open(name, 'r') as f:
             data = json.load(f)
             return len(data)
     except:
@@ -72,7 +72,7 @@ def count_json_objects(directory=DEFAULT_PATH, name=None):
 
 #XXX: this function actually works like all json files are list of json objects
 def del_json_object(directory=DEFAULT_PATH, name=None, **kwargs):
-    if directory is none or name is None:
+    if directory is None or name is None:
         return
         #TODO: Exception
     if not kwargs:
@@ -80,7 +80,7 @@ def del_json_object(directory=DEFAULT_PATH, name=None, **kwargs):
         #
     stdir(directory)
     try:
-        with open(name) as f:
+        with open(name, 'r') as f:
             data = json.load(f)
     except:
         #TODO:
@@ -93,7 +93,7 @@ def del_json_object(directory=DEFAULT_PATH, name=None, **kwargs):
             if not obj[k] == kwargs[k]:
                 res.append(obj)
                 continue
-    _rmfile(name)
+    rmfile(name)
     create_json_file(directory=directory,
                      name=name,
                      kind=list)
@@ -105,11 +105,11 @@ def del_json_object(directory=DEFAULT_PATH, name=None, **kwargs):
         return
 
 def pythonize_json_file(directory=DEFAULT_PATH, name=None):
-    if directory is none or name is None:
+    if directory is None or name is None:
         return
         #TODO: Exception
     try:
-        with open(name) as f:
+        with open(name, 'r') as f:
             data = json.load(f)
             return data
     except:
