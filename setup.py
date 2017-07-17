@@ -65,5 +65,5 @@ setup(
     },
     url='',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs', 'experience', 'cgreww'))
 )
