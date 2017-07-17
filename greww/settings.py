@@ -42,11 +42,25 @@ BASICS_SETTINGS = {
     "ENVIRENEMENT" : ENVIRENEMENT,
 }
 
+BACKEND_SETTINGS = {
+    "alias" : [],
+}
+
+SERVERS_SETTINGS = {
+    "alias" : [],
+}
+
+RESTAPI_SETTINGS = {
+    "alias" : [],
+}
 
 ALL = [GENERAL_SETTINGS,
        JSON_SETTINGS,
        MYSQL_SETTINGS,
-       BASICS_SETTINGS]
+       BASICS_SETTINGS,
+       BACKEND_SETTINGS,
+       SERVERS_SETTINGS,
+       RESTAPI_SETTINGS]
 
 
 def _set_value(settings_name, **kws):

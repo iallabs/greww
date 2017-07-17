@@ -29,3 +29,6 @@ class MissingSettings(Exception):
 
 class MissingMysqlLogs(MissingSettings):
     pass
+
+class MissingCommand(Exception):
+    pass

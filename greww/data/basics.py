@@ -80,10 +80,9 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     with open(name, 'w') as f:
         if not content:
             return
-        import collections
         if type(content) == str:
             f.write(content)
-        elif isinstance(content, collections.Iterable):
+        elif type(content) == list:
             for i in content:
                 f.write(i + "\n")
         else:
