@@ -32,3 +32,9 @@ class MissingMysqlLogs(MissingSettings):
 
 class MissingCommand(Exception):
     pass
+
+class FileNotFound(Exception):
+    pass
+
+class RejectedConnection(Exception):
+    pass

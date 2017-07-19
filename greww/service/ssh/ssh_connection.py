@@ -1,6 +1,6 @@
 from greww.data.basics import stdir
-from greww.utils.exceptions import 
-import paramico
+from greww.utils.exceptions import RejectedConnection, FileNotFound
+import paramiko
 
 def rsa_key(f, directory=None, name=None):
     pass
