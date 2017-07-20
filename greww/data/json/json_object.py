@@ -28,13 +28,16 @@ def jsonize_kwargs(*args, **kwargs):
             data[k] = kwargs[k]
     return data
 
-def update_json_object(*args, obj=None, **kwargs):
-    if obj is None:
-        raise #TODO
+def update_json_object(*args, **kwargs):
+    if kwargs["obj"] is None:
+        raise Exception()#TODO
+    obj=kwargs["obj"]
     if args:
         obj['args'] += list(args)
     if kwargs:
         for k in list(kwargs.keys()):
+            if k == "obj":
+                continue
             obj[k] = kwargs[k]
     return obj
 
