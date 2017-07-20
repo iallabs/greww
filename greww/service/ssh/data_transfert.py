@@ -1,5 +1,5 @@
 from .server_connection import (ssh_connection,
-                                ssh_connection_with_key)
+                                ssh_connection_with_private_key)
 
 
 def send_file_to_server():

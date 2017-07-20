@@ -7,7 +7,7 @@ def _split_cmd(cmdline):
     return [i for i in cmdline.split(' ')]
 
 
-def execute_shell_command(cmdline=None, shell=False, check=False, rs=False):
+def execute_shell_command(cmdline=None, shell=False, check=False, rs=False, **kwargs):
     if cmdline is None:
         raise MissingCommand()
     cmds = _split_cmd(cmdline)
@@ -21,16 +21,3 @@ def shell_command_output(cmdline=None, shell=False, check=False):
         raise MissingCommand()
     cmds = _split_cmd(cmdline)
     return subprocess.check_output(cmds, shell=shell, check=check)
-
-def execute_shell_script(directory=None, script_file=None, shell=False, check=False, rs=False):
-    pass
-
-
-def sqed_shell_script():
-    pass
-
-
-def popen_shell_command():
-    pass
-
-
