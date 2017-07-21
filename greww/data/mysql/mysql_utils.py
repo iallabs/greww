@@ -103,23 +103,24 @@ def execute_sql_query(instance=None, mlogs=None, sql=None, rs=False, commit=Fals
             return res
 
 @_filter_raws(indexes=[0])
-def instance_databases(instance=None):
-    return execute_sql_query(instance=instance, sql=_SHOW_DATA_BASES, rs=True)
+def instance_databases(instance=None, mlogs=None):
+    return execute_sql_query(instance=instance, mlogs=mlogs, sql=_SHOW_DATA_BASES, rs=True)
 
 
 @_filter_raws(indexes=[0])
-def instance_tables(instance=None, db=None):
+def instance_tables(instance=None, mlogs=None, db=None):
     if db:
         if db == 'ALL':
             return instance_tables(instance=instance, db=None)
         return execute_sql_query(instance=instance,
+                                 mlogs=mlogs,
                                  sql=[_USE_DATA_BASE.format(db), _SHOW_ALL_TABLES],
                                  rs=True)
     else:
         databases = instance_databases(instance=instance)
         return [instance_tables(instance=instance, db=d) for d in databases]
 
-def instance_create_db(instance=None, db=None):
+def instance_create_db(instance=None, mlogs=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
@@ -127,10 +128,11 @@ def instance_create_db(instance=None, db=None):
         err = ('db exist already')
         raise Exception(err)
     execute_sql_query(instance=instance,
+                      mlogs=mlogs,
                       sql=_CREATE_DATA_BASE.format(db),
                       rs=False)
 
-def instance_delete_db(instance=None, db=None):
+def instance_delete_db(instance=None, mlogs=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
@@ -138,111 +140,122 @@ def instance_delete_db(instance=None, db=None):
         err = ('db doesnt exist')
         raise Exception(err)
     execute_sql_query(instance=instance,
+                      mlogs=mlogs,
                       sql=_DELETE_DATA_BASE.format(db),
                       rs=False)
 
-def instance_exist_db(instance=None, db=None):
+def instance_exist_db(instance=None, mlogs=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
-    if not db in instance_databases(instance=instance):
+    if not db in instance_databases(instance=instance, mlogs=mlogs):
         return False
     return True
 
-def database_exist_table(instance=None, db=None, table=None):
+def database_exist_table(instance=None, mlogs=None, db=None, table=None):
     if table in instance_tables(instance=instance,
+                                mlogs=mlogs,
                                 db=db):
         return True
     return False
 
-def database_tables(instance=None, db=None):
+def database_tables(instance=None, mlogs=None, db=None):
     if db is None:
         err = ('db is None')
         raise NameError(err)
-    return instance_tables(instance=instance, db=db)
+    return instance_tables(instance=instance, mlogs=mlogs ,db=db)
 
 # indexes : max range indexes = [0, 1, 2, 3, 4, 5]
 # TODO: *
 # [name, type, *, prim, default, *]
 @_filter_raws(indexes=[0])
-def table_fields(instance=None, db=None, table=None):
+def table_fields(instance=None, mlogs=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
     return execute_sql_query(instance=instance,
+                             mlogs=mlogs,
                              sql=[_USE_DATA_BASE.format(db),
                                   _SHOW_TABLE.format(table)],
                              rs=True)
 
-def create_table(instance=None, db=None, table=None, fields=['id']):
+def create_table(instance=None, mlogs=None, db=None, table=None, fields=['id']):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-    if not instance_exist_db(instance=instance, db=db):
+    if not instance_exist_db(instance=instance, mlogs=mlogs, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
     if database_exist_table(instance=instance,
+                            mlogs=mlogs,
                             db=db,
                             table=table):
         err = ('table exist already')
         raise NameError(err)
     execute_sql_query(instance=instance,
+                      mlogs=mlogs,
                       sql=[_USE_DATA_BASE.format(db),
                            _query_create_table(table, fields)],
                       rs=False)
 
-def table_values(instance=None, db=None, table=None):
+def table_values(instance=None, mlogs=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-    if not instance_exist_db(instance=instance, db=db):
+    if not instance_exist_db(instance=instance, mlogs=mlogs, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
     if not database_exist_table(instance=instance,
+                                mlogs=mlogs,
                                 db=db,
                                 table=table):
         err = ('table doesnt exist')
         raise NameError(err)
     return execute_sql_query(instance=instance,
+                             mlogs=mlogs,
                              sql=[_USE_DATA_BASE.format(db),
                                   _SHOW_TABLE_VALUES.format(table)],
                              rs=True)
 
-def delete_table(instance=None, db=None, table=None):
+def delete_table(instance=None, mlogs=None, db=None, table=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-    if not instance_exit_db(instance=instance, db=db):
+    if not instance_exit_db(instance=instance, mlogs=mlogs, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
     if not database_exist_table(instance=instance,
-                               db=db,
-                               table=table):
+                                mlogs=mlogs,
+                                db=db,
+                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
     execute_sql_query(instance=instance,
+                      mlogs=mlogs,
                       sql=[_USE_DATA_BASE.format(db),
                            _DELETE_TABLE.format(table)],
                       rs=False)
 
 
-def add_value(instance=None, db=None, table=None, value=None):
+def add_value(instance=None, mlogs=None, db=None, table=None, value=None):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-    if not instance_exist_db(instance=instance, db=db):
+    if not instance_exist_db(instance=instance, mlogs=mlogs, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
     if not database_exist_table(instance=instance,
-                               db=db,
-                               table=table):
+                                mlogs=mlogs,
+                                db=db,
+                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
     if value is None:
         return
     ltf = len(table_fields(instance=instance,
-                                     db=db,
-                                     table=table))
+                           mlogs=mlogs,
+                           db=db,
+                           table=table))
     if len(value) > ltf:
         err = ('Too much argument')
         raise Exception(err)
@@ -254,6 +267,7 @@ def add_value(instance=None, db=None, table=None, value=None):
             else:
                 vi += "," + '"' + str(v) + '"'
         execute_sql_query(instance=instance,
+                          mlogs=mlogs,
                           sql=[_USE_DATA_BASE.format(db), _ADD_VALUE.format(table, vi)],
                           rs=False,
                           commit=True)
@@ -265,24 +279,27 @@ def add_value(instance=None, db=None, table=None, value=None):
         nv += [None]
         k -= 1
     add_value(instance=instance,
+              mlogs=mlogs,
               db=db,
               table=table,
               value=nv)
 
-def add_value_wk(instance=None, db=None, table=None, **kwargs):
+def add_value_wk(instance=None, mlogs=None, db=None, table=None, **kwargs):
     if db is None or table is None:
         err = ('db or table is None')
         raise NameError(err)
-    if not instance_exist_db(instance=instance, db=db):
+    if not instance_exist_db(instance=instance, mlogs=mlogs, db=db):
         err = ('db doesnt exist')
         raise NameError(err)
     if not database_exist_table(instance=instance,
-                               db=db,
-                               table=table):
+                                mlogs=mlogs,
+                                db=db,
+                                table=table):
         err = ('table doesnt exist')
         raise NameError(err)
     keys = list(kwargs.keys())
     fields = table_fields(instance=instance,
+                          mlogs=mlogs,
                           db=db,
                           table=table)
     if len(keys) > len(fields):
@@ -299,10 +316,13 @@ def add_value_wk(instance=None, db=None, table=None, **kwargs):
     print(op1, op2)
     print(_ADD_VALUE_WK.format(table, op1, op2))
     execute_sql_query(instance=instance,
+                      mlogs=mlogs,
                       sql=[_USE_DATA_BASE.format(db), _ADD_VALUE_WK.format(table, op1, op2)],
                       rs=False,
                       commit=True)
 
+#TODO: add mlogs kwarg
+#FIXME: pls
 
 def get_architecture(instance=None):
     res = {}
