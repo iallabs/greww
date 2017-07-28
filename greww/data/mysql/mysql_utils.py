@@ -72,12 +72,12 @@ def _query_create_table(name, fields):
     _funquery = ''
     for field in fields:
         if ':' in field:
-            field1, code = field.split(':')
+            code, field1 = field.split(':')
             _funquery += ' ' + field1
             for c in code:
                 _funquery += _protocol_taxon[c].format(field1)
-            continue
-        _funquery += ' ' + field + _protocol_noprotocol
+        else:
+            _funquery += ' ' + field + _protocol_noprotocol
     _query = _CREATE_TABLE.format(name, _funquery)
     return _query[0:-3] + _query[-2:]
 
