@@ -2,7 +2,7 @@
 
 decaprecated = set()
 
-def is_decaprecated(func):
+def decaprecateit(func):
     def pickle(*args, **kwargs):
         decaprecated.add(func)
         return False
