@@ -1,17 +1,15 @@
 import time
+from functools import wraps
+import errno
+import signal
+from .decorators import ClassDecorator
+
 
 def calculate_run_time(func, loop=1):
     t1 = time.time()
     eval(func.__name__ + '()')
     t2 = time.time()
     return 'run in :'+ str(t2 - t1) + ' ms'
-
-def runtime_eval(evl, loop=1):
-	t1 = time.time()
-	for i in range(0, loop):
-		eval(evl)
-	t2 = time.time()
-	return 'run in :' + str(t2 - t1) + ' ms'
 
 
 def timeit(func, active=True):
@@ -52,3 +50,27 @@ def timeitN(func, loop=1, report=True, active=True):
         else:
             print('total run time :' + sum(an))
             print('avg ' + moy)
+
+def timeout(seconds=10, error_message="lol"):
+    def decorator(func):
+        def _handle_timeout(signum, frame):
+            raise TimeoutError(error_message)
+
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(seconds)
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                signal.alarm(0)
+            return result
+        return wraps(func)(wrapper)
+    return decorator
+
+_dec = [timeout,
+        timeit,
+        timeitN]
+
+@ClassDecorator(classmethod)
+class GrewwTimers(object)
+    pass

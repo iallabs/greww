@@ -41,3 +41,6 @@ class RejectedConnection(Exception):
 
 class BadConnector(Exception):
     pass
+
+class TimeoutError(Exception):
+    pass
