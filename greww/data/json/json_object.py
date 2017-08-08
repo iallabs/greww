@@ -1,18 +1,9 @@
 from greww.data.basics import (mkfile_with_content,
-			       stdir,
+			       			   stdir,
                                file_content)
-from greww.settings import SETTINGS
-from greww.utils.cgreww import Greww
 import json
 
-f = __file__.split("/")[-1]
-f = f.split(".")[1]
 
-_settings = SETTINGS("json_object", "ALL")
-
-cgreww_settings = _settings["ENVIRENEMENT"]
-
-DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
 
 
 def jsonize_kwargs(*args, **kwargs):
@@ -44,4 +35,3 @@ def update_json_object(*args, **kwargs):
 
 def get_json_object(file=None, byid=None, **kwarg):
     pass
-
