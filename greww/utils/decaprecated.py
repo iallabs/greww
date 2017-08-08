@@ -1,12 +1,13 @@
 # Decorate decaprecated functions
+from .exceptions import DecaprecatedFunction
 
-decaprecated = set()
+decaprecated = []
 
 def decaprecateit(func):
     def pickle(*args, **kwargs):
         decaprecated.add(func)
-        return False
-    pass
+        raise DecaprecatedFunction(func)
+    return pickle
 
 def get_decaprecated_functions(func):
     return decaprecated
