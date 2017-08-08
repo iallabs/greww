@@ -38,3 +38,6 @@ class FileNotFound(Exception):
 
 class RejectedConnection(Exception):
     pass
+
+class BadConnector(Exception):
+    pass
