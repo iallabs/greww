@@ -3,11 +3,9 @@ from greww.utils.decorators import ClassDecorator
 
 
 
-@ClassDecorator(decorator=classmethod)
+@ClassDecorator(decorator=staticmethod)
 class MysqlPen(object):
-
     __slots__ = [method.__name__ for method in MAF]
-
     def __new__(cls):
         obj = object.__new__(cls)
         for method in MAF:
