@@ -50,4 +50,11 @@ def test_mysql_database_manipulation():
     assert "zilean_tests_0" in db
     remove_database("zilean_tests_0")
     assert not "zilean_tests_0" in db
-    
+
+def test_mysql_tables_manipulation():
+    make_database("zilean_tests_0")
+    make_table("zilean_tests_0",
+               "test_table",
+               field1="INT(2)",
+               field2="VARCHAR(3)",
+               field3="JSON")

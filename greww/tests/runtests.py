@@ -1,56 +1,43 @@
 import unittest
-from greww.utils.runtime import timeit
+import time
 
-all_modules = ['greww.data.tests.json_tests',
-               'greww.data.tests.basics_tests']
+test_modules = ['greww.data.tests.json_tests',
+                'greww.data.tests.basics_tests',
+                'greww.data.tests.mysql_tests']
 
+def _test_function(function):
+    try:
+        t1 = time.time()
+        function()
+        t2 = time.time()
+        print("[ OK ] ... {0} succeeded with a total run time of : {1} ms".format(function.__name__,
+                                                                       t2 - t1))
+    except:
+        t2 = time.time()
+        print("[WARN] ... {0} failed after runing {1} ms")
 
-def run_with_report(fn, utest=False):
-    @timeit
-    def tst(fn):
-        if utest:
-            func = unittest.FunctionTestCase(fn)
-            func()
-        else:
-            fn()
-    return tst(fn)
+def import_module_tests_functions(module):
+    mod = __import__(module, globals(), locals(), [''])
+    functions = getattr(mod, '__all__')         #XXX: Python need this usless arguments
+    return functions                            # to import all objects in a module
 
-@timeit
-def run_functions(*args):
-    print('TEST START')
-    for fnc in args:
-        print('runing ...', fnc.__name__)
-        run_with_report(fnc)
-    print('TOTAL')
+def run_pytests_modules(*test_modules):
+    t1 = time.time()
+    for module in test_modules:
+        print("[INFO] ... Importing {0} test functions".format(module))
+        functions = import_module_tests_functions(module)
+        print("[INFO] ... Runing {0} test functions".format(module))
+        print("[INFO] ... Total number of functions : {0}".format(len(functions)))
+        k1 = time.time()
+        for func in functions:
+            _test_functions(func)
+        k2 = time.time()
+        print("[INFO] ... Module tests total run time : {0} ms".format(k2 - k2))
+        print("[INFO] ... --- end module tests ---")
 
-def run_pytests_modules(test_modules):
-    for t in test_modules:
-        try:
-            # If the module defines a suite() function, call it to get the suite.
-            mod = __import__(t, globals(), locals(), ['pytests'])
-            suitefn = getattr(mod, 'pytests')
-            functions = [getattr(mod, i) for i in suitefn]
-            print(functions)
-            run_functions(*functions)
-        except:
-            # else, just load all the test cases from the module.
-            print('t - ', t)
-            print('exception')
-
-        #unittest.TextTestRunner().run(suite)
-    print('end test')
-
-def run_all_modules():
-    run_pytests_modules(all_modules)
-
-"""
-#@rtdecorator
-def run_functionszz(*funcs):
-    f = list(funcs)
-    for i in f:
-        i()
-    print('end')
-"""
+    print('[INFO] ... --- end test ---')
+    t2 = time.time()
+    print('[ OK ] ... Total runtime : {0} ms'.format(t2 - t1))
 
 def run_all_tests():
-    run_pytests_modules(all_modules)
+    run_pytests_modules(*all_modules)
