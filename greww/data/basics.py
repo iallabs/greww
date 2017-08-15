@@ -2,7 +2,6 @@ import os
 
 ####### directorys #######
 
-#TODO: import settings
 
 DEFAULT = "/Users"
 #/home/ubuntu/greww

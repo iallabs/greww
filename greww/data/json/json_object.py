@@ -4,8 +4,6 @@ from greww.data.basics import (mkfile_with_content,
 import json
 
 
-
-
 def jsonize_kwargs(*args, **kwargs):
     #A = list(args)
     keys = list(kwargs.keys())
