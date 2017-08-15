@@ -30,7 +30,7 @@ def run_pytests_modules(*test_modules):
         print("[INFO] ... Total number of functions : {0}".format(len(functions)))
         k1 = time.time()
         for func in functions:
-            _test_functions(func)
+            _test_function(func)
         k2 = time.time()
         print("[INFO] ... Module tests total run time : {0} ms".format(k2 - k2))
         print("[INFO] ... --- end module tests ---")
@@ -40,4 +40,4 @@ def run_pytests_modules(*test_modules):
     print('[ OK ] ... Total runtime : {0} ms'.format(t2 - t1))
 
 def run_all_tests():
-    run_pytests_modules(*all_modules)
+    run_pytests_modules(*test_modules)

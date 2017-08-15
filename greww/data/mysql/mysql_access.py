@@ -31,7 +31,7 @@ class ConnectorsGenerator():
         self.connectors.clear()
         self._new()
 
-_connectors = ConnectorsGenetor()
+_connectors = ConnectorsGenerator()
 
 def connector_register(func):
     global _connectors
@@ -94,8 +94,6 @@ def execute_only(*args, commit=False, connector=None):
         cursor.execute(query)
     if commit:
         connector.commit()
-
-
 
 @pure_connector_underfails(BadConnector)
 @with_connectors_register

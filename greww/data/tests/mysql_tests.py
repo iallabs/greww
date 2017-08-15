@@ -7,7 +7,6 @@ from greww.data.mysql import (databases,
                               table_content,
                               make_table,
                               remove_table,
-                              talbe_primary_start,
                               copy_table,
                               add_field,
                               remove_field,
@@ -18,15 +17,18 @@ from greww.data.mysql import (databases,
                               update_element,
                               select_optimised,
                               MysqlPen,
+                              ConnectorsGenerator)
 
-from greww.data.mysql.mysql_access import ConnectorsGenetor
-
-_connectors = ConnectorsGenetor()
+_connectors = ConnectorsGenerator()
 M = MysqlPen()
 
+__all__ = ['test_connectors',
+           'test_connection_cursors',
+           'test_mysql_database_manipulation',
+           'test_mysql_tables_manipulation']
 
 def test_connectors():
-    assert _connectors:
+    assert _connectors
     cnx = _connectors.gen
     assert cnx
     _connectors._reset()

@@ -23,6 +23,7 @@ def ssh_session(ssh_connection=None,
                                  port=port,
                                  username=username,
                                  password=password)
+
         session = session.open_channel(kind=kind)
         return session
 
@@ -34,12 +35,12 @@ def ssh_connection_with_private_key(server=None,
                                     user=None,
                                     location=None,
                                     pkey=None,
-                                    allow_agent=False,
-                                    look_for_keys=True):
+                                    allow_agent=None,
+                                    look_for_keys=None):
 
-    pkey = pkey or private_rsa_jey(location)
+    #pkey = pkey or private_rsa_jey(location)
     c = paramiko.SSHCLient()
-    #FIXME: pls
+    pass
 
 def send_ssh_command(ssh_connection=None):
     pass

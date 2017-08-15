@@ -7,7 +7,6 @@ from .mysql_utils import (databases,
                           table_content,
                           make_table,
                           remove_table,
-                          talbe_primary_start,
                           copy_table,
                           add_field,
                           remove_field,
@@ -17,8 +16,8 @@ from .mysql_utils import (databases,
                           select_elements,
                           update_element,
                           select_optimised,
-                          MysqlApiFunction)
+                          MysqlApiFunctions)
 
-from .mysql_access import ConnectorsGenetor
+from .mysql_access import ConnectorsGenerator
 
 from .mysql_pen import MysqlPen

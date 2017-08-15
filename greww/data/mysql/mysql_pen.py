@@ -1,4 +1,4 @@
-from .mysql_utils import MysqlApiFunction as MAF
+from .mysql_utils import MysqlApiFunctions as MAF
 from greww.utils.decorators import ClassDecorator
 
 
