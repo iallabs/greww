@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from setuptools import setup, find_packages, Command
 
 class greww_test_p(Command):
@@ -23,13 +22,11 @@ class greww_test_p(Command):
         from greww.tests.runtests import run_all_tests
         run_all_tests()
 
-
 with open('README.md') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
     license = f.read()
-
 
 setup(
     name='Greww',
@@ -38,10 +35,8 @@ setup(
     long_description=readme,
     author='Imp Alpha lab',
     author_email='hilalyamine@gmail.com',
-    cmdclass={
-        'test' : greww_test_p,
-    },
+    cmdclass={'test' : greww_test_p},
     url='',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs', 'experience', 'cgreww'))
+    packages=find_packages(exclude=('tests', 'docs', 'cgreww'))
 )
