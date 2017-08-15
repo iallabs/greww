@@ -1,8 +1,7 @@
 import mysql.connector
 from greww.vmfetcher import MachineIdentity as MID
 from greww.utils.exceptions import (BadConnector,
-                                    RejectedConnection,
-                                    )
+                                    RejectedConnection)
 
 MYSQL_LOGS = MID._load("mysql.logs")
 MYSQL_CONFIG = MID._load("mysql.config")
@@ -71,7 +70,8 @@ def mysql_local_connector():
     try:
         return mysql.connector.connect(**MYSQL_LOGS,
                                        **MYSQL_CONFIG)
-    raise RejectedConnection(**MYSQL_LOGS, **MYSQL_CONFIG)
+    except:
+        raise RejectedConnection(**MYSQL_LOGS, **MYSQL_CONFIG)
 
 @pure_connector_underfails(BadConnector)
 @with_connectors_register
@@ -114,7 +114,7 @@ def execute_and_fetch(*args, commit=False, connector=None):
     try:
         cursor = connector.cursor()
     except:
-        raise BadConnector
+        raise BadConnector(connector)
     for query in list(args):
         cursor.execute(query)
     for e in cursor:

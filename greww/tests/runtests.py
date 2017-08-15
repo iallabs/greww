@@ -1,7 +1,6 @@
 import unittest
 from greww.utils.runtime import timeit
 
-
 all_modules = ['greww.data.tests.json_tests',
                'greww.data.tests.basics_tests']
 

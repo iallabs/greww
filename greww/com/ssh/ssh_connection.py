@@ -30,7 +30,7 @@ def private_rsa_key(location):
     return paramiko.RSAkey.from_private_key_file(location)
 
 #with key
-def ssh_connection_with_private_key(server=None, user=None, location, pkey=None, allow_agent=False, look_for_keys=True):
+def ssh_connection_with_private_key(server=None, user=None, location=None, pkey=None, allow_agent=False, look_for_keys=True):
     pkey = pkey or private_rsa_jey(location)
     c = paramiko.SSHCLient()
     #FIXME: pls
