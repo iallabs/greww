@@ -94,5 +94,5 @@ _dec = [timeout,
         timeitN]
 
 @ClassDecorator(classmethod)
-class GrewwTimers(object)
+class GrewwTimers(object):
     pass
