@@ -41,14 +41,12 @@ def test_connection_cursors():
     cursor = _connectors.gen.cursor()
     cursor.execute("SHOW DATABASES")
     _databases = [i for i in cursor]
-    assert _databases != []
-    assert len(_databases) = 4
+    assert len(_databases) == 4
 
 def test_mysql_database_manipulation():
     db = databases()
     assert db
-    print("hi", db)
-    assert len(db) = 4
+    assert len(db) == 4
     assert "sys" in db
     make_database("zilean_tests_0")
     db = databases()
