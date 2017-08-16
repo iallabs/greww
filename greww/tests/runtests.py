@@ -1,9 +1,9 @@
 import unittest
 import time
 
-test_modules = ['greww.data.tests.json_tests',
-                'greww.data.tests.basics_tests',
-                'greww.data.tests.mysql_tests']
+test_modules = ['greww.data.tests.tests_basics',
+                'greww.data.tests.tests_json',
+                'greww.data.tests.tests_mysql']
 
 def _test_function(func):
     try:
