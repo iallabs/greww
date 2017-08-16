@@ -47,6 +47,7 @@ def test_connection_cursors():
 def test_mysql_database_manipulation():
     db = databases()
     assert db
+    print("hi", db)
     assert len(db) > 4
     assert "sys" in db
     make_database("zilean_tests_0")
