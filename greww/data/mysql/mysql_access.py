@@ -69,7 +69,11 @@ def mysql_local_connector():
     """
     try:
         global MYSQL_LOGS, MYSQL_CONFIG
-        c = mysql.connector.connect(**MYSQL_LOGS, **MYSQL_CONFIG)
+        use_pure = MYSQL_CONFIG['use_pure']
+        raise_on_warnings = MYSQL_LLOGS['raise_on_warnings']
+        c = mysql.connector.connect(user_pure=user_pure,
+                                    raise_on_warnings=raise_on_warnings,
+                                    **MYSQL_LOGS)
         return c
     except:
         raise RejectedConnection(logs=MYSQL_LOGS, cnf=MYSQL_CONFIG)
