@@ -68,6 +68,7 @@ def mysql_local_connector():
     ======================================================
     """
     try:
+        global MYSQL_LOGS, MYSQL_CONFIG
         return mysql.connector.connect(**MYSQL_LOGS, **MYSQL_CONFIG)
     except:
         raise RejectedConnection(**MYSQL_LOGS, **MYSQL_CONFIG)
