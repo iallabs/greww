@@ -4,13 +4,17 @@
 #> decorate function with 2 dimentional return value
 #> indexes is a list if integers
 
+def tuplik(e, indexes):
+    if len(e) == 1:
+        return e[0]
+    else:
+        return [e[i] for i in indexes]
+
 def refetch_filter(indexes):
     """
     Decorator that treates 2D List and return only raws
     indexes
     ===================================================
-    >>> f = lambda n: [(x, x+1, x+2), -9999)\
-                       for x in range(n)]
     >>> f(2)
     [(0, 1, 2), (1, 2, 3)]
     >>> _refetch_filter([0, 2])f(2)
@@ -24,7 +28,7 @@ def refetch_filter(indexes):
             res = func(*args, **kwargs)
             ress = []
             for i in res:
-                ress += tuplik(*[i[j] for j in indexes])
+                ress.append(tuplik(i, indexes))
             return ress
         return wrap_args
     return wrap_func

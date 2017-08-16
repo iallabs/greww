@@ -20,6 +20,7 @@ from greww.data.mysql import (databases,
                               ConnectorsGenerator)
 
 _connectors = ConnectorsGenerator()
+#_connectors._new()
 M = MysqlPen()
 
 __all__ = ['test_connectors',
@@ -34,6 +35,7 @@ def test_connectors():
     _connectors._reset()
     cnx = _connectors.gen
     assert cnx
+
 
 def test_connection_cursors():
     cursor = _connectors.gen.cursor()
@@ -51,7 +53,10 @@ def test_mysql_database_manipulation():
     db = databases()
     assert "zilean_tests_0" in db
     remove_database("zilean_tests_0")
+    db = databases()
     assert not "zilean_tests_0" in db
+
+test_mysql_database_manipulation()
 
 def test_mysql_tables_manipulation():
     make_database("zilean_tests_0")
