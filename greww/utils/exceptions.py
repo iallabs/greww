@@ -37,10 +37,12 @@ class FileNotFound(Exception):
     pass
 
 class RejectedConnection(Exception):
-    pass
+    def __init__(self, logs=None, cnf=None):
+        self.message = "Cannot connect to mysql-server using logs {0}".format(logs)
 
 class BadConnector(Exception):
-    pass
+    def __init__(self, cnx):
+        self.message = "Cannot use mysql-connector {0}".format(cnx)
 
 class TimeoutError(Exception):
     pass
