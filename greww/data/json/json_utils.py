@@ -3,20 +3,7 @@ from greww.data.basics import (mkfile_with_content,
                                stdir,
                                rmfile,
                                ckfile)
-from greww.settings import SETTINGS
-from greww.utils.cgreww import Greww
 
-#:TODO Rofl
-
-#TODO: import settings
-
-_settings = SETTINGS("json_utils", "ALL")
-
-cgreww_settings = _settings["ENVIRENEMENT"]
-
-DEFAULT_PATH = _settings["WORKING_DIRECTORY"]
-
-#@Greww(**cgreww_settings)
 def create_json_file(directory=DEFAULT_PATH, name=None, kind=None):
     ct = '[]' if kind == list else "{}"
     mkfile_with_content(directory=directory,
@@ -24,7 +11,6 @@ def create_json_file(directory=DEFAULT_PATH, name=None, kind=None):
                          ext='json',
                          content=ct)
 
-#Append for json list
 def append_json_object(directory=DEFAULT_PATH, name=None, obj=None):
     if directory is None or name is None:
         return

@@ -1,9 +1,7 @@
-from greww.settings import SETTINGS
 import os
 
 ####### directorys #######
 
-#TODO: import settings
 
 DEFAULT = "/Users"
 #/home/ubuntu/greww
@@ -50,7 +48,7 @@ def mkfile(directory, name=None, ext=None):
     if ext:
         _file = open(directory + "/" + name + "." + ext, 'w').close()
     else:
-        _file = open(directory + "/" + name, 'w').close() 
+        _file = open(directory + "/" + name, 'w').close()
 
 def rmfile(directory, name):
     # remove file
@@ -197,4 +195,3 @@ def replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, in
 
 def file_size():
     pass
-

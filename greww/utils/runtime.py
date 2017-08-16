@@ -12,7 +12,6 @@ def calculate_run_time(func, loop=1):
     t2 = time.time()
     return 'run in :'+ str(t2 - t1) + ' ms'
 
-
 def timeit(func, active=True):
     def timed(*args, **kwargs):
         t1 = time.time()
@@ -94,5 +93,5 @@ _dec = [timeout,
         timeitN]
 
 @ClassDecorator(classmethod)
-class GrewwTimers(object)
+class GrewwTimers(object):
     pass

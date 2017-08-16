@@ -1,8 +1,7 @@
 import mysql.connector
 from greww.vmfetcher import MachineIdentity as MID
 from greww.utils.exceptions import (BadConnector,
-                                    RejectedConnection,
-                                    )
+                                    RejectedConnection)
 
 MYSQL_LOGS = MID._load("mysql.logs")
 MYSQL_CONFIG = MID._load("mysql.config")
@@ -32,7 +31,7 @@ class ConnectorsGenerator():
         self.connectors.clear()
         self._new()
 
-_connectors = ConnectorsGenetor()
+_connectors = ConnectorsGenerator()
 
 def connector_register(func):
     global _connectors
@@ -69,9 +68,20 @@ def mysql_local_connector():
     ======================================================
     """
     try:
-        return mysql.connector.connect(**MYSQL_LOGS,
-                                       **MYSQL_CONFIG)
-    raise RejectedConnection(**MYSQL_LOGS, **MYSQL_CONFIG)
+        global MYSQL_LOGS, MYSQL_CONFIG
+        use_pure = MYSQL_CONFIG['use_pure']
+        raise_on_warnings = MYSQL_CONFIG['raise_on_warnings']
+        host = MYSQL_LOGS['host']
+        user = MYSQL_LOGS['user']
+        password = MYSQL_LOGS['password']
+        c = mysql.connector.connect(host=host,
+                                    user=user,
+                                    password=password,
+                                    use_pure=use_pure,
+                                    raise_on_warnings=raise_on_warnings)
+        return c
+    except:
+        raise RejectedConnection(logs=MYSQL_LOGS, cnf=MYSQL_CONFIG)
 
 @pure_connector_underfails(BadConnector)
 @with_connectors_register
@@ -95,8 +105,6 @@ def execute_only(*args, commit=False, connector=None):
     if commit:
         connector.commit()
 
-
-
 @pure_connector_underfails(BadConnector)
 @with_connectors_register
 def execute_and_fetch(*args, commit=False, connector=None):
@@ -114,7 +122,7 @@ def execute_and_fetch(*args, commit=False, connector=None):
     try:
         cursor = connector.cursor()
     except:
-        raise BadConnector
+        raise BadConnector(connector)
     for query in list(args):
         cursor.execute(query)
     for e in cursor:
