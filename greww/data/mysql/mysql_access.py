@@ -71,9 +71,14 @@ def mysql_local_connector():
         global MYSQL_LOGS, MYSQL_CONFIG
         use_pure = MYSQL_CONFIG['use_pure']
         raise_on_warnings = MYSQL_CONFIG['raise_on_warnings']
-        c = mysql.connector.connect(use_pure=use_pure,
-                                    raise_on_warnings=raise_on_warnings,
-                                    **MYSQL_LOGS)
+        host = MYSQL_LOGS['host']
+        user = MYSQL_LOGS['user']
+        password = MYSQL_LOGS['password']
+        c = mysql.connector.connect(host=host,
+                                    user=user,
+                                    password=password,
+                                    use_pure=use_pure,
+                                    raise_on_warnings=raise_on_warnings)
         return c
     except:
         raise RejectedConnection(logs=MYSQL_LOGS, cnf=MYSQL_CONFIG)
