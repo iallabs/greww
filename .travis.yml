@@ -27,5 +27,4 @@ before_script:
 script:
   - "python setup.py install"
   - "python setup.py test"
-after-success:
   - "codeclimate-test-reporter"
