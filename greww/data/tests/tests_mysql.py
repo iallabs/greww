@@ -24,7 +24,7 @@ _connectors = ConnectorsGenerator()
 M = MysqlPen()
 
 db = "zilean_tests_0"
-table = "test_table"
+tb = "test_table"
 
 def test_connectors():
     assert _connectors
@@ -45,27 +45,36 @@ def test_connection_cursors():
 test_connection_cursors()
 
 def test_mysql_database_manipulation():
-    db = databases()
-    assert db
+    _db = databases()
+    assert _db
     assert len(db) >= 4
     assert "sys" in db
-    make_database("db")
-    db = databases()
-    assert "db" in db
-    remove_database("db")
-    db = databases()
-    assert not "db" in db
+    make_database(db)
+    _db = databases()
+    assert db in _db
+    remove_database(db)
+    _db = databases()
+    assert not db in _db
     return 1
 
 def test_mysql_tables_manipulation():
-    make_database("db")
-    make_table("db",
-               "test_table",
+    make_database(db)
+    _tb = tables(db)
+    assert len(_tb) == 0
+    make_table(db,
+               tb,
                field1="INT(2)",
                field2="VARCHAR(3)",
                field3="JSON")
-    fields = table_fields()
-    remove_table("zilean_test_0", "test_table")
+    _tb = tables(db)
+    assert tb in _tb
+    fields = table_fields(db, tb)
+    assert "field1" in fields and \
+           "field2" in fields and \
+           "field3" in fields
+    remove_table(db, tb)
+    _tb = tables(db)
+    assert len(_tb) == 0
     return 1
 
 __all__ = [test_connectors,
