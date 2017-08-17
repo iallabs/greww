@@ -45,6 +45,7 @@ def test_connection_cursors():
 test_connection_cursors()
 
 def test_mysql_database_manipulation():
+    global db, tb
     _db = databases()
     assert _db
     assert len(db) >= 4
@@ -58,6 +59,7 @@ def test_mysql_database_manipulation():
     return 1
 
 def test_mysql_tables_manipulation():
+    global db, tb
     make_database(db)
     _tb = tables(db)
     assert len(_tb) == 0
