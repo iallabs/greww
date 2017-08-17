@@ -1,6 +1,4 @@
-env:
-  global:
-    - CODECLIMATE_REPO_TOKEN=6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
+
 language: python
 python:
   - "3.3"
@@ -26,4 +24,4 @@ script:
   - "python setup.py install"
   - "python setup.py test"
   - "coverage run setup.py test"
-  - "codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
+  - "codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344"
