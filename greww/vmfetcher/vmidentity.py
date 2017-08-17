@@ -1,6 +1,5 @@
 
 
-
 def parse_machine_identity():
     pass
 

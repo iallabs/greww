@@ -6,12 +6,34 @@ from greww.utils.exceptions import (BadConnector,
 MYSQL_LOGS = MID._load("mysql.logs")
 MYSQL_CONFIG = MID._load("mysql.config")
 
+def mysql_local_connector():
+    """
+    Return "LOCAL" MySQLConnection Cursor object
+    ======================================================
+    """
+    try:
+        global MYSQL_LOGS, MYSQLs_CONFIG
+        use_pure = MYSQL_CONFIG['use_pure']
+        raise_on_warnings = MYSQL_CONFIG['raise_on_warnings']
+        host = MYSQL_LOGS['host']
+        user = MYSQL_LOGS['user']
+        password = MYSQL_LOGS['password']
+        c = mysql.connector.connect(host=host,
+                                    user=user,
+                                    password=password,
+                                    use_pure=use_pure,
+                                    raise_on_warnings=raise_on_warnings)
+        return c
+    except:
+        raise RejectedConnection(logs=MYSQL_LOGS, cnf=MYSQL_CONFIG)
+
 class ConnectorsGenerator():
 
     __slots__ = ["connectors"]
 
     def __init__(self):
         self.connectors = set()
+        self._new()
 
     @property
     def gen(self):
@@ -25,7 +47,8 @@ class ConnectorsGenerator():
         self.connectors.add(cntr)
 
     def _new(self):
-        self.connectors.add(mysql_local_connector())
+        c = mysql_local_connector()
+        self.connectors.add(c)
 
     def _reset(self):
         self.connectors.clear()
@@ -61,27 +84,6 @@ def pure_connector_underfails(*exceptions):
         return wrap_args
     return wrap_func
 
-@connector_register
-def mysql_local_connector():
-    """
-    Return "LOCAL" MySQLConnection Cursor object
-    ======================================================
-    """
-    try:
-        global MYSQL_LOGS, MYSQL_CONFIG
-        use_pure = MYSQL_CONFIG['use_pure']
-        raise_on_warnings = MYSQL_CONFIG['raise_on_warnings']
-        host = MYSQL_LOGS['host']
-        user = MYSQL_LOGS['user']
-        password = MYSQL_LOGS['password']
-        c = mysql.connector.connect(host=host,
-                                    user=user,
-                                    password=password,
-                                    use_pure=use_pure,
-                                    raise_on_warnings=raise_on_warnings)
-        return c
-    except:
-        raise RejectedConnection(logs=MYSQL_LOGS, cnf=MYSQL_CONFIG)
 
 @pure_connector_underfails(BadConnector)
 @with_connectors_register

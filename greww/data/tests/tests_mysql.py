@@ -23,10 +23,8 @@ _connectors = ConnectorsGenerator()
 #_connectors._new()
 M = MysqlPen()
 
-__all__ = ['test_connectors',
-           'test_connection_cursors',
-           'test_mysql_database_manipulation',
-           'test_mysql_tables_manipulation']
+db = "zilean_tests_0"
+table = "test_table"
 
 def test_connectors():
     assert _connectors
@@ -35,30 +33,42 @@ def test_connectors():
     _connectors._reset()
     cnx = _connectors.gen
     assert cnx
-
+    return 1
 
 def test_connection_cursors():
     cursor = _connectors.gen.cursor()
     cursor.execute("SHOW DATABASES")
     _databases = [i for i in cursor]
-    assert len(_databases) == 4
+    assert len(_databases) >= 4
+    return 1
+
+test_connection_cursors()
 
 def test_mysql_database_manipulation():
     db = databases()
     assert db
-    assert len(db) == 4
+    assert len(db) >= 4
     assert "sys" in db
-    make_database("zilean_tests_0")
+    make_database("db")
     db = databases()
-    assert "zilean_tests_0" in db
-    remove_database("zilean_tests_0")
+    assert "db" in db
+    remove_database("db")
     db = databases()
-    assert not "zilean_tests_0" in db
+    assert not "db" in db
+    return 1
 
 def test_mysql_tables_manipulation():
-    make_database("zilean_tests_0")
-    make_table("zilean_tests_0",
+    make_database("db")
+    make_table("db",
                "test_table",
                field1="INT(2)",
                field2="VARCHAR(3)",
                field3="JSON")
+    fields = table_fields()
+    remove_table("zilean_test_0", "test_table")
+    return 1
+
+__all__ = [test_connectors,
+           test_connection_cursors,
+           test_mysql_database_manipulation,
+           test_mysql_tables_manipulation]
