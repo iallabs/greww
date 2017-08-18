@@ -16,8 +16,7 @@ install:
   - "sudo apt install gcc"
   - "sudo apt install protobuf-compiler"
   - "pip install -r requirements.txt"
-  - "pip uninstall --yes coverage"
-  - "pip install coverage<4.4"
+  - "pip install 'coverage<4.4'"
 # command to run tests
 script:
   - "python setup.py install"
