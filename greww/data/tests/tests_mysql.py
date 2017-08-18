@@ -48,14 +48,14 @@ def test_mysql_database_manipulation():
     global db, tb
     _db = databases()
     assert _db
-    assert len(db) >= 4
-    assert "sys" in db
+    assert len(_db) >= 4
+    assert "sys" in _db
     make_database(db)
     _db = databases()
     assert db in _db
     remove_database(db)
     _db = databases()
-    assert not db in _db
+    assert not (db in _db)
     return 1
 
 def test_mysql_tables_manipulation():
@@ -78,6 +78,7 @@ def test_mysql_tables_manipulation():
     _tb = tables(db)
     assert len(_tb) == 0
     return 1
+
 
 __all__ = [test_connectors,
            test_connection_cursors,

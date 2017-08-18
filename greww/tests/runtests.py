@@ -33,7 +33,7 @@ def run_pytests_modules(*test_modules):
         for func in functions:
             _test_function(func)
         k2 = time.time()
-        print("[INFO] ... Module tests total run time : {0} ms".format(k2 - k2))
+        print("[INFO] ... Module tests total run time : {0} ms".format(k2 - k1))
         print("[INFO] ... --- end module tests ---")
 
     print('[INFO] ... --- end test ---')

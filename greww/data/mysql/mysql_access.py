@@ -77,7 +77,7 @@ def pure_connector_underfails(*exceptions):
         def wrap_args(*args, **kwargs):
             try:
                 res = func(*args, **kwargs)
-            except execptions:
+            except exceptions:
                 kwargs["connector"] = mysql_local_connector()
                 return func(*args, **kwargs)
             return res

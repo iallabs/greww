@@ -19,6 +19,7 @@ class MachineIdentity(object):
 
     def load(self, a):
         global SQLC, SQLL
+        global GREWW_WORKING_PATH
         if a == "mysql.logs":
             return SQLL
         if a == "mysql.config":

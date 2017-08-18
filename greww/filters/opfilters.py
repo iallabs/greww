@@ -8,7 +8,10 @@ def tuplik(e, indexes):
     if len(e) == 1:
         return e[0]
     else:
-        return [e[i] for i in indexes]
+        R = [e[i] for i in indexes]
+        if len(R) == 1:
+            return R[0]
+        return R
 
 def refetch_filter(indexes):
     """
