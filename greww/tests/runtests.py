@@ -15,7 +15,7 @@ def _test_function(func):
                                                                                          t2 - t1))
     except:
         t2 = time.time()
-        print("[WARN] ... {0} failed after runing {1} ms".format(func,
+        print("[WARN] ... {0} failed after runing {1} ms".format(func.__name__,
                                                                  t2 - t1))
 def import_module_tests_functions(module):
     mod = __import__(module, globals(), locals(), [''])

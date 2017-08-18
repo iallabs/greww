@@ -16,10 +16,9 @@ install:
   - "sudo apt install gcc"
   - "sudo apt install protobuf-compiler"
   - "pip install -r requirements.txt"
+  - "pip uninstall coverage"
+  - "pip install coverage<4.4"
 # command to run tests
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
 script:
   - "python setup.py install"
   - "python setup.py test"
