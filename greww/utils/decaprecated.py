@@ -5,9 +5,11 @@ decaprecated = []
 
 def decaprecateit(func):
     def pickle(*args, **kwargs):
-        decaprecated.add(func)
+        global decaprecated
+        decaprecated.append(func)
         raise DecaprecatedFunction(func)
     return pickle
 
 def get_decaprecated_functions(func):
+    global decaprecated
     return decaprecated

@@ -1,3 +1,4 @@
+
 language: python
 python:
   - "3.3"
@@ -15,7 +16,11 @@ install:
   - "sudo apt install gcc"
   - "sudo apt install protobuf-compiler"
   - "pip install -r requirements.txt"
+  - "pip uninstall --yes coverage"
+  - "pip install 'coverage<4.4'"
 # command to run tests
 script:
   - "python setup.py install"
   - "python setup.py test"
+  - "coverage run setup.py test"
+  - "codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344"

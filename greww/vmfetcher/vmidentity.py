@@ -1,6 +1,5 @@
 
 
-
 def parse_machine_identity():
     pass
 
@@ -10,6 +9,8 @@ SQLL = {"host" : "127.0.0.1",
 
 SQLC = {"use_pure" : True,
         "raise_on_warnings" : True}
+
+GREWW_WORKING_PATH = "/Users/ial/"
 
 class MachineIdentity(object):
 
@@ -22,6 +23,8 @@ class MachineIdentity(object):
             return SQLL
         if a == "mysql.config":
             return SQLC
+        if a == "GWP":
+            return GREWW_WORKING_PATH
 
     @classmethod
     def _load(cls, cnf):

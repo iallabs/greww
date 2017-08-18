@@ -77,6 +77,12 @@ def table_fields(dbname, table):
     """
     return execute_and_fetch(_TABLE_FIELDS.format(dbname, table))
 
+def table_fields_data(dbname, table):
+    """
+    Not Implemented
+    """
+    return execute_and_fetch(_TABLE_FIELDS.format(dbname, table))
+
 def table_content(db, table):
     """
     return a 2 dimentioanl array containing all table values

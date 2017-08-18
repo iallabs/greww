@@ -8,16 +8,15 @@ test_modules = ['greww.data.tests.tests_basics',
 def _test_function(func):
     try:
         t1 = time.time()
-        function = func
-        function()
+        exit_status = func()
         t2 = time.time()
-        print("[ OK ] ... {0} succeeded with a total run time of : {1} ms".format(func,
-                                                                                  t2 - t1))
+        print("[ OK ] ... {0} succeeded ES:{1} with a total run time of : {2} ms".format(func.__name__,
+                                                                                         exit_status,
+                                                                                         t2 - t1))
     except:
         t2 = time.time()
-        print("[WARN] ... {0} failed after runing {1} ms".format(func,
+        print("[WARN] ... {0} failed after runing {1} ms".format(func.__name__,
                                                                  t2 - t1))
-
 def import_module_tests_functions(module):
     mod = __import__(module, globals(), locals(), [''])
     functions = getattr(mod, '__all__')         #XXX: Python need this usless arguments
