@@ -47,8 +47,10 @@ jobs:
 
       - run:
           name: run tests
-          command:
-            - python setup.py test
+          command: |
+            python setup.py test
+            codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
+
 
       - store_artifacts:
           path: test-reports
