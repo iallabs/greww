@@ -32,15 +32,9 @@ jobs:
           command: |
             pip install -r requirements.txt
 
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-
       - run:
           name: install module
-          command: |
-            . venv/bin/activate
+          command:
             python3 setup.py install
 
       - run:
@@ -51,7 +45,7 @@ jobs:
       - run:
           name: report tests
           command: |
-          codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
+            codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
 
       - store_artifacts:
           path: test-reports
