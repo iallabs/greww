@@ -16,7 +16,7 @@ class MysqlPen(object):
                     func)
         return obj
 
-@ClassDecorator(decorator=ArgsBooster(*_databases))
+@ClassDecorator(decorator=ArgsBooster(0, *_databases))
 class AssertedMysqlPen(MysqlPen):
 
     __slots__ = [method for method in MAF.keys()] + ["database"]
