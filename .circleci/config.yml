@@ -46,9 +46,9 @@ jobs:
             python setup.py install
 
       - run:
-        name: run tests
-        command:
-          - python setup.py test
+          name: run tests
+          command:
+            - python setup.py test
 
       - store_artifacts:
           path: test-reports
