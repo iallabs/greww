@@ -1,31 +1,21 @@
 import os
 
-####### directorys #######
-
-
-DEFAULT = "/Users"
-#/home/ubuntu/greww
-
-
-def lsdir(directory):
+def list_dir(directory):
     return os.listdir(directory)
 
-def stdir(directory):
+def set_dir(directory):
     # set os directory
     os.chdir(directory)
 
-def ckdir(directory):
+def check_dir(directory):
     # check directory
     return os.path.exists(directory)
 
-def mkdir(directory):
+def make_dir(directory):
     # make directory
-    if ckdir(directory):
-        #TODO: maybe an Exception here
-        return 0
     os.makedirs(directory)
 
-def rmdir(directory, all=False, rec=False):
+def remove_dir(directory, all=False, rec=False):
     # remove directory
     if rec:
         import shutil
@@ -33,18 +23,14 @@ def rmdir(directory, all=False, rec=False):
         return 0
     os.rmdir(directory)
 
-
 ######### files ##########
 
-def ckfile(directory, name):
+def check_file(directory, name):
     # check file
     return ckdir(directory + "/" + name)
 
 def mkfile(directory, name=None, ext=None):
     # make file
-    if ckfile(directory, name):
-        #TODO: maybe an Exception here
-        return 0
     if ext:
         _file = open(directory + "/" + name + "." + ext, 'w').close()
     else:
@@ -52,32 +38,20 @@ def mkfile(directory, name=None, ext=None):
 
 def rmfile(directory, name):
     # remove file
-    if not ckfile(directory, name):
-        #TODO: Exception
-        return
     os.remove(directory + "/" + name)
 
 ####
 
-
 def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     # make file with content
-    if directory is None or name is None:
-        #TODO: execption
-        return 0
+    if name is None:
+        raise ValueError("Name can't be None")
     if ext:
         name += "." + ext
-    if not ckdir(directory):
-        #TODO: execption
-        return 0
-    if ckfile(directory, name):
-        #TODO: execption
-        return 0
-
     stdir(directory)
+    if not content:
+        return
     with open(name, 'w') as f:
-        if not content:
-            return
         if type(content) == str:
             f.write(content)
         elif type(content) == list:
@@ -88,7 +62,6 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
 
 
 def file_content(directory=None, name=None, expand=True):
-    ckfile(directory, name)
     stdir(directory)
     with open(name, "r") as f:
         if expand:
@@ -98,12 +71,8 @@ def file_content(directory=None, name=None, expand=True):
 
 
 def file_lenght(directory=None, name=None):
-    if directory is None or name is None:
-        #TODO: execption
-        return 0
-    if not ckfile(directory, name):
-        #TODO: execption
-        return -1
+    if name is None:
+        raise ValueError("Name can't be None")
     stdir(directory)
     with open(name, 'r') as f:
         return len(f.readlines())

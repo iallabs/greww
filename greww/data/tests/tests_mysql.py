@@ -26,6 +26,13 @@ M = MysqlPen()
 db = "zilean_tests_0"
 tb = "test_table"
 
+def _element_of_matrix(elem, matrix):
+    for raw in matrix:
+        for column in matrix:
+            if elem == column:
+                return True
+    return False
+
 def test_connectors():
     assert _connectors
     cnx = _connectors.gen
@@ -77,6 +84,10 @@ def test_mysql_tables_manipulation():
     remove_table(db, tb)
     _tb = tables(db)
     assert len(_tb) == 0
+
+
+    # Clean up test database
+    remove_database(db)
     return 1
 
 

@@ -3,8 +3,6 @@ from greww.vmfetcher import MachineIdentity as MID
 from greww.utils.exceptions import (BadConnector,
                                     RejectedConnection)
 
-MYSQL_LOGS = MID._load("mysql.logs")
-MYSQL_CONFIG = MID._load("mysql.config")
 
 def mysql_local_connector():
     """
@@ -12,7 +10,13 @@ def mysql_local_connector():
     ======================================================
     """
     try:
-        global MYSQL_LOGS, MYSQLs_CONFIG
+        MYSQL_LOGS = MID._load("mysql.logs")
+        MYSQL_CONFIG = MID._load("mysql.config")
+        #XXX: The reason behind creting each parameter in
+        # Variables is because Python doesnt support 2 concated
+        # Dictionaries untill version >=3.x
+        # example :
+        # c = mysql.connector.connect(host)
         use_pure = MYSQL_CONFIG['use_pure']
         raise_on_warnings = MYSQL_CONFIG['raise_on_warnings']
         host = MYSQL_LOGS['host']
@@ -27,7 +31,7 @@ def mysql_local_connector():
     except:
         raise RejectedConnection(logs=MYSQL_LOGS, cnf=MYSQL_CONFIG)
 
-class ConnectorsGenerator():
+class ConnectorsGenerator(object):
 
     __slots__ = ["connectors"]
 
