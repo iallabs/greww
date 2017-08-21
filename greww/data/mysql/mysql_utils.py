@@ -10,6 +10,7 @@ from .mysql_query import (_USE_DATABASE,
                           _SHOW_TABLES,
                           _TABLE_FIELDS,
                           _CREATE_TABLE,
+                          _SELECT_TABLE,
                           _USE_DATABASE,
                           _DELETE_TABLE,
                           _IE_QUERY,
@@ -95,7 +96,7 @@ def table_fields_data(dbname, table):
 
 def table_content(db, table):
     """
-    return a 2 dimentioanl array containing all table values
+    return a 2 dimentioanl array cont-aining all table values
     ========================================================
     >>> table_content("sys", "host_ip")
     [[1, 2, 3],
@@ -104,7 +105,7 @@ def table_content(db, table):
     ========================================================
     """
     #XXX: uses : `select * from table`
-    return execute_and_fetch(_SHOW_TABLE_VALUES.format(db, table))
+    return execute_and_fetch(_SELECT_TABLE.format(db, table))
 
 def make_table(db, table, **kwargs):
     """

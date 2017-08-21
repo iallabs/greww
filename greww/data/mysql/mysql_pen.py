@@ -1,5 +1,5 @@
 from .mysql_utils import MysqlApiFunctions as MAF
-from greww.utils.decorators import ClassDecorator, ArgsBooster
+from greww.utils.decorators import ClassDecorator #, ArgsBooster
 
 _databases = ""
 
@@ -16,7 +16,7 @@ class MysqlPen(object):
                     func)
         return obj
 
-@ClassDecorator(decorator=ArgsBooster(0, *_databases))
+#@ClassDecorator(decorator=ArgsBooster(0, *_databases))
 class AssertedMysqlPen(MysqlPen):
 
     __slots__ = [method for method in MAF.keys()] + ["database"]
