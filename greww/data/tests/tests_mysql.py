@@ -42,6 +42,8 @@ def test_connectors():
     assert cnx
     return 1
 
+#test_connectors()
+
 def test_connection_cursors():
     cursor = _connectors.gen.cursor()
     cursor.execute("SHOW DATABASES")
@@ -49,7 +51,7 @@ def test_connection_cursors():
     assert len(_databases) >= 4
     return 1
 
-test_connection_cursors()
+#test_connection_cursors()
 
 def test_mysql_database_manipulation():
     global db, tb
@@ -64,6 +66,8 @@ def test_mysql_database_manipulation():
     _db = databases()
     assert not (db in _db)
     return 1
+
+#test_mysql_database_manipulation()
 
 def test_mysql_tables_manipulation():
     global db, tb
@@ -84,11 +88,11 @@ def test_mysql_tables_manipulation():
     remove_table(db, tb)
     _tb = tables(db)
     assert len(_tb) == 0
-
-
     # Clean up test database
     remove_database(db)
     return 1
+
+#test_mysql_tables_manipulation()
 
 
 __all__ = [test_connectors,
