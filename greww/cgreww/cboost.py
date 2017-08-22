@@ -21,8 +21,6 @@ Types= {'int' : ctypes.c_int,
 # C++
 
 
-
-
 def call_cpp_function(func, path=None, out_put=None, in_put=None, args=None, kwargs=None):
     if path is None:
         pass
