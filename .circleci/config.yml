@@ -38,7 +38,7 @@ jobs:
           command: |
             sudo apt install gcc
             sudo apt install protobuf-compiler
-            pip install -r requirements.txt
+            sudo pip install -r requirements.txt
 
       - run:
           name: install module
