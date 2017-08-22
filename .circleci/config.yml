@@ -52,6 +52,11 @@ jobs:
             coverage run setup.py test
 
       - run:
+          name: show reports
+          command: |
+            coverage report -m
+
+      - run:
           name: report tests
           command: |
             codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
