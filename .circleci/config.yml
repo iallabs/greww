@@ -37,7 +37,7 @@ jobs:
       - run:
           name: install module
           command: |
-            python3 setup.py install
+            sudo python3 setup.py install
 
       - run:
           name: run tests
