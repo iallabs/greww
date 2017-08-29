@@ -28,5 +28,5 @@ script:
   - "coverage run setup.py test"
 
 after_success:
-  - "CODECOV_TOKEN=ddcde6d5-a3d4-44a7-825c-5ced149f31d7"
+  - "export CODECOV_TOKEN='ddcde6d5-a3d4-44a7-825c-5ced149f31d7'"
   - "codecov"
