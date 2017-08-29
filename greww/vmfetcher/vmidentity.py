@@ -5,7 +5,7 @@ def parse_machine_identity():
 
 SQLL = {"host" : "127.0.0.1",
         "user" : "root",
-        "password" : ""}
+        "password" : "uehMLMRw"}
 
 SQLC = {"use_pure" : True,
         "raise_on_warnings" : True}

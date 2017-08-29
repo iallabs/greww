@@ -39,7 +39,6 @@ jobs:
             sudo apt install gcc
             sudo apt install protobuf-compiler
             sudo pip install -r requirements.txt
-            sudo pip install 'coverage<4.4'
 
       - run:
           name: install module
@@ -50,16 +49,9 @@ jobs:
           name: run tests
           command: |
             coverage run setup.py test
+            CODECOV_TOKEN="ddcde6d5-a3d4-44a7-825c-5ced149f31d7"
+            codecov
 
-      - run:
-          name: show reports
-          command: |
-            coverage report -m
-
-      - run:
-          name: report tests
-          command: |
-            codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344
 
       - store_artifacts:
           path: test-reports
