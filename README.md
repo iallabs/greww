@@ -1,8 +1,8 @@
 # greww
 
-| TravisCI | CircleCI | CodeClimate |
+| TravisCI | CircleCI | CodeCov |
 | --- | --- | --- |
-| [![Build Status](https://travis-ci.com/iallabs/greww.svg?token=qsqoiH3xhBi1WyATcy2m&branch=master)](https://travis-ci.com/iallabs/greww) | ![CircleCI](https://circleci.com/gh/iallabs/greww.svg?style=svg&circle-token=6748a7f07d64bb2ee72cbe7201d4ce7106ec5bc9) | [![Test Coverage](https://codeclimate.com/repos/5991fbb6eee472029e0001fe/badges/3bad51a91d10d32438f4/coverage.svg)](https://codeclimate.com/repos/5991fbb6eee472029e0001fe/coverage) [![Issue Count](https://codeclimate.com/repos/5991fbb6eee472029e0001fe/badges/3bad51a91d10d32438f4/issue_count.svg)](https://codeclimate.com/repos/5991fbb6eee472029e0001fe/feed) |
+| [![Build Status](https://travis-ci.com/iallabs/greww.svg?token=qsqoiH3xhBi1WyATcy2m&branch=master)](https://travis-ci.com/iallabs/greww) | ![CircleCI](https://circleci.com/gh/iallabs/greww.svg?style=svg&circle-token=6748a7f07d64bb2ee72cbe7201d4ce7106ec5bc9) | [![codecov](https://codecov.io/gh/iallabs/greww/branch/master/graph/badge.svg?token=qiUtFFz1Ei)](https://codecov.io/gh/iallabs/greww) |
 
 
 ## Contribution
