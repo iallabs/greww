@@ -1,24 +1,58 @@
-from greww.shellenv import (unset_varenv,
+from greww.shellenv import (varenvs,
+                            unset_varenv,
                             export_varenv,
                             import_varenv,
-                            execute_shell_command)
+                            execute_shell_command,
+                            catch_shell_streaming)
 from greww.shellenv.shell import Shell
 
+_ls = "ls {0}"
+_ls_la = "ls -la {0}"
+_un = "uname"
+_un_op = "uname {0}"
+_mkdir_home = "mkdir $HOME/{0}"
+_rmdir_home = "rm -rf $HOME/{0}"
+
+esc = execute_shell_command
+
 def test_esc_general():
-    pass
+    global _ls, _ls_la, _un
+    dirs = esc(_ls.format("/"), rs=True)
+    assert len(dirs) > 0
+    system = esc(_un, rs=True)
+    assert system
+
+def test_esc_no_results():
+    global _mkdir_home, _rmdir_home
+    dirs = esc(_ls.format("$HOME"))
+    dir_test = "greww_test_dir"
+    assert not (dir_test in dirs)
+    esc(_mkdir_home.format(dir_test))
+    dirs = esc(_ls.format("$HOME"))
+    assert dir_test in dirs
+
+css = catch_shell_streaming
 
 def test_esc_streaming():
     pass
 
 def test_varenvs():
-    pass
+    ve = varenvs()
+    assert "HOME" in ve
+    assert "USER" in ve
+    assert "SHELL" in ve
+    vhome = import_varenv("HOME")
+    assert vhome
+    vuser = import_varenv("USER")
+    assert vuser
+    vshell = import_varenv("SHELL")
+    assert vshell == "/bin/bash"
+    _test_ve = "TESTVAR_0"
+    export_varenv("")
+
 
 def test_shell_class_structure():
     pass
-
-_ls = "ls {0}"
-_ls = "ls -la {0}"
-_top = "top"
 
 __all__ = [test_esc_general,
            test_esc_streaming,

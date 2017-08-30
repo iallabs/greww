@@ -14,8 +14,8 @@ Exemple : POINTER(c_int) : int*
 Types= {'int' : ctypes.c_int,
         'char' : ctypes.c_char,
         'string' : ctypes.c_char_p,
-	'stringlist' : ctypes.POINTER(ctypes.c_char_p),
-	'intlist' : ctypes.POINTER(ctypes.c_int)}
+    	'stringlist' : ctypes.POINTER(ctypes.c_char_p),
+	    'intlist' : ctypes.POINTER(ctypes.c_int)}
 
 
 # C++
