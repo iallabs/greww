@@ -26,6 +26,13 @@ M = MysqlPen()
 db = "zilean_tests_0"
 tb = "test_table"
 
+def _element_of_matrix(elem, matrix):
+    for raw in matrix:
+        for column in matrix:
+            if elem == column:
+                return True
+    return False
+
 def test_connectors():
     assert _connectors
     cnx = _connectors.gen
@@ -35,6 +42,8 @@ def test_connectors():
     assert cnx
     return 1
 
+#test_connectors()
+
 def test_connection_cursors():
     cursor = _connectors.gen.cursor()
     cursor.execute("SHOW DATABASES")
@@ -42,21 +51,23 @@ def test_connection_cursors():
     assert len(_databases) >= 4
     return 1
 
-test_connection_cursors()
+#test_connection_cursors()
 
 def test_mysql_database_manipulation():
     global db, tb
     _db = databases()
     assert _db
-    assert len(db) >= 4
-    assert "sys" in db
+    assert len(_db) >= 4
+    assert "sys" in _db
     make_database(db)
     _db = databases()
     assert db in _db
     remove_database(db)
     _db = databases()
-    assert not db in _db
+    assert not (db in _db)
     return 1
+
+#test_mysql_database_manipulation()
 
 def test_mysql_tables_manipulation():
     global db, tb
@@ -77,7 +88,12 @@ def test_mysql_tables_manipulation():
     remove_table(db, tb)
     _tb = tables(db)
     assert len(_tb) == 0
+    # Clean up test database
+    remove_database(db)
     return 1
+
+#test_mysql_tables_manipulation()
+
 
 __all__ = [test_connectors,
            test_connection_cursors,

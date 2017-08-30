@@ -10,6 +10,7 @@ from .mysql_query import (_USE_DATABASE,
                           _SHOW_TABLES,
                           _TABLE_FIELDS,
                           _CREATE_TABLE,
+                          _SELECT_TABLE,
                           _USE_DATABASE,
                           _DELETE_TABLE,
                           _IE_QUERY,
@@ -28,7 +29,7 @@ def databases():
     """
     return a list of strings containing msql databases
     =======================================================
-    >>> from zilean.zilean import databases
+    >>> from greww.data.mysql import databases
     >>> databases()
     ["sys", "mysql"]
     =======================================================
@@ -39,23 +40,31 @@ def make_database(dbname):
     """
     make a mysql database
     =======================================================
-    >>> _make_database('Table')
+    >>> from greww.data.mysql import make_database, databases
+    >>> make_database('kikou')
+    >>> databases()
+    ["sys", "mysql", "kikou"]
     =======================================================
     """
-    return execute_only(_CREATE_DATABASE.format(dbname))
+    execute_only(_CREATE_DATABASE.format(dbname))
 
 def remove_database(dbname):
     """
     Remove a mysql database
     =======================================================
-    >>>
+    >>> from greww.data.mysql import (remove_database,
+                                      databases)
+    >>> remove_database('kikou')
+    >>> databases()
     """
-    return execute_only(_DELETE_DATABASE.format(dbname))
+    execute_only(_DELETE_DATABASE.format(dbname))
 
-def use_database(dbname):
+def use_database(dbname): #XXX: Maybe is useless
+                          # need discution before removing
     """
+    Use mysql databases
     """
-    return execute_only(_USE_DATABASE.format(dbname))
+    execute_only(_USE_DATABASE.format(dbname))
 
 @refetch_filter([0])
 def tables(dbname):
@@ -63,7 +72,8 @@ def tables(dbname):
     return a list of strings containing mysql tables at one
     given database
     =======================================================
-    >>> _tables("sys")
+    >>> from greww.data.mysql import tables
+    >>> tables("sys")
     ["host_ip", "host_kappa" ... ""]
     =======================================================
     """
@@ -72,34 +82,39 @@ def tables(dbname):
 @refetch_filter([0])
 def table_fields(dbname, table):
     """
-    Not Implemented
+    Return a list of table fields ( only their names )
     =======================================================
     """
     return execute_and_fetch(_TABLE_FIELDS.format(dbname, table))
 
 def table_fields_data(dbname, table):
     """
-    Not Implemented
+    Return a list of table fields ( All data )
+    =======================================================
     """
     return execute_and_fetch(_TABLE_FIELDS.format(dbname, table))
 
 def table_content(db, table):
     """
-    return a 2 dimentioanl array containing all table values
+    return a 2 dimentioanl array cont-aining all table values
     ========================================================
-    >>> _table_content("sys", "host_ip")
-    [[]]
+    >>> table_content("sys", "host_ip")
+    [[1, 2, 3],
+     [2, 3, 4],
+     [3, 4, 5]]
     ========================================================
     """
     #XXX: uses : `select * from table`
-    return execute_and_fetch(_SHOW_TABLE_VALUES.format(db, table))
+    return execute_and_fetch(_SELECT_TABLE.format(db, table))
 
 def make_table(db, table, **kwargs):
     """
     Create a table at database with kwargs as fields
     =======================================================
+    >>> from greww.data.mysql import make_table
+    >>> make_table("db1", "tb1", id="INT(5)", name="VARCHAR(10)")
     """
-    return execute_only(_CT_QUERY(db, table, **kwargs))
+    execute_only(_CT_QUERY(db, table, **kwargs))
 
 def remove_table(db, table):
     """
@@ -114,7 +129,7 @@ def table_primary_start(db, table, start):
     """
     return execute_only(_AUTOINCR.format(db, table, start))
 
-def copy_table(db, table):
+def copy_table(db, table, target_table):
     """
     Not Implemented
     =======================================================
@@ -126,25 +141,25 @@ def add_field(db, table, field_name, field_type):
     Add field to table at db
     =======================================================
     """
-    return execute_only(_ADD_COLUMN.format(db, table, field_name, field_type))
+    execute_only(_ADD_COLUMN.format(db, table, field_name, field_type))
 
 def remove_field(db, table, field_name):
     """
     Remove field from table at db
     =======================================================
     """
-    return execute_only(_DELETE_COLUMN.format(db, table, field_name))
+    execute_only(_DELETE_COLUMN.format(db, table, field_name))
 
 def change_field(db, table, field_name, new_field, field_type):
     """
     Change field in table at db
     =======================================================
     """
-    return execute_only(_CHANGE_COLUMN.format(db,
-                                              table,
-                                              field_name,
-                                              new_field,
-                                              field_type))
+    execute_only(_CHANGE_COLUMN.format(db,
+                                       table,
+                                       field_name,
+                                       new_field,
+                                       field_type))
 
 def add_element(db, table, **kwargs):
     """
@@ -189,21 +204,21 @@ def select_optimised(db,
                                                  kind,
                                                  with_limit))
 
-MysqlApiFunctions = [databases,
-                     make_database,
-                     remove_database,
-                     use_database,
-                     tables,
-                     table_fields,
-                     table_content,
-                     make_table,
-                     remove_table,
-                     copy_table,
-                     add_field,
-                     remove_field,
-                     change_field,
-                     add_element,
-                     remove_elements,
-                     select_elements,
-                     update_element,
-                     select_optimised]
+MysqlApiFunctions = {"databases" : databases,
+                     "make_database" : make_database,
+                     "remove_database" : remove_database,
+                     "use_database" : use_database,
+                     "tables" : tables,
+                     "table_fields" : table_fields,
+                     "table_content" : table_content,
+                     "make_table" : make_table,
+                     "remove_table" : remove_table,
+                     "copy_table" : copy_table,
+                     "add_field" : add_field,
+                     "remove_field" : remove_field,
+                     "change_field" : change_field,
+                     "add_element" : add_element,
+                     "remove_elements" : remove_elements,
+                     "select_elements" : select_elements,
+                     "update_element" : update_element,
+                     "select_optimised" : select_optimised}

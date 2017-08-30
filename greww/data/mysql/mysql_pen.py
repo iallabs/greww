@@ -1,16 +1,29 @@
 from .mysql_utils import MysqlApiFunctions as MAF
-from greww.utils.decorators import ClassDecorator
+from greww.utils.decorators import ClassDecorator #, ArgsBooster
 
+_databases = ""
 
 @ClassDecorator(decorator=staticmethod)
 class MysqlPen(object):
 
-    __slots__ = [method.__name__ for method in MAF]
+    __slots__ = [method for method in MAF.keys()]
 
     def __new__(cls):
         obj = object.__new__(cls)
-        for method in MAF:
+        for method, func in MAF.items():
             setattr(obj,
-                    method.__name__,
-                    method)
+                    method,
+                    func)
         return obj
+
+#@ClassDecorator(decorator=ArgsBooster(0, *_databases))
+class AssertedMysqlPen(MysqlPen):
+
+    __slots__ = [method for method in MAF.keys()] + ["database"]
+
+    def __new__(cls, db):
+        obj = object.__new__(cls)
+        for method, func in MAF.items():
+            setattr(obj,
+                    method,
+                    func)

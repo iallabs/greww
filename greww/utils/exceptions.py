@@ -46,3 +46,12 @@ class BadConnector(Exception):
 
 class TimeoutError(Exception):
     pass
+
+class NonAuthorizedMachine(Exception):
+    pass
+
+class NonAuthorizedLevel(Exception):
+    pass
+
+class FatalAssertion(Exception):
+    pass

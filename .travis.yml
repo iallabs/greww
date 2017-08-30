@@ -1,5 +1,7 @@
+#HUHU
 
 language: python
+
 python:
   - "3.3"
   - "3.4"
@@ -9,18 +11,22 @@ python:
   - "3.6-dev" # 3.6 development branch
   - "3.7-dev" # 3.7 development branch
   - "nightly" # currently points to 3.7-dev
-# command to install dependencies
+
 services:
   - mysql
+
+# command to install dependencies
 install:
   - "sudo apt install gcc"
   - "sudo apt install protobuf-compiler"
   - "pip install -r requirements.txt"
-  - "pip uninstall --yes coverage"
-  - "pip install 'coverage<4.4'"
+
 # command to run tests
 script:
   - "python setup.py install"
   - "python setup.py test"
   - "coverage run setup.py test"
-  - "codeclimate-test-reporter --token 6e6dcba8a8cdf32cad8ce638e04bbd20b59d20fa02609095307eec3564e40344"
+
+after_success:
+  - "export CODECOV_TOKEN='ddcde6d5-a3d4-44a7-825c-5ced149f31d7'"
+  - "codecov"

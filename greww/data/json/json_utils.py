@@ -1,6 +1,6 @@
 import json
 from greww.data.basics import (mkfile_with_content,
-                               stdir,
+                               set_dir,
                                rmfile,
                                ckfile)
 from greww.utils.exceptions import (WTF,
@@ -29,7 +29,7 @@ def make_json(directory=GWP, name=None, kind=None, from_data=None):
 def feed_json(directory=GWP, name=None, obj=None):
     if name is None:
         raise ValueError("Name can't be None")
-    stdir(directory)
+    set_dir(directory)
     with open(name, 'r') as f:
         data = json.load(f)
         if isinstance(data, list):
@@ -44,7 +44,7 @@ def feed_json(directory=GWP, name=None, obj=None):
 def count_json(directory=GWP, name=None):
     if name is None:
         raise ValueError("Name can't be None")
-    stdir(directory)
+    set_dir(directory)
     with open(name, 'r') as f:
         data = json.load(f)
         return len(data)
@@ -59,7 +59,7 @@ def unfeed_json(directory=GWP, name=None, **kwargs):
         raise ValueError("Name can't be None")
     if not kwargs:
         raise LockedOption("Unauthorized Move")
-    stdir(directory)
+    set_dir(directory)
     with open(name, 'r') as f:
         data = json.load(f)
     if isinstance(data, list):
@@ -97,7 +97,7 @@ def search_json(directory=GWP, name=None, **kwargs):
     """
     if name is None:
         raise ValueError("Name can't be None")
-    stdir(directory)
+    set_dir(directory)
     with open(name, 'r') as f:
         data = json.load(f)
     results = []
