@@ -1,9 +1,9 @@
 from greww.shellenv import (varenvs,
                             unset_varenv,
                             export_varenv,
-                            import_varenv,
-                            execute_shell_command,
-                            catch_shell_streaming)
+                            import_varenv)
+from greww.shellenv.pyshell import (execute_shell_command,
+                                    catch_shell_streaming)
 from greww.shellenv.shell import Shell
 
 _ls = "ls {0}"
@@ -48,8 +48,6 @@ def test_varenvs():
     vshell = import_varenv("SHELL")
     assert vshell == "/bin/bash"
     _test_ve = "TESTVAR_0"
-    export_varenv("")
-
 
 def test_shell_class_structure():
     pass

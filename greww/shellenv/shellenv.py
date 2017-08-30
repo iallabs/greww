@@ -1,6 +1,8 @@
-from .pyshell import execute_shell_command as esc
+from .pyshell import execute_shell_command
 import os
 # EXPORT AND UNSERT VARS FROM SHELL ENVIRENEMENT
+
+esc = execute_shell_command
 
 def varenvs():
     cmd = "printenv"
