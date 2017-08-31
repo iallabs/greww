@@ -22,14 +22,18 @@ def test_esc_general():
     system = esc(_un, rs=True)
     assert system
 
+test_esc_general()
+
 def test_esc_no_results():
     global _mkdir_home, _rmdir_home
-    dirs = esc(_ls.format("$HOME"))
+    dirs = esc(_ls.format("$HOME"), shell=True, rs=True)
     dir_test = "greww_test_dir"
     assert not (dir_test in dirs)
-    esc(_mkdir_home.format(dir_test))
-    dirs = esc(_ls.format("$HOME"))
+    esc(_mkdir_home.format(dir_test), shell=True)
+    dirs = esc(_ls.format("$HOME"), shell=True, rs=True)
     assert dir_test in dirs
+
+test_esc_no_results()
 
 css = catch_shell_streaming
 
@@ -37,7 +41,7 @@ def test_esc_streaming():
     pass
 
 def test_varenvs():
-    ve = varenvs()
+    ve = varenvs().keys()
     assert "HOME" in ve
     assert "USER" in ve
     assert "SHELL" in ve

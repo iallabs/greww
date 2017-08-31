@@ -26,12 +26,6 @@ M = MysqlPen()
 db = "zilean_tests_0"
 tb = "test_table"
 
-def _element_of_matrix(elem, matrix):
-    for raw in matrix:
-        for column in matrix:
-            if elem == column:
-                return True
-    return False
 
 def test_connectors():
     assert _connectors

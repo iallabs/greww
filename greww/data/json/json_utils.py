@@ -35,7 +35,7 @@ def feed_json(directory=GWP, name=None, obj=None):
         if isinstance(data, list):
             data.append(obj)
         elif isinstance(data, dict):
-            data.upload(obj)
+            data.update(obj)
         else:
             raise WTF(file, data, obj)
     with open(name, 'w') as f:

@@ -1,6 +1,5 @@
 # greww filters
 
-
 #> decorate function with 2 dimentional return value
 #> indexes is a list if integers
 
@@ -33,5 +32,25 @@ def refetch_filter(indexes):
             for i in res:
                 ress.append(tuplik(i, indexes))
             return ress
+        return wrap_args
+    return wrap_func
+
+
+def rezip_filter(res_type=list, split_opt="=", applied_func=None):
+    """
+    """
+    def wrap_func(func):
+        def wrap_args(*args, **kwargs):
+            res = func(*args, **kwargs)
+            dicta = {}
+            if not isinstance(res, res_type):
+                return res
+            for i in res:
+                if not i:
+                    continue
+                val = applied_func(i)
+                _d, _v = val.split(split_opt)
+                dicta.update({_d: _v})
+            return dicta
         return wrap_args
     return wrap_func
