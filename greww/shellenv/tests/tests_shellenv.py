@@ -35,7 +35,6 @@ def test_varenvs_():
     ve = varenvs()
     assert not (_test_ve in ve.keys())
 
-
 def test_esc_general():
     global _ls, _ls_la, _un
     dirs = esc(_ls.format("/"), rs=True)
