@@ -38,7 +38,7 @@ def test_varenvs_():
     assert not (_test_ve in ve.keys())
 
 print("___________________________")
-test_varenv_()
+test_varenvs_()
 
 def test_esc_general():
     global _ls, _ls_la, _un
