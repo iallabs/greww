@@ -17,6 +17,9 @@ def _varenvs_keys():
 def _varenvs_values():
     return varenvs().values()
 
+def all_varenv():
+    return os.environ
+
 def export_varenv(var, val):
     os.environ[var] = val
 
