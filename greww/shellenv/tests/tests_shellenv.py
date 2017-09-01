@@ -16,6 +16,7 @@ _rmdir = "rm -r {0}/{1}"
 
 def test_varenvs_():
     ve = varenvs().keys()
+    print(ve)
     assert "HOME" in ve
     assert "USER" in ve
     assert "SHELL" in ve
@@ -36,12 +37,18 @@ def test_varenvs_():
     ve = varenvs()
     assert not (_test_ve in ve.keys())
 
+print("___________________________")
+test_varenv_()
+
 def test_esc_general():
     global _ls, _ls_la, _un
     dirs = esc(_ls.format("/"), rs=True)
     assert len(dirs) > 0
     system = esc(_un, rs=True)
     assert system
+
+print("_____________________________")
+test_esc_general()
 
 def test_esc_no_results():
     global _mkdir, _rmdir
