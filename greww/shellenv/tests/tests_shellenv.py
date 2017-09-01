@@ -18,13 +18,13 @@ def test_varenvs_():
     ve = varenvs().keys()
     print(ve)
     assert "HOME" in ve
-    assert "USER" in ve
-    assert "SHELL" in ve
+    assert "LANG" in ve
+    assert "PATH" in ve
     vhome = import_varenv("HOME")
     assert vhome
-    vuser = import_varenv("USER")
+    vuser = import_varenv("LANG")
     assert vuser
-    vshell = import_varenv("SHELL")
+    vshell = import_varenv("PATH")
     assert (vshell == "/bin/bash" or vshell == "/bin/sh")
     _test_ve = "TESTVAR_0"
     _test_value = "NONE-LOL"
@@ -37,8 +37,6 @@ def test_varenvs_():
     ve = varenvs()
     assert not (_test_ve in ve.keys())
 
-print("___________________________")
-test_varenvs_()
 
 def test_esc_general():
     global _ls, _ls_la, _un
@@ -46,6 +44,9 @@ def test_esc_general():
     assert len(dirs) > 0
     system = esc(_un, rs=True)
     assert system
+
+print("___________________________")
+test_varenvs_()
 
 print("_____________________________")
 test_esc_general()
