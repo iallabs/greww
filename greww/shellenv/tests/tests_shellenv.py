@@ -24,8 +24,6 @@ def test_varenvs_():
     assert vhome
     vuser = import_varenv("LANG")
     assert vuser
-    vshell = import_varenv("PATH")
-    assert (vshell == "/bin/bash" or vshell == "/bin/sh")
     _test_ve = "TESTVAR_0"
     _test_value = "NONE-LOL"
     export_varenv(_test_ve, _test_value)
