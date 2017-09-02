@@ -17,6 +17,7 @@ _rmdir = "rm -r {0}/{1}"
 def test_varenvs_():
     ve = varenvs().keys()
     print(ve)
+    print("kkoki")
     assert "HOME" in ve
     assert "LANG" in ve
     assert "PATH" in ve
