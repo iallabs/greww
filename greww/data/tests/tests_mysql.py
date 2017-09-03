@@ -52,6 +52,7 @@ def test_mysql_database_manipulation():
     _db = databases()
     assert _db
     assert len(_db) >= 4
+    print(_db)
     assert "sys" in _db
     make_database(db)
     _db = databases()
