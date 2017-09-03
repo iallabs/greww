@@ -48,7 +48,7 @@ def rezip_filter(res_type=list, split_opt="=", applied_func=None):
             for i in res:
                 val = applied_func(i)
                 print(val)
-                if not ('=' in val):
+                if not ('=' in val) or val.count('=') > 1:
                     continue
                 _d, _v = val.split(split_opt)
                 dicta.update({_d: _v})

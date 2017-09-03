@@ -1,15 +1,6 @@
 import ctypes
 from .exceptions import CppModuleImport, CppFunctionImport
 
-#TODO: POINTERS
-
-"""
-Pointeur
-c_char_p : char*
-c_void_p : void*
-POINTER(type) : type*
-Exemple : POINTER(c_int) : int*
-"""
 
 Types= {'int' : ctypes.c_int,
         'char' : ctypes.c_char,
@@ -42,19 +33,6 @@ def call_cpp_function(func, path=None, out_put=None, in_put=None, args=None, kwa
 
     return function
 
-
 #TODO: CPP Object
 def call_cpp_object(obj, path=None):
     pass
-
-
-# call_cpp_function(ked, path="/Users/ial/greww/greww/settings.so", out_put=ctypes.c_char_p)
-"""
-settings = ctypes.CDLL("/Users/ial/greww/greww/settings.so")
-a=settings.ked
-a.restype=ctypes.c_char_p
-a.argstypes=[ctype.c_int]
-print(a)
-
-print(a())
-"""
