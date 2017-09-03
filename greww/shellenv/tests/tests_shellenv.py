@@ -43,12 +43,6 @@ def test_esc_general():
     system = esc(_un, rs=True)
     assert system
 
-print("___________________________")
-test_varenvs_()
-
-print("_____________________________")
-test_esc_general()
-
 def test_esc_no_results():
     global _mkdir, _rmdir
     HOME = varenvs()["HOME"]
@@ -76,4 +70,5 @@ def test_shell_class_structure():
 __all__ = [test_varenvs_,
            test_esc_general,
            test_esc_streaming,
+           test_esc_no_results,
            test_shell_class_structure]
