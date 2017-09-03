@@ -52,7 +52,6 @@ def test_mysql_database_manipulation():
     _db = databases()
     assert _db
     assert len(_db) >= 4
-    print(_db)
     assert "mysql" in _db
     make_database(db)
     _db = databases()
@@ -86,10 +85,6 @@ def test_mysql_tables_manipulation():
     # Clean up test database
     remove_database(db)
     return 1
-
-print("kakaka /n kakakkakaka/n LOL ")
-
-test_mysql_tables_manipulation()
 
 
 __all__ = [test_connectors,
