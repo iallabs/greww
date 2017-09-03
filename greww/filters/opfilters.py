@@ -47,7 +47,6 @@ def rezip_filter(res_type=list, split_opt="=", applied_func=None):
                 return res
             for i in res:
                 val = applied_func(i)
-                print(val)
                 if not ('=' in val) or val.count('=') > 1:
                     continue
                 _d, _v = val.split(split_opt)
