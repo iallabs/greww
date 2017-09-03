@@ -61,8 +61,6 @@ def test_mysql_database_manipulation():
     assert not (db in _db)
     return 1
 
-test_mysql_database_manipulation()
-
 def test_mysql_tables_manipulation():
     global db, tb
     make_database(db)
@@ -85,7 +83,6 @@ def test_mysql_tables_manipulation():
     # Clean up test database
     remove_database(db)
     return 1
-
 
 __all__ = [test_connectors,
            test_connection_cursors,
