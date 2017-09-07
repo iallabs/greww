@@ -27,6 +27,10 @@ def make_json(directory=GWP, name=None, kind=None, from_data=None):
 
 
 def feed_json(directory=GWP, name=None, obj=None):
+    """
+    feed json file at directory with obj
+    =================================================================
+    """
     if name is None:
         raise ValueError("Name can't be None")
     set_dir(directory)
@@ -112,7 +116,6 @@ def search_json(directory=GWP, name=None, **kwargs):
                  results += [i]
             w = True
         return results
-
-    elif isinstance(data, list):
+    elif isinstance(data, dict):
         #TODO: add this part
         raise NotImplementedAlgo(name)

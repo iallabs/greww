@@ -9,10 +9,7 @@ Types= {'int' : ctypes.c_int,
 	    'intlist' : ctypes.POINTER(ctypes.c_int)}
 
 
-# C++
-
-
-def call_cpp_function(func, path=None, out_put=None, in_put=None, args=None, kwargs=None):
+def call_c_extern_function(func, path=None, out_put=None, in_put=None, args=None, kwargs=None):
     if path is None:
         pass
     try:
@@ -29,10 +26,4 @@ def call_cpp_function(func, path=None, out_put=None, in_put=None, args=None, kwa
     if out_put:
         if type(out_put) == str:
             function.restype = Types[in_put]
-
-
     return function
-
-#TODO: CPP Object
-def call_cpp_object(obj, path=None):
-    pass

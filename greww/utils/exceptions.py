@@ -5,7 +5,6 @@
 
 #TODO: make exception hierarchy
 
-
 class CppModuleImport(Exception):
     def __init__(self, path):
         self.message = "Can't find path : {0}".format(path)

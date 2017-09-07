@@ -1,3 +1,7 @@
+#MYSQL PREDEF
+_VERSION = "select version();"
+_USER = "select user();"
+
 # Databases querries
 _SHOW_DATABASES = "SHOW DATABASES;"
 _CREATE_DATABASE = "CREATE DATABASE {0};"
@@ -7,13 +11,10 @@ _USE_DATABASE = "USE {0};"
 # Table querries
 _TABLE_FIELDS = "DESC {0}.{1};"
 _SHOW_TABLES = "SHOW TABLES IN {0};"
-
 _CREATE_TABLE = """CREATE TABLE {0}.{1} (
 {2}
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;"""
-
 _DELETE_TABLE = "DROP TABLE {0}.{1};"
-
 #COLUMN
 _ADD_COLUMN = """ALTER TABLE {0}.{1}
 ADD {2} {3};"""
@@ -21,38 +22,31 @@ _DELETE_COLUMN = """ALTER TABLE {0}.{1}
 DROP COLUMN {2};"""
 _CHANGE_COLUMN = """ALTER TABLE {0}.{1}
 CHANGE {2} {3} {4};"""
-
 _INSERT_VALUE_NO_MATCH = """INSERT INTO {0}.{1}
 VALUES {2};"""
-
 _INSERT_VALUE_WK = """INSERT INTO {0}.{1}
 {2}
 VALUES {3};"""
-
 _DELETE_VALUES = """DELETE FROM {0}.{1}
 WHERE {2}"""
-
 _SELECT_TABLE = "SELECT * FROM {0}.{1};"
-
 _SELECT_GENERAL = """SELECT {0}
 FROM {1}.{2}
 WHERE {3}"""
-
 _SORTED_TABLE = """SELECT {0}
 FROM {1}.{2}
 ORDER BY {3} {4}
 """
-
 _SELECT_OPTI = """SELECT {0}
 FROM {1}.{2}
 ORDER BY {3} {4}
 LIMIT {5}"""
-
 _UPDATE_ELEMENT = """UPDATE {0}.{1}
 SET {2}
 WHERE {3}"""
-
 _AUTOINCR = "ALTER TABLE {0}.{1} AUTO_INCREMENT = {2};"
+
+# Querries constructors
 
 def JSON_PYSTR(a, ln=True, dct=False):
     final = "[{0}]"

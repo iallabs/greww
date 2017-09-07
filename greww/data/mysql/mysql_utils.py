@@ -3,7 +3,9 @@ from .mysql_access import (execute_only,
 
 from greww.filters import refetch_filter
 
-from .mysql_query import (_USE_DATABASE,
+from .mysql_query import (_VERSION,
+                          _USER,
+                          _USE_DATABASE,
                           _SHOW_DATABASES,
                           _CREATE_DATABASE,
                           _DELETE_DATABASE,
@@ -23,6 +25,17 @@ from .mysql_query import (_USE_DATABASE,
                           _DELETE_COLUMN,
                           _CHANGE_COLUMN,
                           _SELECT_OPTI)
+
+def _version():
+    """
+    """
+    return execute_and_fetch(_VERSION)
+
+def _user():
+    """
+    """
+    return execute_and_fetch(_USER)
+
 
 @refetch_filter([0])
 def databases():
