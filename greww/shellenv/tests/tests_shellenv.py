@@ -4,7 +4,7 @@ from greww.shellenv import (varenvs,
                             import_varenv)
 from greww.shellenv.pyshell import execute_shell_command as esc
 from greww.shellenv.shell import Shell
-from greww.filters.dynamic_filters import filter_iter as FI
+from greww.utils.filters import filter_iter as FI
 from greww.utils.strbin import convert_bin_to_str as c0
 
 _ls = "ls {0}"
