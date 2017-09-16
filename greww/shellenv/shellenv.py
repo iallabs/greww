@@ -1,6 +1,6 @@
 from .pyshell import execute_shell_command
 from greww.utils.strbin import convert_bin_to_str as cbts
-from greww.filters.opfilters import rezip_filter
+from greww.utils.filters import rezip_filter
 import os
 # EXPORT AND UNSERT VARS FROM SHELL ENVIRENEMENT
 

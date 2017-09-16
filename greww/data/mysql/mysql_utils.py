@@ -1,7 +1,7 @@
 from .mysql_access import (execute_only,
                            execute_and_fetch)
 
-from greww.filters import refetch_filter
+from greww.utils.filters import refetch_filter
 
 from .mysql_query import (_VERSION,
                           _USER,

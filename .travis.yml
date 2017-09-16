@@ -1,4 +1,6 @@
 #HUHU
+dist: trusty
+sudo: required
 
 language: python
 
