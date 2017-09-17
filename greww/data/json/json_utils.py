@@ -1,15 +1,14 @@
 import json
 from greww.data.basics import (mkfile_with_content,
                                set_dir,
-                               rmfile,
-                               ckfile)
+                               remove_file,
+                               check_file)
 from greww.utils.exceptions import (WTF,
                                     LockedOption,
                                     NotImplementedAlgo)
-from greww.shellenv import import_varenv
+import skmvs as SK
 
-
-GWP = import_varenv("GREWW_WORKING_PATH")
+GWP = sk.get_value("GREWW_WORKING_PATH", db=main)
 
 def make_json(directory=GWP, name=None, kind=None, from_data=None):
     """
@@ -27,6 +26,10 @@ def make_json(directory=GWP, name=None, kind=None, from_data=None):
 
 
 def feed_json(directory=GWP, name=None, obj=None):
+    """
+    feed json file at directory with obj
+    =================================================================
+    """
     if name is None:
         raise ValueError("Name can't be None")
     set_dir(directory)
@@ -35,7 +38,7 @@ def feed_json(directory=GWP, name=None, obj=None):
         if isinstance(data, list):
             data.append(obj)
         elif isinstance(data, dict):
-            data.upload(obj)
+            data.update(obj)
         else:
             raise WTF(file, data, obj)
     with open(name, 'w') as f:
@@ -112,7 +115,6 @@ def search_json(directory=GWP, name=None, **kwargs):
                  results += [i]
             w = True
         return results
-
-    elif isinstance(data, list):
+    elif isinstance(data, dict):
         #TODO: add this part
         raise NotImplementedAlgo(name)

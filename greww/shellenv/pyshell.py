@@ -25,8 +25,41 @@ def shell_command_output(cmdline=None, shell=False, check=False):
     """
     Not working just use execute_shell_command with rs=True
     """
-    #TODO: Need some documentations
     if cmdline is None:
         raise MissingCommand()
     cmds = _split_cmd(cmdline)
     return subprocess.check_output(cmds, shell=shell, check=check)
+
+
+#NOTE: to understand this part take a look at
+# https://stackoverflow.com/questions/17904231/handling-tcpdump-output-in-python
+
+def catch_shell_streaming(cmdline=None,
+                          verbose=False,
+                          to_file=None,
+                          __func=None,
+                          with_runtime_limit=None,
+                          with_iterations_limit=None,
+                          with_datetime_limit=None):
+    """
+    Cant read shell command lines that stream data like tcpdump / top
+    """
+    #TODO runtime / iterations / datetime limit
+    #NOTE STILL NOT TESTED
+    cmds = _split_cmd(cmdline)
+    p = subprocess.Popen(cmds, stdout=sub.PIPE)
+    if verbose:
+        for row in iter(p.stdout.readline, b''):
+            print(row.rstrip())   # process here
+    elif to_file:
+        f = open(to_file, 'w')
+        for row in iter(p.stdout.readline, b''):
+            f.write(row)
+        f.close()
+    elif __func:
+        for row in iter(p.stdout.readline, b''):
+            __func(row)
+    else:
+        __func = lambda x : print(x)
+        for row in iter(p.stdout.readline, b''):
+            __func(row)

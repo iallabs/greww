@@ -5,7 +5,6 @@
 
 #TODO: make exception hierarchy
 
-
 class CppModuleImport(Exception):
     def __init__(self, path):
         self.message = "Can't find path : {0}".format(path)
@@ -54,4 +53,13 @@ class NonAuthorizedLevel(Exception):
     pass
 
 class FatalAssertion(Exception):
+    pass
+
+class WTF(Exception):
+    pass
+
+class LockedOption(Exception):
+    pass
+
+class NotImplementedAlgo(Exception):
     pass
