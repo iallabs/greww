@@ -1,4 +1,6 @@
-from greww.data.mysql import (databases,
+from greww.data.mysql import (_version,
+                              _user,
+                              databases,
                               make_database,
                               remove_database,
                               use_database,
@@ -43,6 +45,15 @@ def test_connection_cursors():
     _databases = [i for i in cursor]
     assert len(_databases) >= 4
     return 1
+
+#test_mysql_version
+
+def test_mysql_version():
+    assert _version() >= '5.7'
+    assert _user()
+    # coverage tests
+    use_database('kikou')
+
 
 #test_connection_cursors()
 

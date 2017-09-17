@@ -73,11 +73,11 @@ def remove_database(dbname):
     execute_only(_DELETE_DATABASE.format(dbname))
 
 def use_database(dbname): #XXX: Maybe is useless
-                          # need discution before removing
     """
     Use mysql databases
-    """
     execute_only(_USE_DATABASE.format(dbname))
+    """
+    pass
 
 @refetch_filter([0])
 def tables(dbname):
