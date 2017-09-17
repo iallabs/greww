@@ -15,6 +15,9 @@ def make_dir(directory):
     # make directory
     os.makedirs(directory)
 
+def find_dir():
+    pass
+
 def remove_dir(directory, all=False, rec=False):
     # remove directory
     if rec:
@@ -39,6 +42,9 @@ def mkfile(directory, name=None, ext=None):
 def rmfile(directory, name):
     # remove file
     os.remove(directory + "/" + name)
+
+def find_file():
+    pass
 
 ####
 
@@ -163,4 +169,7 @@ def replace_lines_in_file(directory=None, name=None, nlines=None, lines=None, in
 
 
 def file_size():
+    pass
+
+def file_path():
     pass
