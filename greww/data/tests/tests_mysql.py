@@ -1,5 +1,5 @@
-from greww.data.mysql import (version,
-                              user,
+from greww.data.mysql import (_version,
+                              _user,
                               databases,
                               make_database,
                               remove_database,

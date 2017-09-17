@@ -1,4 +1,6 @@
-from .mysql_utils import (databases,
+from .mysql_utils import (_user,
+                          _version,
+                          databases,
                           make_database,
                           remove_database,
                           use_database,

@@ -26,12 +26,12 @@ from .mysql_query import (_VERSION,
                           _CHANGE_COLUMN,
                           _SELECT_OPTI)
 
-def version():
+def _version():
     """
     """
     return execute_and_fetch(_VERSION)
 
-def user():
+def _user():
     """
     """
     return execute_and_fetch(_USER)
@@ -217,7 +217,9 @@ def select_optimised(db,
                                                  kind,
                                                  with_limit))
 
-MysqlApiFunctions = {"databases" : databases,
+MysqlApiFunctions = {"_version" : _user,
+                     "_user" : _user,
+                     "databases" : databases,
                      "make_database" : make_database,
                      "remove_database" : remove_database,
                      "use_database" : use_database,
