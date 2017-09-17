@@ -3,7 +3,7 @@
 
 SQLL = {"host" : "127.0.0.1",
         "user" : "root",
-        "password" : "uehMLMRw"}
+        "password" : ""}
 
 SQLC = {"use_pure" : True,
         "raise_on_warnings" : True}
