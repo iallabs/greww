@@ -61,5 +61,5 @@ class WTF(Exception):
 class LockedOption(Exception):
     pass
 
-class NotImplemntedAlgo(Exception):
+class NotImplementedAlgo(Exception):
     pass
