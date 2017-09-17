@@ -107,48 +107,6 @@ def table_fields_data(dbname, table):
     """
     return execute_and_fetch(_TABLE_FIELDS.format(dbname, table))
 
-def table_content(db, table):
-    """
-    return a 2 dimentioanl array cont-aining all table values
-    ========================================================
-    >>> table_content("sys", "host_ip")
-    [[1, 2, 3],
-     [2, 3, 4],
-     [3, 4, 5]]
-    ========================================================
-    """
-    #XXX: uses : `select * from table`
-    return execute_and_fetch(_SELECT_TABLE.format(db, table))
-
-def make_table(db, table, **kwargs):
-    """
-    Create a table at database with kwargs as fields
-    =======================================================
-    >>> from greww.data.mysql import make_table
-    >>> make_table("db1", "tb1", id="INT(5)", name="VARCHAR(10)")
-    """
-    execute_only(_CT_QUERY(db, table, **kwargs))
-
-def remove_table(db, table):
-    """
-    Drop table at db
-    =======================================================
-    """
-    return execute_only(_DELETE_TABLE.format(db, table))
-
-def table_primary_start(db, table, start):
-    """
-    Set table starting point for AUTO_INCREMENT PRIMARY Key
-    """
-    return execute_only(_AUTOINCR.format(db, table, start))
-
-def copy_table(db, table, target_table):
-    """
-    Not Implemented
-    =======================================================
-    """
-    pass
-
 def add_field(db, table, field_name, field_type):
     """
     Add field to table at db
@@ -173,6 +131,49 @@ def change_field(db, table, field_name, new_field, field_type):
                                        field_name,
                                        new_field,
                                        field_type))
+
+
+def make_table(db, table, **kwargs):
+    """
+    Create a table at database with kwargs as fields
+    =======================================================
+    >>> from greww.data.mysql import make_table
+    >>> make_table("db1", "tb1", id="INT(5)", name="VARCHAR(10)")
+    """
+    execute_only(_CT_QUERY(db, table, **kwargs))
+
+def remove_table(db, table):
+    """
+    Drop table at db
+    =======================================================
+    """
+    return execute_only(_DELETE_TABLE.format(db, table))
+
+def table_content(db, table):
+    """
+    return a 2 dimentioanl array cont-aining all table values
+    ========================================================
+    >>> table_content("sys", "host_ip")
+    [[1, 2, 3],
+     [2, 3, 4],
+     [3, 4, 5]]
+    ========================================================
+    """
+    #XXX: uses : `select * from table`
+    return execute_and_fetch(_SELECT_TABLE.format(db, table))
+
+def table_primary_start(db, table, start):
+    """
+    Set table starting point for AUTO_INCREMENT PRIMARY Key
+    """
+    return execute_only(_AUTOINCR.format(db, table, start))
+
+def copy_table(db, table, target_table):
+    """
+    Not Implemented
+    =======================================================
+    """
+    pass
 
 def add_element(db, table, **kwargs):
     """
@@ -207,7 +208,7 @@ def select_optimised(db,
                      kind="ASC",
                      sorted_by=None):
     """
-    Not Implemented
+    Select optimised
     =======================================================
     """
     return execute_and_fetch(_SELECT_OPTI.format(selection,
