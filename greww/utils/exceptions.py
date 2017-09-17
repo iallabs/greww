@@ -57,3 +57,9 @@ class FatalAssertion(Exception):
 
 class WTF(Exception):
     pass
+
+class LockedOption(Exception):
+    pass
+
+class NotImplemntedAlgo(Exception):
+    pass
