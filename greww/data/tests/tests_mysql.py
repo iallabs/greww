@@ -96,5 +96,6 @@ def test_mysql_tables_manipulation():
 
 __all__ = [test_connectors,
            test_connection_cursors,
+           test_mysql_version,
            test_mysql_database_manipulation,
            test_mysql_tables_manipulation]
