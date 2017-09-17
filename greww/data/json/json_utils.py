@@ -1,15 +1,14 @@
 import json
 from greww.data.basics import (mkfile_with_content,
                                set_dir,
-                               rmfile,
-                               ckfile)
+                               remove_file,
+                               check_file)
 from greww.utils.exceptions import (WTF,
                                     LockedOption,
                                     NotImplementedAlgo)
-from greww.shellenv import import_varenv
+import skmvs as SK
 
-
-GWP = import_varenv("GREWW_WORKING_PATH")
+GWP = sk.get_value("GREWW_WORKING_PATH", db=main)
 
 def make_json(directory=GWP, name=None, kind=None, from_data=None):
     """

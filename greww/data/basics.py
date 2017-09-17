@@ -15,7 +15,7 @@ def make_dir(directory):
     # make directory
     os.makedirs(directory)
 
-def find_dir():
+def find_dir(directory):
     pass
 
 def remove_dir(directory, all=False, rec=False):
@@ -39,7 +39,7 @@ def mkfile(directory, name=None, ext=None):
     else:
         _file = open(directory + "/" + name, 'w').close()
 
-def rmfile(directory, name):
+def remove_file(directory, name):
     # remove file
     os.remove(directory + "/" + name)
 
