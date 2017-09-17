@@ -32,7 +32,7 @@ def check_file(directory, name):
     # check file
     return ckdir(directory + "/" + name)
 
-def mkfile(directory, name=None, ext=None):
+def make_file(directory, name=None, ext=None):
     # make file
     if ext:
         _file = open(directory + "/" + name + "." + ext, 'w').close()
