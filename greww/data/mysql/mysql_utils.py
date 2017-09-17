@@ -29,12 +29,12 @@ from .mysql_query import (_VERSION,
 def _version():
     """
     """
-    return execute_and_fetch(_VERSION)
+    return execute_and_fetch(_VERSION)[0][0]
 
 def _user():
     """
     """
-    return execute_and_fetch(_USER)
+    return execute_and_fetch(_USER)[0][0]
 
 
 @refetch_filter([0])
