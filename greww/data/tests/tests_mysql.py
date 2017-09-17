@@ -130,7 +130,7 @@ def test_mysql_tables_content_basic_manipulations():
     _tb = tables(db)
     make_table(db,
                tb,
-               field1="INT(2)",
+               field1="INT(3) NOT NULL AUTO_INCREMENT",
                field2="VARCHAR(3)",
                field3="JSON",
                primary_key="field1")
@@ -139,14 +139,14 @@ def test_mysql_tables_content_basic_manipulations():
     ct = table_content(db, tb)
     assert len(ct) == 0
     # add elements
-    add_element(db, tb, field2="kik")
+    add_element(db, tb, field2="kik", field3='[]')
     add_element(db, tb, field2="kok", field3='[]')
     ct = table_content(db, tb)
     assert len(ct) == 2
-    assert ct[0][0] == 0
+    assert ct[0][0] == 1
     assert ct[0][1] == "kik"
-    assert ct[0][2] is None
-    assert ct[1][0] == 1
+    assert ct[0][2] == '[]'
+    assert ct[1][0] == 2
     assert ct[1][1] == "kok"
     assert ct[1][2] == '[]'
     # remove element
@@ -156,7 +156,7 @@ def test_mysql_tables_content_basic_manipulations():
     assert len(ct) == 1
     assert ct[0][1] == "kok"
     assert ct[0][2] == '[]'
-    remove_elements(db, tb, where="field3 = '[]'", with_limit=1)
+    remove_elements(db, tb, where="field1 = 2", with_limit=1)
     ct = table_content(db, tb)
     assert len(ct) == 0
     # clean
@@ -166,6 +166,7 @@ def test_mysql_tables_content_basic_manipulations():
 
 def _column_of_matrix(matrix, column):
     return [i[column] for i in matrix]
+
 
 def test_mysql_tables_content_selection():
     #init
@@ -206,6 +207,11 @@ def test_mysql_tables_content_selection():
                                  kind="ASC",
                                  sorted_by="field1")
     assert _column_of_matrix(selection, 0) == [1, 2]
+    remove_table(db, tb)
+    remove_database(db)
+    return 1
+
+test_mysql_tables_content_selection()
 
 def test_mysql_tables_content_update():
     pass
