@@ -26,7 +26,6 @@ M = MysqlPen()
 db = "zilean_tests_0"
 tb = "test_table"
 
-
 def test_connectors():
     assert _connectors
     cnx = _connectors.gen
