@@ -31,9 +31,6 @@ def _version():
     """
     return execute_and_fetch(_VERSION)
 
-
-print("MYSQL_VERSION ------- ", _version())
-
 def _user():
     """
     """
