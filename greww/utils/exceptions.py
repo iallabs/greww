@@ -54,3 +54,6 @@ class NonAuthorizedLevel(Exception):
 
 class FatalAssertion(Exception):
     pass
+
+class WTF(Exception):
+    pass
