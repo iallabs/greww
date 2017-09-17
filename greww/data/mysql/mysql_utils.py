@@ -26,12 +26,12 @@ from .mysql_query import (_VERSION,
                           _CHANGE_COLUMN,
                           _SELECT_OPTI)
 
-def _version():
+def version():
     """
     """
     return execute_and_fetch(_VERSION)
 
-def _user():
+def user():
     """
     """
     return execute_and_fetch(_USER)
