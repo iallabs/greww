@@ -10,6 +10,10 @@ function expmk () {
     export GREWW_CACHE
 }
 
+function make_babtu_cfg () {
+
+}
+
 function make_cache () {
     if [ ! -d $GREWW_CACHE ]; then
         mkdir GREWW_CACHE
