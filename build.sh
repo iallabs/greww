@@ -11,8 +11,7 @@ function expmk () {
 }
 
 function make_babtu_cfg () {
-    python3 ial-pkg-sos.py -v --clone skmvs -p
-    python3 ial-pkg-sos.py -v --build skmvs -bo export-vars
+    python3 ial-pkg-sos.py --make $PWD
 }
 
 function make_cache () {
