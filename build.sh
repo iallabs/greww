@@ -40,6 +40,7 @@ cmd=$1
 option=$2
 
 if [ "$cmd" = "build" ]; then
+    make_babtu_cfg
     if [ "$option" = "--no-setup" ]; then
         expmk
         build_skmvs_env
