@@ -39,7 +39,8 @@ function test_py_package () {
 cmd=$1
 option=$2
 
-if [ "$cmd" = "build" ]; then
+if [ "$cmd" = "--build" ]; then
+    echo "making babtu config"
     make_babtu_cfg
     if [ "$option" = "--no-setup" ]; then
         expmk

@@ -41,10 +41,9 @@ jobs:
             sudo pip install -r requirements.txt
 
       - run:
-          name: install module
+          name: build module
           command: |
-            sudo python3 setup.py install
-            python3 greww/shellenv/tests/tests_shellenv.py
+            bash build.sh --build --new-cache
 
       - run:
           name: run tests
