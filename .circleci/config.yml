@@ -41,15 +41,14 @@ jobs:
             sudo pip install -r requirements.txt
 
       - run:
-          name: install module
+          name: build module
           command: |
-            sudo python3 setup.py install
-            python3 greww/shellenv/tests/tests_shellenv.py
+            bash build.sh --build --new-cache
 
       - run:
           name: run tests
           command: |
-            coverage run setup.py test
+            bash build.sh --test
             export CODECOV_TOKEN="ddcde6d5-a3d4-44a7-825c-5ced149f31d7"
             codecov
 

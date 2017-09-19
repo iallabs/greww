@@ -8,7 +8,7 @@ from greww.utils.exceptions import (WTF,
                                     NotImplementedAlgo)
 import skmvs as SK
 
-GWP = sk.get_value("GREWW_WORKING_PATH", db=main)
+GWP = SK.get_value("GREWW_CACHE", db='paths')
 
 def make_json(directory=GWP, name=None, kind=None, from_data=None):
     """
@@ -23,7 +23,6 @@ def make_json(directory=GWP, name=None, kind=None, from_data=None):
                         name=name,
                         ext='json',
                         content=ct)
-
 
 def feed_json(directory=GWP, name=None, obj=None):
     """
@@ -118,3 +117,18 @@ def search_json(directory=GWP, name=None, **kwargs):
     elif isinstance(data, dict):
         #TODO: add this part
         raise NotImplementedAlgo(name)
+
+def jsonize_kwargs(*args, **kwargs):
+    """
+	Return a Json object that contain all data stored at args and kwargs
+	"""
+    keys = list(kwargs.keys())
+    if not args:
+        data = kwargs
+    else:
+        data = {
+             "args" : list(args),
+        }
+        for k in keys:
+            data[k] = kwargs[k]
+    return data

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages, Command
 #
-class greww_test_p(Command):
+class greww_test(Command):
     """Runs all "PYTHON" tests under the greww/folder
     """
 
@@ -35,8 +35,7 @@ setup(
     long_description=readme,
     author='Imp Alpha lab',
     author_email='hilalyamine@gmail.com',
-    cmdclass={'test' : greww_test_p},
-    url='',
+    cmdclass={'test' : greww_test},
     license=license,
-    packages=find_packages(exclude=('tests', 'docs', 'cgreww'))
+    packages=find_packages(exclude=('tests', 'docs'))
 )
