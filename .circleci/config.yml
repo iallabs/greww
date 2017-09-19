@@ -48,7 +48,6 @@ jobs:
       - run:
           name: run tests
           command: |
-            coverage run setup.py test
             export CODECOV_TOKEN="ddcde6d5-a3d4-44a7-825c-5ced149f31d7"
             codecov
 
