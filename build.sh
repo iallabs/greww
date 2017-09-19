@@ -3,20 +3,17 @@
 GREWW_PATH="$PWD"
 GREWW_VERSION="0.0.1"
 GREWW_CACHE="$GREWW_PATH/cache"
-
-function expmk () {
-    export GREWW_PATH
-    export GREWW_VERSION
-    export GREWW_CACHE
-}
+export GREWW_PATH
+export GREWW_VERSION
+export GREWW_CACHE
 
 function make_babtu_cfg () {
-    python3 ial-pkg-sos.py --make $PWD
+    python3 ial-pkg-sos.py -v --make $PWD
 }
 
 function make_cache () {
     if [ ! -d $GREWW_CACHE ]; then
-        mkdir GREWW_CACHE
+        mkdir $GREWW_CACHE
     fi
 }
 
@@ -42,10 +39,8 @@ if [ "$cmd" = "--build" ]; then
     echo "making babtu config"
     make_babtu_cfg
     if [ "$option" = "--no-setup" ]; then
-        expmk
         build_skmvs_env
     elif [ "$option" = "--new-cache" ]; then
-        expmk
         build_skmvs_env
         rm -rf $GREWW_CACHE
         make_cache
