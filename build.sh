@@ -28,7 +28,7 @@ function make_py_package () {
 }
 
 function test_py_package () {
-    GREWW_PY_SETUP="GREWW_PATH/setup.py"
+    GREWW_PY_SETUP="$GREWW_PATH/setup.py"
     coverage run $GREWW_PY_SETUP test
 }
 
