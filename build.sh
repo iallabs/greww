@@ -24,7 +24,7 @@ function build_skmvs_env () {
 
 function make_py_package () {
     GREWW_PY_SETUP="$GREWW_PATH/setup.py"
-    python3 $GREWW_PY_SETUP install
+    sudo python3 $GREWW_PY_SETUP install
 }
 
 function test_py_package () {

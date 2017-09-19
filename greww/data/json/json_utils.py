@@ -8,8 +8,8 @@ from greww.utils.exceptions import (WTF,
                                     NotImplementedAlgo)
 import skmvs as SK
 
-GWP = sk.get_value("GREWW_WORKING_PATH", db='paths')
-GWP = sk.get_value("GREWW_WORKING_PATH", db=main)
+GWP = SK.get_value("GREWW_WORKING_PATH", db='paths')
+GWP = SK.get_value("GREWW_WORKING_PATH", db=main)
 
 def make_json(directory=GWP, name=None, kind=None, from_data=None):
     """
