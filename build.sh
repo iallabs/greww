@@ -29,7 +29,7 @@ function make_py_package () {
 
 function test_py_package () {
     GREWW_PY_SETUP="GREWW_PATH/setup.py"
-    python3 $GREWW_PY_SETUP test
+    coverage run $GREWW_PY_SETUP test
 }
 
 cmd=$1
@@ -52,6 +52,6 @@ if [ "$cmd" = "--build" ]; then
     fi
 fi
 
-if [ "$cmd" = "test" ]; then
+if [ "$cmd" = "--test" ]; then
     test_py_package
 fi

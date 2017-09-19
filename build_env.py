@@ -10,5 +10,6 @@ def build_env():
     SK.store_value('GREWW_CACHE', GC, db='paths')
     SK.store_value('GREWW_VERSION', GV, db='paths')
 
+
 if __name__ == "__main__":
     build_env()
