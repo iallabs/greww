@@ -20,11 +20,12 @@ from greww.data.basics import (list_dir,
                                replace_lines,
                                file_size)
 
-#from greww._envs import GREWW_CACHE, GREWW_PATH
+from greww._envs import GREWW_CACHE, GREWW_PATH
 
+#GC = "/Users/ial-ah/GitHub/greww/cache"
+#GP = "/Users/ial-ah/GitHub/greww"
+GC, GP = GREWW_CACHE, GREWW_PATH
 
-GC = "/Users/ial-ah/GitHub/greww/cache"
-GP = "/Users/ial-ah/GitHub/greww"
 
 TDIR = "{0}/tests".format(GC)
 TFILE = "test1"
