@@ -63,3 +63,26 @@ def catch_shell_streaming(cmdline=None,
         __func = lambda x : print(x)
         for row in iter(p.stdout.readline, b''):
             __func(row)
+
+
+class Shell(object):
+    """
+    Shell execution and envirenement
+    """
+    slots = []
+
+    @staticmethod
+    def execute(*args, **kwargs):
+        return esc(*args, **kwargs)
+
+    #XXX: declared as var=VarEnv instead
+    # Just to not use '()' for nothing
+    #@staticmethod
+    #def var():
+    #    return VarEnv
+    @staticmethod
+    def execute_under_new_popen():
+        """
+        Not Implemented
+        """
+        raise NotImplemented()

@@ -1,5 +1,5 @@
 import mysql.connector
-from greww.vmfetcher import MachineIdentity as MID
+from greww._machine_config import MachineIdentity as MID
 from greww.utils.exceptions import (BadConnector,
                                     RejectedConnection)
 

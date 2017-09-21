@@ -12,6 +12,18 @@ def tuplik(e, indexes):
             return R[0]
         return R
 
+def filter_app(filt=None):
+    def wrap_func(func):
+        def wrap_args(*args, **kwargs):
+            res = func(*args, **kwargs)
+            _res = []
+            for i in res:
+                _res += [filt(i)]
+            return _res
+        return wrap_args
+    return wrap_func
+
+
 def refetch_filter(indexes):
     """
     Decorator that treates 2D List and return only raws

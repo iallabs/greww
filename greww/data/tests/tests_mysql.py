@@ -25,7 +25,6 @@ from greww.data.mysql import (_version,
 
 _connectors = ConnectorsGenerator()
 #_connectors._new()
-M = MysqlPen()
 
 db = "greww_mysql_tests_0"
 tb = "test_table"

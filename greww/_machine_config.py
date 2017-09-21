@@ -1,6 +1,3 @@
-
-
-
 SQLL = {"host" : "127.0.0.1",
         "user" : "root",
         "password" : ""}
@@ -28,7 +25,6 @@ class MachineIdentity(object):
             return GREWW_WORKING_PATH
         if a == "identity.name":
             return MACHINE_NAME
-
 
     @classmethod
     def _load(cls, cnf):
