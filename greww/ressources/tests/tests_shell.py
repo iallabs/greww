@@ -1,5 +1,4 @@
-from greww.shellenv.pyshell import execute_shell_command as esc
-from greww.shellenv.shell import Shell
+from greww.ressources.shell import execute_shell_command as esc
 from greww.utils.filters import filter_iter as FI
 
 _ls = "ls {0}"
@@ -8,8 +7,6 @@ _un = "uname"
 _un_op = "uname {0}"
 _mkdir = "mkdir {0}/{1}"
 _rmdir = "rm -r {0}/{1}"
-
-
 
 def test_esc_general():
     global _ls, _ls_la, _un
@@ -20,7 +17,7 @@ def test_esc_general():
 
 def test_esc_no_results():
     global _mkdir, _rmdir
-    HOME = varenvs()["HOME"]
+    HOME = os.environ['HOME']
     dirs = esc(_ls.format(HOME), rs=True)
     bdirs = FI(dirs, c0)
     dir_test = "greww_test_dir"
@@ -42,8 +39,7 @@ def test_esc_streaming():
 def test_shell_class_structure():
     pass
 
-__all__ = [test_varenvs_,
-           test_esc_general,
+__all__ = [test_esc_general,
            test_esc_streaming,
            test_esc_no_results,
            test_shell_class_structure]

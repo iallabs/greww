@@ -1,3 +1,5 @@
+import os
+
 from greww.data.basics import (list_dir,
                                set_dir,
                                check_dir,
@@ -19,7 +21,8 @@ from greww.data.basics import (list_dir,
                                file_size)
 
 #from greww._envs import GREWW_CACHE, GREWW_PATH
-import os
+
+
 GC = "/Users/ial-ah/GitHub/greww/cache"
 GP = "/Users/ial-ah/GitHub/greww"
 
@@ -81,9 +84,6 @@ def test_dir_file_basics():
 
 _fcc_test = """00000
 11111
-55555
-66666
-77777
 88888
 88888
 88888
@@ -99,7 +99,8 @@ _fcc_final_expect = """00000
 77777
 88888
 99999
-00000"""
+00000
+"""
 
 def test_file_data():
     # assert cache dir
@@ -107,10 +108,40 @@ def test_file_data():
     # make test dir
     make_dir(TDIR)
     mkfile_with_content(TDIR, TFILE, content=_fcc_test)
+    # file content
+    cont = file_content(TDIR, TFILE)
+    # file lenght
+    l = file_lenght(TDIR, TFILE)
+    assert l == 6
+    # add line
+    add_line(TDIR, TFILE,
+             line="00000", nline=10)
+    l = file_lenght(TDIR, TFILE)
+    assert l == 7
+    # add lines
+    add_lines(TDIR, TFILE,
+              lines=["22222",
+                     "33333",
+                     "44444"],
+               nline=2)
+    # add lines
+    add_lines(TDIR, TFILE,
+              lines=["77777",
+                     "66666",
+                     "55555"],
+              nline=5,
+              inv=True)
+    l = file_lenght(TDIR, TFILE)
+    assert l == 13
+    # del lines
+    del_lines(TDIR, TFILE,
+              nlines=[2,3],
+              inv=True)
+    l = file_lenght(TDIR, TFILE)
+    assert l == 11
     cont = file_content(TDIR, TFILE, False)
-    print("ffccccc")
-    print(_fcc_test)
-    print("contttt")
-    print(cont)
+    assert cont == _fcc_final_expect
+    remove_dir(TDIR, rec=True)
 
-test_file_data()
+__all__ = [test_dir_file_basics,
+           test_file_data]

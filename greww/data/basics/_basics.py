@@ -49,7 +49,7 @@ def check_file(directory, name):
     """
     Check file at directory
     """
-    return ckdir(directory + "/" + name)
+    return check_dir(directory + "/" + name)
 
 def make_file(directory, name=None, ext=None):
     """
@@ -73,8 +73,6 @@ def find_file():
     """
     pass
 
-####
-
 def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     """
     Make file at directory
@@ -93,22 +91,26 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
             f.write(content)
         elif type(content) == list:
             for i in content:
-                f.write(i + "\n")
+                f.write(str(i) + "\n")
         else:
             f.write(content)
 
-@filter_app(lambda x : x[:-1])
+@filter_app(lambda x : x[:-1] if '\n' in x else x)
+def _file_content_list(directory, name):
+    set_dir(directory)
+    with open(name, "r") as f:
+        return f.readlines()
+
 def file_content(directory=None, name=None, expand=True):
     """
     Return file content
     expand : Use expand to get a list of lines
     """
+    if expand:
+        return _file_content_list(directory, name)
     set_dir(directory)
     with open(name, "r") as f:
-        if expand:
-            return f.readlines()
-        else:
-            return f.read()
+        return f.read()
 
 
 def file_lenght(directory=None, name=None):
@@ -134,17 +136,15 @@ def add_line(directory=None, name=None, line=None, nline=0, inv=False):
     if not check_file(directory, name):
         #TODO: Exception
         return
+    content = file_content(directory, name, True)
     if inv:
-        #XXX: Not sure about this
-        nline = file_lenght(directory, name) - nline
-    # read
-    set_dir(directory)
-    with open(name, 'r') as f:
-        content = f.readlines()
+        content = content[::-1]
     # insertion
     content.insert(nline, line)
     # recreate
     remove_file(directory, name)
+    if inv:
+        content = content[::-1]
     mkfile_with_content(directory=directory,
                          name=name,
                          content=content)
@@ -164,15 +164,11 @@ def add_lines(directory=None, name=None, lines=None, nline=0, inv=False, inv_wri
                         nline=nline,
                         inv=inv)
     if not check_file(directory, name):
-        #TODO: Exception
         return
-    if inv:
-        #XXX: Not sure about this
-        nline = file_lenght(directory, name) - nline
     # read
-    set_dir(directory)
-    with open(name, 'r') as f:
-        content = f.readlines()
+    content = file_content(directory, name, True)
+    if inv:
+        content = content[::-1]
     # insersion
     for line in lines:
         content.insert(nline, line)
@@ -182,36 +178,32 @@ def add_lines(directory=None, name=None, lines=None, nline=0, inv=False, inv_wri
             nline += 1
     # recreate
     remove_file(directory, name)
+    if inv:
+        content = content[::-1]
     mkfile_with_content(directory=directory,
-                         name=name,
-                         content=content)
+                        name=name,
+                        content=content)
 
-
-def del_lines(directory=None, name=None, nlines=None, where=None):
+def del_lines(directory=None, name=None, nlines=None, inv=False):
     """
     Delete lines at nlines from file at directory
     """
     if not check_file(directory, name):
-        #TODO: Exception
         return
-    if inv:
-        #XXX: Not sure about this
-        nline = file_lenght(directory, name) - nline
     # read
-    set_dir(directory)
-    with open(name, 'r') as f:
-        content = f.readlines()
-
-    #TODO: to functions module
+    content = file_content(directory, name, True)
+    if inv:
+        content = content[::-1]
+    i = 0
     def _incr_list(ln, incr):
         return [i+incr for i in ln]
-    i = 0
-    while nlines:
-        del content[nlines[i]]
+    for line_i in range(len(nlines)):
+        del content[nlines[line_i]]
         nlines = _incr_list(nlines, -1)
-        i += 1
     # recreate
     remove_file(directory, name)
+    if inv:
+        content = content[::-1]
     mkfile_with_content(directory=directory,
                         name=name,
                         content=content)
