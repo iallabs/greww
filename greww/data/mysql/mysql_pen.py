@@ -34,4 +34,4 @@ class _AssertedMysqlPen(_MysqlPen):
                     method,
                     func)
 
-AssertedMysqlPen = _AssertedMysqlPen()
+AssertedMysqlPen = _AssertedMysqlPen("kaka")
