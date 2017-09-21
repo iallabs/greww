@@ -43,41 +43,42 @@ def test_dir_file_basics():
     assert check_dir(TDIR)
     # list dir
     d = list_dir(GC)
-    assert TDIR in d
+    assert 'tests' in d
     # set dir
     set_dir(GP)
     d = list_dir('cache')
-    assert TDIR in d
+    assert 'tests' in d
     set_dir(TDIR)
     # make dirs
     make_dir('testdir8')
-    make_dirs('testdir9')
+    make_dir('testdir9')
     set_dir(GP)
     # find dir
-    pd = find_dir('testdir8')
-    assert pd == TDIR + 'testdir8'
+    pd = find_dir(GP, 'testdir8')
+    assert len(pd) == 1
+    assert pd[0] == TDIR + '/testdir8'
     # remove dir
-    remove_dir(TDIR + 'testdir8')
+    remove_dir(TDIR + '/testdir8')
     # reove dir rec
-    remove_dir(TDIR, rec=True)
-    pd = find_dir('testdir8')
-    assert not pd
+    remove_dir(TDIR, True)
+    pd = find_dir(GP, 'testdir8')
+    assert len(pd) == 0
     # reconstrcut
     make_dir(TDIR)
     set_dir(TDIR)
     make_dir('testdir8')
-    make_dirs('testdir9')
+    make_dir('testdir9')
     # make file
-    make_file(TDIR + TFILE)
+    make_file(TDIR, TFILE)
     # check file
-    assert check_file(TDIR + TFILE)
-    make_file(TDIR + 'testdir9' + TFILE)
+    assert check_file(TDIR, TFILE)
+    make_file(TDIR + '/testdir9', TFILE)
     # find_file
-    pf = find_file('TFILE')
+    pf = find_file(GP, TFILE)
     assert len(pf) == 2
     # remove file
-    remove_file(TDIR + 'testdir9' + TFILE)
-    pf = find_file('TFILE')
+    remove_file(TDIR + '/testdir9', TFILE)
+    pf = find_file(GP, TFILE)
     assert len(pf) == 1
     # remove
     remove_dir(TDIR, rec=True)
@@ -142,6 +143,8 @@ def test_file_data():
     cont = file_content(TDIR, TFILE, False)
     assert cont == _fcc_final_expect
     remove_dir(TDIR, rec=True)
+
+test_file_data()
 
 __all__ = [test_dir_file_basics,
            test_file_data]

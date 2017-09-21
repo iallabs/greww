@@ -26,13 +26,8 @@ def make_dir(directory):
     """
     os.makedirs(directory)
 
-def find_dir(directory):
-    """
-    Find directory
-    """
-    pass
 
-def remove_dir(directory, all=False, rec=False):
+def remove_dir(directory, rec=False):
     """
     Remove directory
     Use rec to remove directory with it content
@@ -41,7 +36,19 @@ def remove_dir(directory, all=False, rec=False):
         # NOTE: check if rec=False work for this case
         import shutil
         shutil.rmtree(directory)
-    os.rmdir(directory)
+    else:
+        os.rmdir(directory)
+
+def find_dir(directory, dir_name):
+    """
+    Find directory
+    """
+    r = []
+    for root, dirs, files in os.walk(directory):
+        if dir_name in dirs:
+            r += [os.path.join(root, dir_name)]
+    return r
+
 
 ######### files ##########
 
@@ -67,11 +74,15 @@ def remove_file(directory, name):
     """
     os.remove(directory + "/" + name)
 
-def find_file():
+def find_file(directory, name):
     """
     Find file at directory
     """
-    pass
+    r = []
+    for root, dirs, files in os.walk(directory):
+        if name in files:
+            r += [os.path.join(root, name)]
+    return r
 
 def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     """
