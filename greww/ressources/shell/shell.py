@@ -70,7 +70,6 @@ class Shell(object):
     Shell execution and envirenement
     """
     slots = []
-    var = VarEnv
 
     @staticmethod
     def execute(*args, **kwargs):
