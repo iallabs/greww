@@ -19,7 +19,7 @@ class greww_test(Command):
         pass
 
     def run(self):
-        from greww.tests.runtests import run_all_tests
+        from greww.utils.run_tests import run_all_tests
         run_all_tests()
 
 with open('README.md') as f:
@@ -30,7 +30,7 @@ with open('LICENSE') as f:
 
 setup(
     name='Greww',
-    version='0.0.1',
+    version='0.0.2',
     description='Greeeeewwww',
     long_description=readme,
     author='Imp Alpha lab',

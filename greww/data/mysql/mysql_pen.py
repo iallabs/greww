@@ -4,7 +4,7 @@ from greww.utils.decorators import ClassDecorator #, ArgsBooster
 _databases = ""
 
 @ClassDecorator(decorator=staticmethod)
-class MysqlPen(object):
+class _MysqlPen(object):
     """
     This pen have a big d, can write everywhere.
     Errors raises if mysql raises one
@@ -18,8 +18,10 @@ class MysqlPen(object):
                     func)
         return obj
 
+MysqlPen = _MysqlPen()
+
 #@ClassDecorator(decorator=ArgsBooster(0, *_databases))
-class AssertedMysqlPen(MysqlPen):
+class _AssertedMysqlPen(_MysqlPen):
     """
     This pen have a short d, can't write anywhere
     Errors raises if he breaks it authorisations
@@ -31,3 +33,5 @@ class AssertedMysqlPen(MysqlPen):
             setattr(obj,
                     method,
                     func)
+
+AssertedMysqlPen = _AssertedMysqlPen()
