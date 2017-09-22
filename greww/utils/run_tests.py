@@ -22,7 +22,7 @@ import time
 test_modules = ['greww.data.tests.tests_basics',
                 'greww.data.tests.tests_mysql',
                 'greww.data.tests.tests_config',
-                'greww.ressources.tests.tests_shell']
+                'greww.data.tests.tests_json']
 Succeeded_Test = "[ OK ] ... {0} succeeded ES:{1} with a total run time of : {2} ms"
 Failed_Test = "[WARN] ... {0} failed after runing : {1} ms"
 
