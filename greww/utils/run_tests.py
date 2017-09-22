@@ -21,6 +21,7 @@ import time
 
 test_modules = ['greww.data.tests.tests_basics',
                 'greww.data.tests.tests_mysql',
+                'greww.data.tests.tests_config',
                 'greww.ressources.tests.tests_shell']
 Succeeded_Test = "[ OK ] ... {0} succeeded ES:{1} with a total run time of : {2} ms"
 Failed_Test = "[WARN] ... {0} failed after runing : {1} ms"
@@ -50,12 +51,12 @@ def run_pytests_modules(*test_modules):
         for func in functions:
             _test_function(func)
         k2 = time.time()
-        print("[INFO] ... Module tests total run time : {0} ms".format(k2 - k1))
-        print("[INFO] ... --- end module tests ---")
+        print("        ====> Module tests total run time : {0} ms".format(k2 - k1))
+        print("        ====> end module test")
 
     print('[INFO] ... --- end test ---')
     t2 = time.time()
-    print('[ OK ] ... Total runtime : {0} ms'.format(t2 - t1))
+    print('       ====> Total runtime : {0} ms'.format(t2 - t1))
 
 def run_all_tests():
     run_pytests_modules(*test_modules)
