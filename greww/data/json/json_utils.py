@@ -1,6 +1,5 @@
 import json
-from greww.data.basics import (mkfile_with_content,
-                               set_dir,
+from greww.data.basics import (set_dir,
                                remove_file,
                                check_file)
 from greww.utils.exceptions import (WTF,
@@ -10,7 +9,7 @@ import skmvs as SK
 
 GWP = SK.get_value("GREWW_CACHE", db='paths')
 
-def make_json(directory=GWP, name=None, kind=None, from_data=None):
+def make_json(directory=GWP, name=None, kind=dict, from_data=None, pretty=True):
     """
     Create json file at directory initiated as List Json or Dict Json
     =================================================================
@@ -19,10 +18,16 @@ def make_json(directory=GWP, name=None, kind=None, from_data=None):
         ct = '[]' if kind == list else "{}"
     if from_data:
         ct = from_data
-    mkfile_with_content(directory=directory,
-                        name=name,
-                        ext='json',
-                        content=ct)
+    set_dir(directory)
+    f = open(name, 'w')
+    if pretty:
+        json.dump(ct, f,
+                  sort_keys = True,
+                  indent = 4,
+                  ensure_ascii = False)
+    else:
+        json.dump(ct, f)
+    f.close()
 
 def feed_json(directory=GWP, name=None, obj=None):
     """
@@ -88,6 +93,7 @@ def read_json(directory=GWP, name=None):
     """
     if name is None:
         raise ValueError("Name can't be None")
+    set_dir(directory)
     with open(name, 'r') as f:
         data = json.load(f)
         return data
