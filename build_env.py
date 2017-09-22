@@ -7,11 +7,11 @@ GC = os.environ['GREWW_CACHE']
 GG = os.environ['GREWW_CONFIG']
 
 def build_env():
-    SK.store_value('GREWW_PATH', GP, db='paths')
-    SK.store_value('GREWW_CACHE', GC, db='paths')
-    SK.store_value('GREWW_VERSION', GV, db='paths')
-    SK.store_value('GREWW_CONFIG', GG, db='paths')
-
+    SK.store_value('GREWW_PATH', GP, db='paths', force=True)
+    SK.store_value('GREWW_CACHE', GC, db='paths', force=True)
+    SK.store_value('GREWW_CONFIG', GG, db='paths', force=True)
+    SK.store_value('GREWW_VERSION', GV, db='main', force=True)
+    SK.store_value("greww_paths_stored", True, db="main", force=True)
 
 if __name__ == "__main__":
     build_env()

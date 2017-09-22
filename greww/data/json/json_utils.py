@@ -7,9 +7,7 @@ from greww.utils.exceptions import (WTF,
                                     NotImplementedAlgo)
 import skmvs as SK
 
-GWP = SK.get_value("GREWW_CACHE", db='paths')
-
-def make_json(directory=GWP, name=None, kind=dict, from_data=None, pretty=True):
+def make_json(directory=None, name=None, kind=dict, from_data=None, pretty=True):
     """
     Create json file at directory initiated as List Json or Dict Json
     =================================================================
@@ -19,6 +17,8 @@ def make_json(directory=GWP, name=None, kind=dict, from_data=None, pretty=True):
     if from_data:
         ct = from_data
     set_dir(directory)
+    if not ('.json' in name):
+        name = '{0}.json'.format(name)
     f = open(name, 'w')
     if pretty:
         json.dump(ct, f,
@@ -29,7 +29,7 @@ def make_json(directory=GWP, name=None, kind=dict, from_data=None, pretty=True):
         json.dump(ct, f)
     f.close()
 
-def feed_json(directory=GWP, name=None, obj=None):
+def feed_json(directory=None, name=None, obj=None):
     """
     feed json file at directory with obj
     =================================================================
@@ -48,7 +48,7 @@ def feed_json(directory=GWP, name=None, obj=None):
     with open(name, 'w') as f:
         json.dump(data, f)
 
-def count_json(directory=GWP, name=None):
+def count_json(directory=None, name=None):
     if name is None:
         raise ValueError("Name can't be None")
     set_dir(directory)
@@ -56,14 +56,12 @@ def count_json(directory=GWP, name=None):
         data = json.load(f)
         return len(data)
 
-def unfeed_json(directory=GWP, name=None, **kwargs):
+def unfeed_json(directory, name, **kwargs):
     """
     Remove all json objects under a json file that satify kwargs
     logic
     ==============================================================
     """
-    if directory is None or name is None:
-        raise ValueError("Name can't be None")
     if not kwargs:
         raise LockedOption("Unauthorized Move")
     set_dir(directory)
@@ -77,8 +75,7 @@ def unfeed_json(directory=GWP, name=None, **kwargs):
             for k in list(kwargs.keys()):
                 if not obj[k] == kwargs[k]:
                     res.append(obj)
-                    continue
-        rmfile(directory, name)
+        remove_file(directory, name)
         with open(name, 'w') as f:
             json.dump(res, f)
 
@@ -86,7 +83,7 @@ def unfeed_json(directory=GWP, name=None, **kwargs):
         #TODO: add this part
         raise NotImplementedAlgo(name)
 
-def read_json(directory=GWP, name=None):
+def read_json(directory=None, name=None):
     """
     Read a json file to return a Python object
     ==============================================================
@@ -98,7 +95,7 @@ def read_json(directory=GWP, name=None):
         data = json.load(f)
         return data
 
-def search_json(directory=GWP, name=None, **kwargs):
+def search_json(directory, name, **kwargs):
     """
     Try to find a list of objects that satisfy kwargs logic
     ==============================================================
@@ -124,9 +121,18 @@ def search_json(directory=GWP, name=None, **kwargs):
         #TODO: add this part
         raise NotImplementedAlgo(name)
 
+def _replace_json(d, f, nc):
+    """
+    Replace json file content with another
+    ==============================================================
+    """
+    remove_file(d, f)
+    make_json(d, f, from_data=nc, pretty=True)
+
 def jsonize_kwargs(*args, **kwargs):
     """
 	Return a Json object that contain all data stored at args and kwargs
+    ===================================================================
 	"""
     keys = list(kwargs.keys())
     if not args:

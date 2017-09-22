@@ -1,14 +1,10 @@
 from ._envs import GREWW_CONFIG
-from .data.json import read_json, make_json
+from .data.json import read_json, make_json, _replace_json
 from .data.basics import remove_file
 from .data.config import get_configurations, configuration_data
 import skmvs as SK
 
 GCF = "gconfig.json"
-
-def _replace_json_file(d, f, nc):
-    remove_file(d, f)
-    make_json(d, f, from_data=nc)
 
 class UnknownConfiguration(Exception):
     pass
@@ -58,7 +54,6 @@ class GrewwConfigLoader(object):
         obj = object.__new__(cls)
         obj.__init__()
         return obj.configuration
-
 
 class Configuration(object):
 
