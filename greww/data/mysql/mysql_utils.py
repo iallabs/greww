@@ -28,11 +28,15 @@ from .mysql_query import (_VERSION,
 
 def _version():
     """
+    Return MySQL version
+    =======================================================
     """
     return execute_and_fetch(_VERSION)[0][0]
 
 def _user():
     """
+    Return MySQL user
+    =======================================================
     """
     return execute_and_fetch(_USER)[0][0]
 

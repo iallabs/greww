@@ -10,15 +10,21 @@ from greww.utils.exceptions import (NonAuthorizedMachine,
                                     NonAuthorizedLevel,
                                     FatalAssertion)
 
-from greww.vmfetcher import MachineIdentity
+from greww._config import Configuration as Config
 
+core_database = Config.laod_option('zilean.config', 'zilean_core_database')
+authorisation = Config.load_option('zilean.config', 'zilean_authorisation')
+given_databases = Config.load_option('zilean.config', 'zilean_authorized_databases')
+
+zm_model = ["machine_registred_moves",
+            "machine_performance_history",
+            "machine_traffic_history"]
 
 def assert_zilean_core_databases():
     """
     Not Implemented
     """
-
-    if MachineIdentity._load("identity.type") != "ZileanType":
+    if Config.load_option('zilean.config', 'zilean_type') != "main":
         msg = """ Please make sure to use a ZileanMachine
         to assert it core databases. Other ways its not safe
         at all to make this kind of test possible from this
@@ -26,10 +32,9 @@ def assert_zilean_core_databases():
         raise NonAuthorizedMachine(msg)
 
     else:
-        msg = """ Please make sure to use zilean-cli to make this
+        msg = """ Please make sure to use zilean-cli/api to make this
         kind of tests."""
-
-    raise NonAuthorizedLevel(msg)
+        raise NonAuthorizedLevel(msg)
 
 def build_zilean_core_database():
     """
@@ -37,55 +42,44 @@ def build_zilean_core_database():
     """
     msg = """ Can't build Zilean Core Database from an outsider
     package or non-zilean machine type """
-    raise NonAuthorizedLevel()
+    raise NonAuthorizedLevel(msg)
 
-
-
-def assert_machine_core_database():
+def assert_machine_databases():
     """
     Asserting machine database is called just to verifiy every single
     db is installed correctly.
     Return 1 if everything went good
     """
-
-    core_database = MachineIdentity._load("mysql.core-database")
-    authorisation = MachineIdentity._load("mysql.authorisations")
     # At this level authorisations are still ignored
     #FIXME: Having authorisation type doesnt stop you from doing anything
     #Zilean will just stop every unauthorised mouvement
     _db = databases()
-    if not (core_database in _db):
-        msg = "Damn it {0}".format(core_database)
-        raise FatalAssertion(msg)
-    return 1
+    t = core_database + given_databases
+    for e in t:
+        if not (e in _db):
+            msg = "Damn it : {0}".format(core_database)
+            raise FatalAssertion(msg)
 
 def assert_zilean_machine_core_architecture():
-    core_database = MachineIdentity._load("mysql.core-database")
-    given_databases = MachineIdentity._load("mysql.databases")
-    authorisation = MachineIdentity._load("mysql.authorisations")
-    _db = databases()
+    db = database()
     for i in given_databases:
-        if not (i in _db):
+        if not (i in db):
             msg = "Damn it {0}".format(i)
             raise FatalAssertion(msg)
-    _core_tables = tables(core_database)
-    if not _core_tables:
+    tb = tables(core_database)
+    if not db:
         msg = "Damn it"
         raise FatalAssertion(msg)
     else:
-        a = "machine_registred_moves"
-        b = "machine_performance_history"
-        c = "machine_traffic_history"
-        if not (a in _core_tables or b in _core_tables or c in _core_tables):
-            raise FatalAssertion()
-    return 1
+        for i in zm_model:
+            if not (i in tb):
+                raise FatalAssertion()
 
 def build_machine_registred_moves():
     """
         Create a table that can hold all machine registred moves
         Probably going to be decorated
     """
-    core_database = MachineIdentity._load("mysql.core-database")
     make_table(core_database,
                "machine_registred_moves",
                move_id="INT(10) NOT NULL AUTO_INCREMENT",
@@ -112,7 +106,4 @@ def build_machine_performance_history():
     """
     Not Impelemented
     """
-    pass
-
-def build_zilean_machine_database():
     pass
