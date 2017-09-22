@@ -39,7 +39,7 @@ option=$2
 
 if [ "$cmd" = "--build" ]; then
     echo "making babtu config"
-    #make_babtu_cfg
+    make_babtu_cfg
     if [ "$option" = "--no-setup" ]; then
         build_skmvs_env
     elif [ "$option" = "--new-cache" ]; then
