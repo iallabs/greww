@@ -5,7 +5,7 @@ SHELL := /bin/bash
 #Project
 PROJECT = "Greww"
 #Version
-RELEASE = "0.0.1"
+RELEASE = "0.0.4"
 #Authors
 AUTHORS = ""
 # Path to source directory

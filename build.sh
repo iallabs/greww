@@ -3,9 +3,11 @@
 GREWW_PATH="$PWD"
 GREWW_VERSION="0.0.1"
 GREWW_CACHE="$GREWW_PATH/cache"
+GREWW_CONFIG="$GREWW_PATH/pkg/config"
 export GREWW_PATH
 export GREWW_VERSION
 export GREWW_CACHE
+export GREWW_CONFIG
 
 function make_babtu_cfg () {
     python3 ial-pkg-sos.py -v --make $PWD

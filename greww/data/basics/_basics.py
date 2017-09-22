@@ -106,6 +106,11 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
         else:
             f.write(content)
 
+def replace_file(directory=None, name=None, new_content=None):
+    """
+    """
+    raise NotImplemented("")
+
 @filter_app(lambda x : x[:-1] if '\n' in x else x)
 def _file_content_list(directory, name):
     set_dir(directory)

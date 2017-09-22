@@ -30,7 +30,7 @@ with open('LICENSE') as f:
 
 setup(
     name='Greww',
-    version='0.0.2',
+    version='0.0.4',
     description='Greeeeewwww',
     long_description=readme,
     author='Imp Alpha lab',

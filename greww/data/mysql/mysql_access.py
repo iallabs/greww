@@ -1,5 +1,5 @@
 import mysql.connector
-from greww._machine_config import MachineIdentity as MID
+from greww._config import Configuration
 from greww.utils.exceptions import (BadConnector,
                                     RejectedConnection)
 
@@ -10,15 +10,10 @@ def mysql_local_connector():
     ======================================================
     """
     try:
-        MYSQL_LOGS = MID._load("mysql.logs")
-        MYSQL_CONFIG = MID._load("mysql.config")
-        #XXX: The reason behind creting each parameter in
-        # Variables is because Python doesnt support 2 concated
-        # Dictionaries untill version >=3.x
-        # example :
-        # c = mysql.connector.connect(host)
-        use_pure = MYSQL_CONFIG['use_pure']
-        raise_on_warnings = MYSQL_CONFIG['raise_on_warnings']
+        MYSQL_LOGS = Configuration.load('greww.mysql.logs')
+        MYSQL_CONFIG = Configuration.load("greww.mysql.config")
+        use_pure = (MYSQL_CONFIG['use_pure'] == 'true')
+        raise_on_warnings = (MYSQL_CONFIG['raise_on_warnings'] == 'true')
         host = MYSQL_LOGS['host']
         user = MYSQL_LOGS['user']
         password = MYSQL_LOGS['password']
