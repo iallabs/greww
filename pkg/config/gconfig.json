@@ -1,0 +1,25 @@
+{
+    "babtu_dependencies": [
+        "skmvs",
+        "cfg-parser"
+    ],
+    "configuration": {
+        "active": "greww_config",
+        "list": [
+            "greww_config",
+            "machine_config"
+        ],
+        "using": "greww_config"
+    },
+    "configurations": {
+        "greww_config": {
+            "path": "<GREWW_CONFIG;paths>/greww_config.ini",
+            "type": "__ini__"
+        },
+        "machine_config": {
+            "path": "<MACHINE_CONFIG;paths>",
+            "type": "__ini__"
+        }
+    },
+    "greww_version": "0.0.4"
+}
