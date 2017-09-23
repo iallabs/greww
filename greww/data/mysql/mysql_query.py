@@ -32,7 +32,7 @@ WHERE {2}"""
 _SELECT_TABLE = "SELECT * FROM {0}.{1};"
 _SELECT_GENERAL = """SELECT {0}
 FROM {1}.{2}
-WHERE {3}"""
+"""
 _SORTED_TABLE = """SELECT {0}
 FROM {1}.{2}
 ORDER BY {3} {4}
@@ -132,7 +132,9 @@ def _DL_QUERY(db, table, w, lim):
 
 
 def _SL_QUERY(db, table, w, lim, s):
-    res = _SELECT_GENERAL.format(s, db, table, w)
+    res = _SELECT_GENERAL.format(s, db, table)
+    if w:
+        res = res + "\n WHERE {0}".format(w)
     if lim > 0:
         return res + "\n LIMIT {0};".format(lim)
     return res + ";"

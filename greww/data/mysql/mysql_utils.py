@@ -222,7 +222,10 @@ def select_optimised(db,
                                                  kind,
                                                  with_limit))
 
-MysqlApiFunctions = {"_version" : _user,
+#!NOTE execute_only and execute_and_fetch changes name in this list
+MysqlApiFunctions = {"execute" : execute_only,
+                     "execute_op" : execute_and_fetch,
+                     "_version" : _user,
                      "_user" : _user,
                      "databases" : databases,
                      "make_database" : make_database,
