@@ -134,7 +134,7 @@ def _DL_QUERY(db, table, w, lim):
 def _SL_QUERY(db, table, w, lim, s):
     res = _SELECT_GENERAL.format(s, db, table)
     if w:
-        res = res + "\n WHERE {0}".format(where)
+        res = res + "\n WHERE {0}".format(w)
     if lim > 0:
         return res + "\n LIMIT {0};".format(lim)
     return res + ";"
