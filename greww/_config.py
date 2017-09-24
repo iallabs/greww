@@ -49,8 +49,8 @@ class GConfigLoader(object):
         else:
             self._data['configuration']['list'].append(name)
             cfg = {
-                'path' : "{0}".format(path)
-                'type' : "{0}".format(t)
+                'path' : "{0}".format(path),
+                'type' : "{0}".format(t),
             }
             self._data['configurations'].update({name : cfg})
             _replace_json_file(GREWW_CONFIG, GCF, self._data)
