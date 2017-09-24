@@ -1,88 +1,91 @@
 # execute shell command lines
 from greww.utils.exceptions import MissingCommand
+from greww.utils.str_bin import convert_bin_to_str as cbts
 import subprocess
+import os
 
-#TODO
-def _split_cmd(cmdline):
-    """
-    """
-    return [i for i in cmdline.split(' ')]
+def _cbtr(ln):
+    r = []
+    for i in ln.split(b'\n'):
+        if i:
+            r += [cbts(i)]
+    return r
 
-def execute_shell_command(cmdline=None, shell=False, check=False, rs=False, **kwargs):
+def _simple_execution(cmd):
     """
-    Execute shell command at shell subprocess
-    with rs=False : the function return the command line result
+    Shell simple execution
+    Return only exit status (0 : Good)
     """
-    if cmdline is None:
-        raise MissingCommand()
-    cmds = _split_cmd(cmdline)
-    if not rs:
-        subprocess.run(cmds, shell=shell, check=check)
-    else:
-        return subprocess.run(cmds, shell=shell, check=check, stdout=subprocess.PIPE).stdout.split(b'\n')
+    return os.system(cmd)
 
-def shell_command_output(cmdline=None, shell=False, check=False):
+def _subprocess_call_with_communicate(cmd, r=False):
     """
-    Not working just use execute_shell_command with rs=True
+    Shell controlled execution
+    Cant output shell logs, and errors
+    errors empty : Good
     """
-    if cmdline is None:
-        raise MissingCommand()
-    cmds = _split_cmd(cmdline)
-    return subprocess.check_output(cmds, shell=shell, check=check)
-
+    c = cmd.split(' ')
+    p = subprocess.Popen(c, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+    if r:
+        return _cbtr(stdout), _cbtr(stderr)
 
 #NOTE: to understand this part take a look at
 # https://stackoverflow.com/questions/17904231/handling-tcpdump-output-in-python
 
-def catch_shell_streaming(cmdline=None,
-                          verbose=False,
-                          to_file=None,
-                          __func=None,
-                          with_runtime_limit=None,
-                          with_iterations_limit=None,
-                          with_datetime_limit=None):
+def _catch_shell_stream(cmd,
+                        verbose=False,
+                        stdout=False,
+                        urlout=False,
+                        runtime_limit=None,
+                        deadline_limit=None,
+                        iterations_limit=None,
+                        raise_repetition_limit=None):
     """
-    Cant read shell command lines that stream data like tcpdump / top
-    """
-    #TODO runtime / iterations / datetime limit
-    #NOTE STILL NOT TESTED
-    cmds = _split_cmd(cmdline)
-    p = subprocess.Popen(cmds, stdout=sub.PIPE)
-    if verbose:
-        for row in iter(p.stdout.readline, b''):
-            print(row.rstrip())   # process here
-    elif to_file:
-        f = open(to_file, 'w')
-        for row in iter(p.stdout.readline, b''):
-            f.write(row)
-        f.close()
-    elif __func:
-        for row in iter(p.stdout.readline, b''):
-            __func(row)
-    else:
-        __func = lambda x : print(x)
-        for row in iter(p.stdout.readline, b''):
-            __func(row)
+    Catch shell stream
+    Commands like 'tcpdump' and 'top' need more tricky way to catch all logs and redirect them
 
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    stdout = []
+    while True:
+        line = p.stdout.readline()
+        stdout.append(line)
+        if verbose:
+            print(line)
+        if line == '' and p.poll() != None:
+            break
+    return ''.join(stdout)
+    """
+    pass
 
 class Shell(object):
     """
     Shell execution and envirenement
     """
-    slots = []
+    @staticmethod
+    def execute(cmd, output=False, errors=False, subprocess=False):
+        if subprocess or output:
+            s = _subprocess_call_with_communicate(cmd, 1)
+            if output:
+                res = [s[0]]
+                if errors:
+                    res += [s[1]]
+                return res
+        else:
+            return _simple_execution(cmd)
 
     @staticmethod
-    def execute(*args, **kwargs):
-        return esc(*args, **kwargs)
+    def check_output(cmd, subprocess=False):
+        if subprocess:
+            return not _subprocess_call_with_communicate(cmd, 1)[1]
+        else:
+            return _simple_execution(cmd) == 0
 
-    #XXX: declared as var=VarEnv instead
-    # Just to not use '()' for nothing
-    #@staticmethod
-    #def var():
-    #    return VarEnv
     @staticmethod
-    def execute_under_new_popen():
-        """
-        Not Implemented
-        """
-        raise NotImplemented()
+    def _execute(cmd):
+        return _subprocess_call_with_communicate(cmd, 1)
+
+    @staticmethod
+    def catch_stream():
+        _catch_shell_stream(1)
+        pass

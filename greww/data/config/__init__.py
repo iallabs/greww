@@ -4,4 +4,6 @@ from .config_utils import (get_configurations,
                            option_data,
                            set_configuration,
                            set_option,
+                           remove_configuration,
+                           remove_option,
                            make_configuration_file)

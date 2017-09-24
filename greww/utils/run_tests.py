@@ -20,9 +20,12 @@ import time
 
 
 test_modules = ['greww.data.tests.tests_basics',
-                'greww.data.tests.tests_mysql',
                 'greww.data.tests.tests_config',
-                'greww.data.tests.tests_json']
+                'greww.data.tests.tests_json',
+                'greww.data.tests.tests_greww_config',
+                'greww.data.tests.tests_mysql',
+                'greww.ressources.tests.tests_shell']
+
 Succeeded_Test = "[ OK ] ... {0} succeeded ES:{1} with a total run time of : {2} ms"
 Failed_Test = "[WARN] ... {0} failed after runing : {1} ms"
 
@@ -32,31 +35,40 @@ def _test_function(func):
         exit_status = func()
         t2 = time.time()
         print(Succeeded_Test.format(func.__name__, exit_status, t2 - t1))
+        return 1
     except:
         t2 = time.time()
         print(Failed_Test.format(func.__name__, t2 - t1))
+        return 0
+
 def import_module_tests_functions(module):
     mod = __import__(module, globals(), locals(), [''])
     functions = getattr(mod, '__all__')         #XXX: Python need this usless arguments
     return functions                            # to import all objects in a module
 
 def run_pytests_modules(*test_modules):
+    tfunction = 0
+    tsuccess = 0
+    c = None
     t1 = time.time()
     for module in test_modules:
-        print("[INFO] ... Importing {0} test functions".format(module))
         functions = import_module_tests_functions(module)
-        print("[INFO] ... Runing {0} test functions".format(module))
-        print("[INFO] ... Total number of functions : {0}".format(len(functions)))
+        print("[INFO] ... Runing {0} tests : [{1} functions]".format(module, len(functions)))
         k1 = time.time()
         for func in functions:
-            _test_function(func)
+            c = _test_function(func)
+            tfunction += 1
+            if c == 1:
+                tsuccess += 1
         k2 = time.time()
         print("        ====> Module tests total run time : {0} ms".format(k2 - k1))
         print("        ====> end module test")
-
-    print('[INFO] ... --- end test ---')
+        print("")
     t2 = time.time()
+    sr = tsuccess/tfunction * 100
+    print('[INFO] ... --- end test ---')
     print('       ====> Total runtime : {0} ms'.format(t2 - t1))
+    print('       ====> Success rate : {0}  [ {1}/{2} ]'.format(sr, tsuccess, tfunction))
 
 def run_all_tests():
     run_pytests_modules(*test_modules)

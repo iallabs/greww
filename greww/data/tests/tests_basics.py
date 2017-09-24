@@ -14,6 +14,8 @@ from greww.data.basics import (list_dir,
                                mkfile_with_content,
                                file_content,
                                file_lenght,
+                               copy_file,
+                               move_file,
                                add_line,
                                add_lines,
                                del_lines,
@@ -77,8 +79,16 @@ def test_dir_file_basics():
     # find_file
     pf = find_file(GP, TFILE)
     assert len(pf) == 2
+    # copy_file
+    copy_file(TDIR, TFILE, TDIR, 'copyofTFILE')
+    assert check_file(TDIR, 'copyofTFILE')
+    # check ct
+    move_file(TDIR, 'copyofTFILE', TDIR, 'mvofTFILE')
+    assert not check_file(TDIR, 'copyofTFILE')
+    assert check_file(TDIR, 'mvofTFILE')
     # remove file
     remove_file(TDIR + '/testdir9', TFILE)
+
     pf = find_file(GP, TFILE)
     assert len(pf) == 1
     # remove

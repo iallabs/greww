@@ -141,6 +141,5 @@ def jsonize_kwargs(*args, **kwargs):
         data = {
              "args" : list(args),
         }
-        for k in keys:
-            data[k] = kwargs[k]
+        data.update(kwargs)
     return data

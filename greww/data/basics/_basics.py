@@ -95,9 +95,9 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     if ext:
         name += "." + ext
     set_dir(directory)
-    if not content:
-        return
     with open(name, 'w') as f:
+        if not content:
+            return
         if type(content) == str:
             f.write(content)
         elif type(content) == list:
@@ -128,6 +128,13 @@ def file_content(directory=None, name=None, expand=True):
     with open(name, "r") as f:
         return f.read()
 
+def copy_file(directory, name, nd, nn):
+    ct = file_content(directory, name)
+    mkfile_with_content(nd, nn, content=ct)
+
+def move_file(directory, name, nd, nn):
+    copy_file(directory, name, nd, nn)
+    remove_file(directory, name)
 
 def file_lenght(directory=None, name=None):
     """

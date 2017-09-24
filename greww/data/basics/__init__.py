@@ -8,6 +8,8 @@ from ._basics import (list_dir,
                       find_file,
                       make_file,
                       check_file,
+                      copy_file,
+                      move_file,
                       remove_file,
                       mkfile_with_content,
                       file_content,
@@ -17,6 +19,5 @@ from ._basics import (list_dir,
                       del_lines,
                       replace_lines,
                       file_size)
-
 
 from .basics import GrewwDirectory, GrewwFile
