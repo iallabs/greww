@@ -95,9 +95,9 @@ def mkfile_with_content(directory=None, name=None, ext=None, content=None):
     if ext:
         name += "." + ext
     set_dir(directory)
-    if not content:
-        return
     with open(name, 'w') as f:
+        if not content:
+            return
         if type(content) == str:
             f.write(content)
         elif type(content) == list:
