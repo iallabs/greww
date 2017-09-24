@@ -1,5 +1,5 @@
 from greww.ressources.shell import Shell
-from greww.data.basics import check_dir, list_dir
+from greww.data.basics import check_dir, list_dir, remove_dir
 from greww._envs import GREWW_CACHE
 
 DIR = "{0}/newdir__".format(GREWW_CACHE)
@@ -27,11 +27,8 @@ def test_all_executions():
 
 def test_check_output():
     # simple check
-    x = Shell.check_output(_rmg)
-    assert x == False
     x = Shell.check_output(_mkdir)
     assert x
-    # subprocess check
     x = Shell.check_output(_rmg, True)
     assert x
     x = Shell.check_output(_rmg, True)
