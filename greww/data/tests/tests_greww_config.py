@@ -44,3 +44,6 @@ def test_gconfig_loader():
 
 def test_configuration():
     pass
+
+__all__ = [test_gconfig_loader,
+           test_configuration]
