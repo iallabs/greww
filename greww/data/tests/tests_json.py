@@ -53,6 +53,10 @@ def test_json_file_basics():
     ct = read_json(*_args)
     assert ct == __data_frame_2
     remove_file(GREWW_CACHE, 'jf.json')
+    # jsonize_kwargs
+    d = jsonize_kwargs(1, k=1)
+    assert d == {"args" : 1,
+                 "k" : 1}
 
 def test_json_operations():
     make_json(*_args, from_data=__data_frame_2, pretty=True)
