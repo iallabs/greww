@@ -1,45 +1,45 @@
-from greww.ressources.shell import execute_shell_command as esc
-from greww.utils.filters import filter_iter as FI
+from greww.ressources.shell import Shell
+from greww.data.basics import check_dir, list_dir
+from greww._envs import GREWW_CACHE
 
-_ls = "ls {0}"
-_ls_la = "ls -la {0}"
+DIR = "{0}/newdir__".format(GREWW_CACHE)
+_lsg = "ls {0}".format(GREWW_CACHE)
+_rmg = "rm -r {0}".format(DIR)
 _un = "uname"
-_un_op = "uname {0}"
-_mkdir = "mkdir {0}/{1}"
-_rmdir = "rm -r {0}/{1}"
+_mkdir = "mkdir {0}".format(DIR)
+_stream = """(echo "import sys" ; echo "for r in range(10): print(r)") | python3"""
 
-def test_esc_general():
-    global _ls, _ls_la, _un
-    dirs = esc(_ls.format("/"), rs=True)
-    assert len(dirs) > 0
-    system = esc(_un, rs=True)
-    assert system
 
-def test_esc_no_results():
-    global _mkdir, _rmdir
-    HOME = os.environ['HOME']
-    dirs = esc(_ls.format(HOME), rs=True)
-    bdirs = FI(dirs, c0)
-    dir_test = "greww_test_dir"
-    assert not (dir_test in bdirs)
-    # Make test dir
-    esc(_mkdir.format(HOME, dir_test))
-    dirs = esc(_ls.format(HOME), rs=True)
-    bdirs = FI(dirs, c0)
-    assert dir_test in bdirs
-    # Delete it
-    esc(_rmdir.format(HOME, dir_test))
-    dirs = esc(_ls.format(HOME), rs=True)
-    bdirs = FI(dirs, c0)
-    assert not (dir_test in bdirs)
+def test_all_executions():
+    # simple execution
+    Shell.execute(_mkdir)
+    assert check_dir(DIR)
+    # subprocess execution
+    op = Shell.execute(_lsg, output=True, errors=True)
+    assert op[0] == ['newdir__']
+    assert not op[1]
+    # subprocess no result no errors
+    op = Shell.execute(_rmg, subprocess=True)
+    assert not check_dir(DIR)
+    # check err
+    _, err = Shell._execute(_rmg)
+    assert len(err) > 0
 
-def test_esc_streaming():
-    pass
+def test_check_output():
+    # simple check
+    x = Shell.check_output(_rmg)
+    assert x == False
+    x = Shell.check_output(_mkdir)
+    assert x
+    # subprocess check
+    x = Shell.check_output(_rmg, True)
+    assert x
+    x = Shell.check_output(_rmg, True)
+    assert not x
 
-def test_shell_class_structure():
-    pass
+def test_catch_stream():
+    Shell.catch_stream()
 
-__all__ = [test_esc_general,
-           test_esc_streaming,
-           test_esc_no_results,
-           test_shell_class_structure]
+__all__ = [test_all_executions,
+           test_check_output,
+           test_catch_stream]
