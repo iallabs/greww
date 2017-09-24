@@ -46,38 +46,3 @@ def refetch_filter(indexes):
             return ress
         return wrap_args
     return wrap_func
-
-
-def rezip_filter(res_type=list, split_opt="=", applied_func=None):
-    """
-    """
-    def wrap_func(func):
-        def wrap_args(*args, **kwargs):
-            res = func(*args, **kwargs)
-            dicta = {}
-            if not isinstance(res, res_type):
-                return res
-            for i in res:
-                val = applied_func(i)
-                if not ('=' in val) or val.count('=') > 1:
-                    continue
-                _d, _v = val.split(split_opt)
-                dicta.update({_d: _v})
-            return dicta
-        return wrap_args
-    return wrap_func
-
-
-def func_for_iter(filt):
-    def wrap_func(func):
-        def wrap_args(*args, **kwargs):
-            res = func(*args, **kwargs)
-            if hasattr(res, '__iter__'):
-                return [filt(e) for e in res]
-            return res
-        return wrap_args
-    return wrap_func
-
-
-def filter_iter(res, _filter):
-    return [_filter(e) for e in res]

@@ -23,8 +23,8 @@ class GConfigLoader(object):
     """
     config_file = GREWW_CONFIG
 
-    def __init__(self):
-        self._data = self._load_configurations()
+    def __init__(self, p=GREWW_CONFIG, f=GCF):
+        self._data = self._load_configurations(p, f)
         self.version = self._data['greww_version']
         self.dependencies = self._data['babtu_dependencies']
         self.configuration = self._data['configuration']['active']
@@ -33,8 +33,8 @@ class GConfigLoader(object):
         self.machine_config = self._data['configurations']['machine_config']
 
     @staticmethod
-    def _load_configurations():
-        return read_json(GREWW_CONFIG, GCF)
+    def _load_configurations(g, c):
+        return read_json(g, c)
 
     def _change_configuration_to(self, nc):
         if nc in self.configurations_list:
