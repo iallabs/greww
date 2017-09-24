@@ -1,7 +1,7 @@
-from ._envs import GREWW_CONFIG
 from .data.json import read_json, make_json, _replace_json
 from .data.basics import remove_file
 from .data.config import get_configurations, configuration_data
+from ._envs import GREWW_CONFIG
 import skmvs as SK
 
 GCF = "gconfig.json"
@@ -21,10 +21,13 @@ class GConfigLoader(object):
     """
     Greww Configurations
     """
-    config_file = GREWW_CONFIG
+    path = GREWW_CONFIG
+    f = GCF
 
-    def __init__(self, p=GREWW_CONFIG, f=GCF):
-        self._data = self._load_configurations(p, f)
+    def __init__(self, p=None, f=None):
+        self._path = p if p else self.path
+        self._file = f if f else self.f
+        self._data = self._load_configurations(self._path, self._file)
         self.version = self._data['greww_version']
         self.dependencies = self._data['babtu_dependencies']
         self.configuration = self._data['configuration']['active']
@@ -39,12 +42,12 @@ class GConfigLoader(object):
     def _change_configuration_to(self, nc):
         if nc in self.configurations_list:
             self._data['configuration']['active'] = nc
-            _replace_json_file(GREWW_CONFIG, GCF, self._data)
+            _replace_json(self._path, self._file, self._data)
         else:
             raise UnknownConfiguration("")
 
     def _new_configuration(self, name, path, t='__ini__'):
-        if n in self.configurations_list:
+        if name in self.configurations_list:
             raise ConfigurationAlreadyExists("")
         else:
             self._data['configuration']['list'].append(name)
@@ -53,15 +56,27 @@ class GConfigLoader(object):
                 'type' : "{0}".format(t),
             }
             self._data['configurations'].update({name : cfg})
-            _replace_json_file(GREWW_CONFIG, GCF, self._data)
+            _replace_json(self._path, self._file, self._data)
 
     def _remove_configuration(self, name):
-        if n in self.configurations_list:
+        if name in self.configurations_list:
             self._data['configuration']['list'].remove(name)
             del self._data['configurations'][name]
-            _replace_json_file(GREWW_CONFIG, GCF, self._data)
+            _replace_json(self._path, self._file, self._data)
         else:
             UnknownConfiguration("")
+
+    @classmethod
+    def mainsource(cls):
+        obj = object.__new__(cls)
+        obj.__init__()
+        return obj._path, obj._file
+
+    @classmethod
+    def all_configs(cls):
+        obj = object.__new__(cls)
+        obj.__init__()
+        return obj.configurations_list
 
     @classmethod
     def configure(cls, nc):
