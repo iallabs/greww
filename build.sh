@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 GREWW_PATH="$PWD"
 GREWW_VERSION="0.0.5"
