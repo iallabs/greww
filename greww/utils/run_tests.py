@@ -30,16 +30,15 @@ Succeeded_Test = "[ OK ] ... {0} succeeded ES:{1} with a total run time of : {2}
 Failed_Test = "[WARN] ... {0} failed after runing : {1} ms"
 
 def _test_function(func):
+    t1 = time.time()
     try:
-        t1 = time.time()
-        exit_status = func()
-        t2 = time.time()
+        exit_status, t2 = func(), time.time()
         print(Succeeded_Test.format(func.__name__, exit_status, t2 - t1))
-        return 1
+        return True
     except:
         t2 = time.time()
         print(Failed_Test.format(func.__name__, t2 - t1))
-        return 0
+        return False
 
 def import_module_tests_functions(module):
     mod = __import__(module, globals(), locals(), [''])
@@ -58,7 +57,7 @@ def run_pytests_modules(*test_modules):
         for func in functions:
             c = _test_function(func)
             tfunction += 1
-            if c == 1:
+            if c:
                 tsuccess += 1
         k2 = time.time()
         print("        ====> Module tests total run time : {0} ms".format(k2 - k1))

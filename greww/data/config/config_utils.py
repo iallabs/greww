@@ -34,17 +34,16 @@ def option_data(full_path, c, o):
     return config[c][o]
 
 def _dispatch_path(p):
-    _file = ''
-    _path = ''
+    _file, _path = '', ''
     slash_found = False
     for i in p[::-1]:
-        if i == '/' and not slash_found:
-            slash_found = True
-        elif slash_found:
-            _file += i
-        else:
+        if slash_found:
             _path += i
-    return _file[::-1], _path[::-1]
+        elif i == '/':
+            slash_found = True
+        else:
+            _file += i
+    return _path[::-1], _file[::-1]
 
 def set_configuration(full_path, c, **kwargs):
     """

@@ -7,6 +7,7 @@ try:
     GREWW_CACHE = env('GREWW_CACHE')
     GREWW_CONFIG = env('GREWW_CONFIG')
 except:
+    # no scop tests
     def _dispatch_path(fdir):
         fn, fd = '', ''
         bo = False
