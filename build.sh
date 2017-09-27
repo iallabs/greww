@@ -9,6 +9,13 @@ export GREWW_VERSION
 export GREWW_CACHE
 export GREWW_CONFIG
 
+function __unset_env () {
+    unset GREWW_PATH
+    unset GREWW_VERSION
+    unset GREWW_CACHE
+    unset GREWW_CONFIG
+}
+
 function make_cache () {
     if [ ! -d $GREWW_CACHE ]; then
         mkdir $GREWW_CACHE
@@ -43,6 +50,10 @@ if [ "$cmd" = "--build" ]; then
 elif [ "$cmd" = "--test" ]; then
     test_py_package
     echo "[ OK ] ... End tests"
+elif [ "$cmd" = "--test-noscop" ]; then
+    __unset_env
+    test_py_package
+    echo "[ OK ] ... End no scop tests"
 elif [ "$cmd" = "--clear-cache" ];then
     clear_cache
     echo "[ OK ] ... Clear cache"

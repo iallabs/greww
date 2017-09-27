@@ -46,6 +46,11 @@ jobs:
             bash build.sh --build
 
       - run:
+          name: run no scop tests
+          command: |
+            bash build.sh --test-noscop
+
+      - run:
           name: run tests
           command: |
             bash build.sh --test
