@@ -31,7 +31,11 @@ function make_py_package () {
 }
 
 function test_py_package () {
-    GREWW_PY_SETUP="$GREWW_PATH/setup.py"
+    if [ "$1" = "--noscop" ]; then
+        GREWW_PY_SETUP="setup.py"
+    else
+        GREWW_PY_SETUP="$GREWW_PATH/setup.py"
+    fi
     coverage run $GREWW_PY_SETUP test
     RS=$?
     exit $RC
@@ -57,7 +61,7 @@ elif [ "$cmd" = "--test" ]; then
     echo "[ OK ] ... End tests"
 elif [ "$cmd" = "--test-noscop" ]; then
     __unset_env
-    test_py_package
+    test_py_package --noscop
     echo "[ OK ] ... End no scop tests"
 elif [ "$cmd" = "--clear-cache" ];then
     clear_cache
