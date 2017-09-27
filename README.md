@@ -37,7 +37,7 @@ Greww.ressources
 | feature | devidea | written | tested | implemented |
 | --- | --- | --- | --- | --- |
 | ssh | X | O | O | O |
-| curl | X | X | O | O |
+| curl | X | X | O | O |
 | shell | X | X | X | X |
 | ping | X | O | O | O |
 
@@ -55,10 +55,11 @@ bash build.sh --test [ --noscop ]
 
 ## Configuration
 
-## Documentation
-
 ```
 {}
 ```
 
 ## Examples
+
+
+###
