@@ -10,7 +10,7 @@ export GREWW_CACHE
 export GREWW_CONFIG
 
 function __unset_env () {
-    #unset GREWW_PATH
+    unset GREWW_PATH
     unset GREWW_VERSION
     unset GREWW_CACHE
     unset GREWW_CONFIG
@@ -25,11 +25,15 @@ function make_cache () {
 function make_py_package () {
     GREWW_PY_SETUP="$GREWW_PATH/setup.py"
     sudo python3 $GREWW_PY_SETUP install
+    RS=$?
+    return RC
 }
 
 function test_py_package () {
     GREWW_PY_SETUP="$GREWW_PATH/setup.py"
     coverage run $GREWW_PY_SETUP test
+    RS=$?
+    return RC
 }
 
 function clear_cache () {
