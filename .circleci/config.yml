@@ -39,6 +39,7 @@ jobs:
             sudo apt install gcc
             sudo apt install protobuf-compiler
             sudo pip install -r requirements.txt
+            sudo pip install -r cireq.txt
 
       - run:
           name: build module
@@ -46,17 +47,19 @@ jobs:
             bash build.sh --build
 
       - run:
+          name: run tests
+          command: |
+            bash build.sh --test
+
+      - run:
           name: run no scop tests
           command: |
             bash build.sh --test-noscop
 
       - run:
-          name: run tests
+          name: export coverage
           command: |
-            bash build.sh --test
-            export CODECOV_TOKEN="ddcde6d5-a3d4-44a7-825c-5ced149f31d7"
             codecov
-
 
       - store_artifacts:
           path: test-reports
