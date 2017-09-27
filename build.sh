@@ -10,7 +10,7 @@ export GREWW_CACHE
 export GREWW_CONFIG
 
 function __unset_env () {
-    unset GREWW_PATH
+    #unset GREWW_PATH
     unset GREWW_VERSION
     unset GREWW_CACHE
     unset GREWW_CONFIG
