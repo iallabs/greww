@@ -43,7 +43,7 @@ jobs:
       - run:
           name: build module
           command: |
-            bash build.sh --build --new-cache
+            bash build.sh --build
 
       - run:
           name: run tests

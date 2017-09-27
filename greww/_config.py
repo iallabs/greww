@@ -2,10 +2,8 @@ from .data.json import read_json, make_json, _replace_json
 from .data.basics import remove_file
 from .data.config import get_configurations, configuration_data
 from ._envs import GREWW_CONFIG
-import skmvs as SK
 
 GCF = "gconfig.json"
-
 
 class UnknownConfiguration(Exception):
     pass
@@ -118,7 +116,7 @@ class GConfigLoader(object):
 class Configuration(object):
 
     def __init__(self, path=None):
-        self._path = path if path else SK.scan_expr(GConfigLoader.config_of(-1)['path'])
+        self._path = path if path else '{0}/{1}'.format(GREWW_CONFIG, GConfigLoader.config_of(-1)['file'])
         self._configs = get_configurations(self._path)
 
     @classmethod

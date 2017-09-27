@@ -5,7 +5,6 @@ from greww.data.basics import (set_dir,
 from greww.utils.exceptions import (WTF,
                                     LockedOption,
                                     NotImplementedAlgo)
-import skmvs as SK
 
 def make_json(directory=None, name=None, kind=dict, from_data=None, pretty=True):
     """
