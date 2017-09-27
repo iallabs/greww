@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 GREWW_PATH="$PWD"
 GREWW_VERSION="0.0.5"
@@ -25,8 +26,7 @@ function make_cache () {
 function make_py_package () {
     GREWW_PY_SETUP="$GREWW_PATH/setup.py"
     sudo python3 $GREWW_PY_SETUP install
-    RS=$?
-    exit $RC
+    exit $?
 }
 
 function test_py_package () {
@@ -36,8 +36,7 @@ function test_py_package () {
         GREWW_PY_SETUP="$GREWW_PATH/setup.py"
     fi
     coverage run $GREWW_PY_SETUP test
-    RS=$?
-    exit $RC
+    exit $?
 }
 
 function clear_cache () {
@@ -49,7 +48,7 @@ option=$2
 
 if [ "$cmd" = "--build" ]; then
     make_cache
-    if [ "$option" = "--clear-cache"]; then
+    if [ "$option" = "--clear-cache" ]; then
         clear_cache
     fi
     make_py_package
