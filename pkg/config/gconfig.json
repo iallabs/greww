@@ -13,13 +13,13 @@
     },
     "configurations": {
         "greww_config": {
-            "path": "<GREWW_CONFIG;paths>/greww_config.ini",
+            "file": "greww_config.ini",
             "type": "__ini__"
         },
         "machine_config": {
-            "path": "<MACHINE_CONFIG;paths>",
+            "file": "machine_config.ini",
             "type": "__ini__"
         }
     },
-    "greww_version": "0.0.4"
+    "greww_version": "0.0.5"
 }

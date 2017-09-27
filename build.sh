@@ -1,7 +1,8 @@
 #!/bin/bash
+set -e
 
 GREWW_PATH="$PWD"
-GREWW_VERSION="0.0.1"
+GREWW_VERSION="0.0.5"
 GREWW_CACHE="$GREWW_PATH/cache"
 GREWW_CONFIG="$GREWW_PATH/pkg/config"
 export GREWW_PATH
@@ -9,8 +10,11 @@ export GREWW_VERSION
 export GREWW_CACHE
 export GREWW_CONFIG
 
-function make_babtu_cfg () {
-    python3 ial-pkg-sos.py -v --make $PWD
+function __unset_env () {
+    unset GREWW_PATH
+    unset GREWW_VERSION
+    unset GREWW_CACHE
+    unset GREWW_CONFIG
 }
 
 function make_cache () {
@@ -19,41 +23,45 @@ function make_cache () {
     fi
 }
 
-function build_skmvs_env () {
-    GREWW_BUILD_ENV="$GREWW_PATH/build_env.py"
-    python3 $GREWW_BUILD_ENV
-}
-
 function make_py_package () {
     GREWW_PY_SETUP="$GREWW_PATH/setup.py"
     sudo python3 $GREWW_PY_SETUP install
+    exit $?
 }
 
 function test_py_package () {
-    GREWW_PY_SETUP="$GREWW_PATH/setup.py"
+    if [ "$1" = "--noscop" ]; then
+        GREWW_PY_SETUP="setup.py"
+    else
+        GREWW_PY_SETUP="$GREWW_PATH/setup.py"
+    fi
     coverage run $GREWW_PY_SETUP test
+    exit $?
+}
+
+function clear_cache () {
+    rm -rf $GREWW_CACHE/*
 }
 
 cmd=$1
 option=$2
 
 if [ "$cmd" = "--build" ]; then
-    echo "making babtu config"
-    make_babtu_cfg
-    if [ "$option" = "--no-setup" ]; then
-        build_skmvs_env
-    elif [ "$option" = "--new-cache" ]; then
-        build_skmvs_env
-        rm -rf $GREWW_CACHE
-        make_cache
-        make_py_package
-    else
-        expmk
-        build_skmvs_env
-        make_py_package
+    make_cache
+    if [ "$option" = "--clear-cache" ]; then
+        clear_cache
     fi
-fi
-
-if [ "$cmd" = "--test" ]; then
+    make_py_package
+    echo "[ OK ] ... Build success"
+    exit 0
+elif [ "$cmd" = "--test" ]; then
     test_py_package
+    echo "[ OK ] ... End tests"
+elif [ "$cmd" = "--test-noscop" ]; then
+    __unset_env
+    test_py_package --noscop
+    echo "[ OK ] ... End no scop tests"
+elif [ "$cmd" = "--clear-cache" ];then
+    clear_cache
+    echo "[ OK ] ... Clear cache"
 fi
